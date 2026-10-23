@@ -22,12 +22,11 @@ The simulator uses the 2026 team and driver names and the layouts of real circui
 
 Circuit outlines are simplified from the open [f1-circuits](https://github.com/bacinger/f1-circuits) GeoJSON data, which is derived from OpenStreetMap contributors' data (ODbL). Start-line positions and pit-lane drawings are approximate.
 
-![Monza, dry](screenshots/grand-prix-simulator-monza.png)
-![Spa, rain arrives](screenshots/grand-prix-simulator-spa-rain.png)
-![Monaco, Heritage theme](screenshots/heritage-simulator-monaco.png)
-![Chequered flag and points](screenshots/simulator-chequered-flag-classification.png)
-![Replay](screenshots/grand-prix-replay-projection.png)
-![Eight circuits](screenshots/circuits-simplified-from-open-data.png)
+
+![Race page](screenshots/page-race.png)
+![Podium and classification](screenshots/broadcast-podium-classification.png)
+![Replay](screenshots/broadcast-replay-undercut.png)
+![Heritage theme](screenshots/heritage-simulator-monza.png)
 
 ## Broadcast-style presentation (v5)
 

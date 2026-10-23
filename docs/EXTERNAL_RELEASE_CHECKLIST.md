@@ -1,7 +1,7 @@
 # External Release Checklist — exact commands for everything this environment could not verify
 
 This is the companion to
-[`FINAL_PRODUCTION_READINESS_REPORT.md`](./FINAL_PRODUCTION_READINESS_REPORT.md).
+the archived readiness report.
 Every item here is marked `NOT RUN` in that report for a specific, stated
 reason (no Android SDK, no container registry access, no AWS account, no
 physical device). This document is the exact, copy-pasteable command list
