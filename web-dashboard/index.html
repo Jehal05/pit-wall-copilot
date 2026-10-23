@@ -452,6 +452,55 @@ main.se .sbtns{padding:10px 16px 8px}
 @media (max-width:760px){.pages{padding:0 8px}.pages button{padding:10px 14px 10px 10px;font-size:14px}main.cp .alx-log{height:55vh}}
 
 #charts svg{height:auto}
+
+/* ---------- v8: engineer pages ---------- */
+body[data-page="telemetry"] main[data-pg="telemetry"]{display:grid}
+body[data-page="strategy"] main[data-pg="strategy"]{display:grid}
+main.tl,main.st{grid-template-columns:minmax(0,1.05fr) minmax(0,1.1fr) minmax(0,1fr)}
+@media (max-width:1280px){main.tl,main.st{grid-template-columns:1fr 1fr}}
+@media (max-width:820px){main.tl,main.st{grid-template-columns:1fr}}
+.eb{padding:8px 12px 12px;font-size:13px}
+.eb .muted{color:var(--ink3);font-size:12px;margin:6px 0 0;line-height:1.35}
+.eb .hint{padding:10px 4px;color:var(--ink3)}
+.etab{width:100%;border-collapse:collapse;font-size:12.5px}
+.etab th{font:600 10px var(--font-body);color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;text-align:left;padding:4px 5px;border-bottom:1px solid var(--line2)}
+.etab td{padding:4px 5px;border-bottom:1px solid var(--line);white-space:nowrap}
+.etab td.c{font:italic 800 15px var(--font-display);letter-spacing:.03em}
+.etab td.p{font:italic 800 15px var(--font-display);width:22px;color:var(--ink3)}
+.etab tr.me{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.etab td.sx{font-variant-numeric:tabular-nums;text-align:right}
+.sx.pu{color:#fff;background:#8a2be2}.sx.gr{color:#fff;background:#0c8a4f}.sx.ye{background:#ffe27a;color:#15151e}.sx.dim{color:var(--ink3)}
+.leg{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--ink3);margin:6px 0 2px}
+.leg i{display:inline-block;width:10px;height:10px;margin-right:4px;vertical-align:-1px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:8px;margin:0 0 8px}
+.kpis div{background:var(--bg2);border:1px solid var(--line);padding:6px 9px}
+.kpis small{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.kpis b{font:italic 800 20px var(--font-display)}
+.pill{display:inline-block;font:italic 800 11px var(--font-display);letter-spacing:.1em;padding:1px 9px;color:#fff;background:#6b7080;clip-path:polygon(5px 0,100% 0,calc(100% - 5px) 100%,0 100%);text-transform:uppercase}
+.pill.bad{background:#e10600}.pill.ok{background:#0c8a4f}.pill.warn{background:#d9a000;color:#15151e}.pill.info{background:#2b7be4}
+.eb svg{width:100%;height:auto;display:block}
+.gg{display:grid;grid-template-columns:92px 1fr 64px;gap:4px 8px;align-items:center;margin:4px 0;font-size:12px}
+.gg s{display:block;height:8px;background:var(--line);position:relative;text-decoration:none}
+.gg s i{display:block;height:100%}
+.gg s u{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.gg b{text-align:right;font:italic 800 14px var(--font-display)}
+.alertbox{margin:8px 0 2px;padding:8px 10px;border-left:4px solid var(--accent);background:color-mix(in srgb,var(--accent) 8%,transparent);font-size:12.5px}
+.alertbox.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 8%,transparent)}
+.brief{margin:0;padding-left:18px}.brief li{margin:5px 0;line-height:1.35}
+.reco{margin:8px 0 2px;padding:9px 12px;background:#15151e;color:#fff;font:italic 800 17px var(--font-display);letter-spacing:.05em}
+.reco small{display:block;font:500 12px var(--font-body);letter-spacing:0;color:#b9bdca;font-style:normal;margin-top:2px}
+.xo{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0}
+.xo span{width:30px;text-align:center;font:italic 800 11px var(--font-display);color:#fff;padding:3px 0;position:relative}
+.xo span em{display:block;font:500 9px var(--font-body);font-style:normal;opacity:.85}
+.mcbar{display:flex;height:16px;background:var(--line);margin:3px 0 1px}.mcbar i{display:block;height:100%}
+.mcrow{margin:7px 0}.mcrow b{font:italic 700 14px var(--font-display);letter-spacing:.03em}
+.mcrow small{color:var(--ink3);margin-left:6px}
+.radio-row{display:grid;grid-template-columns:5px 1fr auto;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);align-items:start}
+.radio-row i{align-self:stretch}
+.radio-row .a{color:var(--ink3);font-size:11.5px}
+.radio-row b{font-weight:600}
+.btn.sm{padding:6px 16px;font-size:14px}
+
 /* ---------- toast + dialog ---------- */
 .toast{position:fixed;left:50%;top:auto;bottom:28px;transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
@@ -513,9 +562,11 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
 
 <nav class="pages" id="pages" aria-label="Pages">
   <button type="button" data-pg="race" id="nav-race" aria-pressed="true"><i>1</i>Race</button>
-  <button type="button" data-pg="analysis" id="nav-analysis" aria-pressed="false"><i>2</i>Analysis</button>
-  <button type="button" data-pg="copilot" id="nav-copilot" aria-pressed="false"><i>3</i>Copilot</button>
-  <button type="button" data-pg="season" id="nav-season" class="only-sim" aria-pressed="false"><i>4</i>Championship</button>
+  <button type="button" data-pg="telemetry" id="nav-telemetry" class="only-sim" aria-pressed="false"><i>2</i>Telemetry</button>
+  <button type="button" data-pg="strategy" id="nav-strategy" class="only-sim" aria-pressed="false"><i>3</i>Strategy</button>
+  <button type="button" data-pg="analysis" id="nav-analysis" aria-pressed="false"><i>4</i>Analysis</button>
+  <button type="button" data-pg="copilot" id="nav-copilot" aria-pressed="false"><i>5</i>Copilot</button>
+  <button type="button" data-pg="season" id="nav-season" class="only-sim" aria-pressed="false"><i>6</i>Championship</button>
 </nav>
 <main class="pg" data-pg="race">
   <section class="col">
@@ -584,6 +635,38 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <h2>Race control <span id="alert-count"></span></h2>
       <div id="alerts" class="feed"><div class="empty">Press Start. Lap events and strategy alerts appear here as they happen.</div></div>
     </div>
+  </section>
+</main>
+
+<main class="pg tl" data-pg="telemetry">
+  <section class="col">
+    <div class="card eng" id="c-sect"><h2>Sector times <span>live, simulated</span></h2><div class="eb" id="c-sect-b"></div></div>
+    <div class="card eng" id="c-riv"><h2>Rival stint profiling <span>wear rate and projected cliff</span></h2><div class="eb" id="c-riv-b"></div></div>
+  </section>
+  <section class="col">
+    <div class="card eng" id="c-ghost"><h2>Telemetry vs ghost lap <span>your last lap vs your best</span></h2><div class="eb" id="c-ghost-b"></div></div>
+    <div class="card eng" id="c-cliff"><h2>Tyre cliff predictor <span>compound life at this circuit</span></h2><div class="eb" id="c-cliff-b"></div></div>
+  </section>
+  <section class="col">
+    <div class="card eng" id="c-fuel"><h2>Fuel and energy <span>fuel-to-finish, ERS map</span></h2><div class="eb" id="c-fuel-b"></div></div>
+    <div class="card eng" id="c-therm"><h2>Car systems <span>thermal alerts, aero balance</span></h2><div class="eb" id="c-therm-b"></div></div>
+    <div class="card eng" id="c-setup"><h2>Setup advisor <span>rule-based, illustrative</span></h2><div class="eb" id="c-setup-b"></div></div>
+  </section>
+</main>
+
+<main class="pg st" data-pg="strategy">
+  <section class="col">
+    <div class="card eng" id="c-brief"><h2>Engineer briefing <span>auto-generated, simulated</span></h2><div class="eb" id="c-brief-b"></div></div>
+    <div class="card eng" id="c-drop"><h2>Pit window drop map <span>where you rejoin if you box now</span></h2><div class="eb" id="c-drop-b"></div></div>
+  </section>
+  <section class="col">
+    <div class="card eng" id="c-threat"><h2>Undercut threat matrix <span>who can jump you, who you can jump</span></h2><div class="eb" id="c-threat-b"></div></div>
+    <div class="card eng" id="c-sc"><h2>Safety car outlook <span>chance, and whether to box under it</span></h2><div class="eb" id="c-sc-b"></div></div>
+    <div class="card eng" id="c-xo"><h2>Crossover window <span>quickest tyre, lap by lap</span></h2><div class="eb" id="c-xo-b"></div></div>
+  </section>
+  <section class="col">
+    <div class="card eng" id="c-mc"><h2>Monte Carlo strategy simulator <span>many seeded races per strategy</span></h2><div class="eb" id="c-mc-b"></div></div>
+    <div class="card eng" id="c-radio"><h2>Radio intel <span>rule-based tone and action items</span></h2><div class="eb" id="c-radio-b"></div></div>
   </section>
 </main>
 
@@ -783,7 +866,7 @@ function analyzeTrack(){
   const mean=v.reduce((a,b)=>a+b,0)/N, vmax=Math.min(352,vavg/mean*1.0);
   const spd=v.map(x=>x*vmax), thr=[], brk=[];
   for(let i=0;i<N;i++){ const dv=(v[(i+3)%N]-v[i]); brk.push(dv<-0.012?Math.min(1,-dv/0.06):0); thr.push(dv>0.004?1:(brk[i]>0?0:Math.min(1,0.45+v[i]*0.55))); }
-  TRK={n:N,v:spd,thr,brk,drs,pts,corners:pick.map((i,n)=>({i,n:n+1,s:sg[i]}))};
+  TRK={n:N,v:spd,thr,brk,k:ks,drs,pts,corners:pick.map((i,n)=>({i,n:n+1,s:sg[i]}))};
   // draw
   let svg="";
   drs.forEach(z=>{ const pp=[]; for(let q=0;q<=z.len;q++) pp.push(pts[(z.s+q)%N].map(v=>v.toFixed(1)).join(",")); svg+=`<polyline points="${pp.join(" ")}" fill="none" stroke="#12c47a" stroke-width="${Math.max(3,TW*0.22)}" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>`;
@@ -1195,7 +1278,7 @@ async function livePoll(){
 }
 function setMode(m){
   S.mode=m; ["replay","sim","live"].forEach(k=>$("src-"+k).setAttribute("aria-pressed",k===m));
-  document.body.dataset.view=m==="sim"?"sim":"replay"; if(m!=="sim"&&document.body.dataset.page==="season") setPage("race");
+  document.body.dataset.view=m==="sim"?"sim":"replay"; if(m!=="sim"&&SIMONLY.includes(document.body.dataset.page)) setPage("race");
   $("brand-sub").textContent=m==="sim"?"Simulated race. Unofficial fan project, not affiliated with F1, the FIA or any team.":"Synthetic demo. All data fictional.";
   clearTower(); $("tower").classList.remove("dense");
   $("tower-note").textContent=m==="sim"?"Gaps are to the car ahead; the small time is each car's last lap; purple is the fastest lap. Team pace and driver form are invented. Names identify the simulated entries only.":"Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.";
@@ -1701,7 +1784,7 @@ function simRender(){
     S.feed.unshift({kind,lap:e.L,title:e.title,detail:e.detail}); renderFeed(); showLT(e);
     if(e.radio) simRadio(e);
   }
-  simCharts(snap); simTyres(snap); simWxRender(snap,lead);
+  simCharts(snap); simTyres(snap); simWxRender(snap,lead); try{ engTick(); }catch(err){ console.error("eng",err); }
   if(allDone&&!SIM.finishShown){ SIM.finishShown=true; SIM.running=false; setTimeout(simFinishDialog,700); }
   $("s-sc").disabled=!(SIM.tau>0&&!allDone&&lapNow<R.laps-5&&!scNow&&!SIM.ic.some(x=>x.lap>lapNow));
 }
@@ -1777,7 +1860,7 @@ function simTick(dt){
 }
 /* Q&A about the simulated race */
 function simAnswer(q){
-  { const g=glossAnswer(q); if(g) return g; const dp=deepAnswer(q); if(dp) return dp; }
+  { const en=deepEngineer(q); if(en) return en; const g=glossAnswer(q); if(g) return g; const dp=deepAnswer(q); if(dp) return dp; }
   const R=SIM.res, T=TRACKS[SIM.track], X=WX[SIM.wx], snap=simSnap(SIM.tau), lead=snap[0], lap=Math.min(Math.max(1,Math.floor(Math.max(0,lead.D))+1),R.laps);
   const car=id=>snap.find(c=>c.id===id), me=car(SIM.mine), stw=simWxAt(Math.max(0,lead.D)), W=R.W;
   const tr=res=>[{call:`RaceSimulator.snapshot(lap=${lap}, circuit="${T.id}", seed=${SIM.seed})`,result:res}];
@@ -1873,6 +1956,10 @@ const GLOSS=[
  {re:/\bgaps?\b|interval|time gap|delta/i,title:"Gaps and intervals",f:T=>`The tower shows the gap to the car ahead, which is the interval. Gap to the leader is the sum of the intervals. Under about ${(T.drs/1000).toFixed(1)}s the car behind is in dirty air and, on dry track, inside the DRS window. The small time under each gap is that car's last lap, and purple marks the fastest lap of the race.`},
  {re:/qualif|grid|standing start|lights out|formation/i,title:"Grid and start",f:()=>`Qualifying sets the grid. The cars line up behind the gantry, five red lights come on one by one and go out together, and the race starts from a standstill. Starts are messy: the model adds a lap-one time penalty that grows with grid slot, so places are won and lost before the first corner.`},
  {re:/fuel/i,title:"Fuel load",f:()=>`Cars start heavy with fuel. Every lap burns some, so the car gets lighter and quicker, about ${SIMCFG.fuel/1000}s per lap in this model. That partly hides tyre wear and is why a late-race stint on old tyres can still be fast.`},
+ {re:/track limits|white line/i,title:"Track limits",f:()=>`Drivers must keep at least part of one wheel on the white line at the edge of the track. Going wider and gaining an advantage is normally punished by deleted lap times and, if repeated, time penalties. The exact penalties are set in the official sporting regulations, which this simulator does not contain, so check the FIA documents for the wording.`},
+ {re:/parc ferm|parc ferme/i,title:"Parc ferme",f:()=>`Parc ferme rules lock the cars' setup after qualifying begins, so teams cannot freely change wings, suspension or other set-up parts before the race, apart from limited allowed work. It is a general explainer only; the precise allowances are in the official regulations.`},
+ {re:/penalty point|super ?licen[cs]e|time penalty|drive.?through/i,title:"Penalties",f:()=>`Typical sporting penalties include time added to a race result, a drive-through or stop-go in the pits, grid drops, and penalty points on the driver's licence, with a ban at twelve points in a rolling twelve months. This is a general explainer, not the official text; the simulator does not apply penalties.`},
+ {re:/blue flag/i,title:"Blue flags",f:()=>`A blue flag tells a slower car it is about to be lapped and must let the faster car through at the next safe opportunity. Ignoring it can bring a penalty. The simulator has no lapping, so it never shows one.`},
  {re:/how do you work|how does (this|the) (copilot|assistant)|are you (real|alexa)|architecture|under the hood|what are you/i,title:"How this copilot works",f:()=>`I am a simulated Alexa+ skill, not a real Alexa device. My answers are routed by a deterministic router to tools: the strategy engine (a Monte Carlo undercut calculation, run in the replay), a regulation service that quotes rules on file and refuses to invent numbers, and this browser race simulator. Every answer shows the calls behind it. If no tool has the data, I say so instead of guessing. Nothing here is AWS-validated.`}
 ];
 function glossAnswer(q){
@@ -1960,8 +2047,57 @@ function helpAnswer(){
   const items=["<b>Race:</b> who leads, gaps, tyres, fastest lap, my driver, weather","<b>Strategy:</b> “Should we box now?”, “What if we pit early or late?”, “Why did we pit?”","<b>Explain:</b> “Explain the race so far”, “How did that overtake happen?”, “Tell me about this circuit”","<b>Championship:</b> “Who leads the championship?”, constructors, points needed","<b>Learn:</b> DRS, undercut, dirty air, tyres, safety car, crossover, points, how this copilot works","<b>Rules:</b> pit lane speed limit (it refuses to invent a number)"];
   return {tag:"Pit Wall Copilot · what I can do",trace:[{call:"Skill.capabilities()",result:"6 areas"}],plain:items.map(s=>s.replace(/<[^>]+>/g,"")).join(". ")+". Every answer shows the calls behind it, and I decline instead of guessing.",say:"I can answer race questions, explain strategy and the sport in detail, show the championship, and run what-if strategies. I decline instead of guessing.",html:"<ul>"+items.map(s=>"<li>"+s+"</li>").join("")+"</ul>Every answer shows the calls behind it, and I decline instead of guessing."};
 }
+
+function needRace(){ return {tag:"Race simulator · engineer",trace:[{call:"Engineer.context()",result:"race not started",ok:false}],plain:"Start the race first; these tools need live laps.",say:"Start the race first."}; }
+const strip=s=>s.replace(/<[^>]+>/g,"");
+function briefAnswer(){ const x=ctxNow(); if(!x.started) return needRace(); if(x.me.done) return {tag:"Engineer briefing",trace:[{call:"Engineer.brief()",result:"race finished",ok:false}],plain:"The race is over. Run another seed for a fresh briefing.",say:"The race is over."}; const b=briefData(x);
+  return {tag:"Engineer briefing · simulated",trace:[{call:`Engineer.brief(driver="${SIM.mine}", lap=${x.lapNow})`,result:b.reco}],plain:b.reco+". "+b.why+" "+b.items.map(strip).join(" "),say:b.reco+". "+b.why+" "+b.items.slice(0,4).map(strip).join(" "),html:`<div class="reco">${esc(b.reco)}<small>${esc(b.why)}</small></div><ul>${b.items.map(s=>"<li>"+s+"</li>").join("")}</ul>`,actions:[{label:"Open Strategy page",fn:()=>setPage("strategy")}]}; }
+function fuelAnswer(){ const x=ctxNow(); if(!x.started) return needRace(); const fm=fuelModel(x), [pu,st,sv]=fm.rows;
+  const txt=`${drv(SIM.mine).name} has about ${fm.now.toFixed(1)} kg in the tank with ${Math.ceil(fm.rem)} laps to go, burning about ${fm.burn.toFixed(2)} kg a lap. In standard mode the margin at the flag is ${st.margin>=0?"+":""}${st.margin.toFixed(1)} kg (${st.laps.toFixed(1)} laps). ${pu.lc>0?`Pushing would need about ${pu.lc.toFixed(1)}% of each lap spent lifting and coasting to make the flag.`:"Pushing is possible without lift and coast."} Saving mode gives ${sv.margin>=0?"+":""}${sv.margin.toFixed(1)} kg for about 0.25s a lap.`;
+  return {tag:"Engineer · fuel to finish (simulated)",trace:[{call:`Engineer.fuel_to_finish(driver="${SIM.mine}", lap=${x.lapNow})`,result:`margin ${st.margin.toFixed(1)}kg, push needs ${pu.lc.toFixed(1)}% L&C`}],plain:txt+" Illustrative model.",say:txt,actions:[{label:"Open Telemetry page",fn:()=>setPage("telemetry")}]}; }
+function cliffAnswer(){ const x=ctxNow(); if(!x.started) return needRace(); const {me,T,R,lapNow}=x; if(tyreType(me.comp)!=="SLICK") return {tag:"Engineer · tyres",trace:[{call:"Engineer.cliff()",result:"wet tyres"}],plain:`${me.code} is on ${me.comp.toLowerCase()}s, whose life depends on how wet the track is; see the crossover window on the Strategy page.`,say:`${me.code} is on ${me.comp.toLowerCase()}s.`};
+  const life=lifeOf(me.comp,T), left=life-me.age, plan=R.tl[SIM.mine].find((l,i)=>l.pit&&i>=Math.max(0,me.i)), now=(tyreDeg(me.comp,me.age+1,T.degM,0,T)-tyreDeg(me.comp,me.age,T.degM,0,T))/1000;
+  const txt=left<=0?`${me.code}'s ${me.comp.toLowerCase()}s are ${me.age} laps old, already past their modelled life of ${life}. Lap times are falling away fast.`:(lapNow+left>R.laps?`${me.code}'s ${me.comp.toLowerCase()}s are ${me.age} laps old. Their life here is about ${life} laps, so the cliff (lap ${lapNow+left}) falls after the flag: they should last. They lose about ${now.toFixed(2)}s more each lap.`:`${me.code}'s ${me.comp.toLowerCase()}s are ${me.age} laps old, with a life of about ${life} laps here. The cliff is predicted on lap ${lapNow+left}, ${left} lap${left>1?"s":""} away. ${plan?`The model plans the stop for lap ${plan.L}.`:"No stop is planned, so consider one."} They lose about ${now.toFixed(2)}s more each lap.`);
+  return {tag:"Engineer · tyre cliff (simulated)",trace:[{call:`Engineer.tyre_cliff(driver="${SIM.mine}", lap=${lapNow})`,result:`life ${life}, age ${me.age}, cliff L${lapNow+Math.max(0,left)}`}],plain:txt,say:txt,actions:[{label:"Open Telemetry page",fn:()=>setPage("telemetry")}]}; }
+function threatAnswer(){ const x=ctxNow(); if(!x.started||x.me.done) return needRace(); const rows=threatRows(x), dg=rows.find(r=>r.side==="behind"&&r.v[1]==="bad"), on=rows.find(r=>r.side==="ahead"&&r.v[1]==="ok");
+  const txt=(dg?`Box to cover: ${dg.r.code} is ${dg.g.toFixed(1)}s behind and a fresh set is worth about ${dg.fg.gain.toFixed(1)}s over two laps, enough to jump ${surname(SIM.mine)}.`:"No rival can jump you with a stop right now.")+" "+(on?`You have an undercut window on ${on.r.code}: ${on.g.toFixed(1)}s ahead against about ${on.fg.gain.toFixed(1)}s of fresh-tyre gain.`:"You have no undercut window on the cars ahead.")+" "+rows.map(r=>`${r.r.code} ${r.side} ${r.g.toFixed(1)}s: ${r.v[0].toLowerCase()}`).join("; ")+".";
+  return {tag:"Engineer · undercut threat matrix (simulated)",trace:[{call:`Engineer.undercut_matrix(driver="${SIM.mine}", lap=${x.lapNow})`,result:dg?"DANGER "+dg.r.code:(on?"window on "+on.r.code:"no threat")}],plain:txt,say:txt.split(". ").slice(0,2).join(". ")+".",html:`<div>${esc(txt)}</div><table class="ctab"><tr><th>Rival</th><th>Gap</th><th>Fresh gain</th><th>Verdict</th></tr>${rows.map(r=>`<tr><td class="n"><b>${r.r.code}</b><small>${r.side}</small></td><td>${r.g.toFixed(1)}s</td><td>+${r.fg.gain.toFixed(1)}s</td><td>${r.v[0]}</td></tr>`).join("")}</table>`,actions:[{label:"Explain the undercut",fn:()=>ask("What is an undercut?")},{label:"Open Strategy page",fn:()=>setPage("strategy")}]}; }
+function dropAnswer(){ const x=ctxNow(); if(!x.started||x.me.done) return needRace(); const d=dropMap(x);
+  const txt=`If ${surname(SIM.mine)} pits this lap, the stop costs about ${d.loss.toFixed(1)}s and the car rejoins P${d.np}${d.a?`, ${d.gA.toFixed(1)}s behind ${d.a.c.code}`:""}${d.b?` and ${d.gB.toFixed(1)}s ahead of ${d.b.c.code}`:""}. ${d.clean?"That is clean air.":"That is traffic, so expect dirty air for a few laps."} This assumes the other cars stay out.`;
+  return {tag:"Engineer · pit window drop map (simulated)",trace:[{call:`Engineer.pit_drop_map(driver="${SIM.mine}", lap=${x.lapNow})`,result:`rejoin P${d.np}, ${d.clean?"clean air":"traffic"}`}],plain:txt,say:txt,actions:[{label:"Open Strategy page",fn:()=>setPage("strategy")}]}; }
+function scChanceAnswer(){ const x=ctxNow(); if(!x.started) return needRace(); const h=scHazard(x), {T,me}=x, saving=(T.pitLoss-T.pitLossSC)/1000, ageFrac=me.age/lifeOf(me.comp,T);
+  const txt=`The model puts the chance of a safety car at about ${(h.p5*100).toFixed(0)}% over the next 5 laps and ${(h.p10*100).toFixed(0)}% over 10, based on ${T.name}'s incident rate and the weather scenario. Under one, a stop is ${saving.toFixed(1)}s cheaper. ${ageFrac>=0.5?`With ${me.age}-lap-old ${me.comp.toLowerCase()}s, box under a safety car.`:`With tyres only ${Math.round(ageFrac*100)}% worn, stay out under one.`}`;
+  return {tag:"Engineer · safety car outlook (simulated)",trace:[{call:`Engineer.sc_hazard(circuit="${T.id}", scenario="${SIM.wx}")`,result:`5 laps ${(h.p5*100).toFixed(0)}%, 10 laps ${(h.p10*100).toFixed(0)}%`}],plain:txt+" This is a model, not real history.",say:txt,actions:[{label:"Explain safety car",fn:()=>ask("Explain safety car")}]}; }
+function setupAnswer(){ const T=TRACKS[SIM.track], S=setupAdvice(T), txt=`For ${T.name} (average speed about ${Math.round(S.v)} km/h) the rule-based advisor suggests: ${S.items.map(r=>r[0].toLowerCase()+": "+r[1]).join("; ")}.`;
+  return {tag:"Engineer · setup advisor (rule-based)",trace:[{call:`SetupAdvisor.advise(circuit="${T.id}", scenario="${SIM.wx}")`,result:`downforce ${S.lvl}/10`}],plain:txt+" Illustrative advice for the simulation, not a real engineering setup.",say:`For ${T.name} I suggest downforce level ${S.lvl} out of 10. ${S.items[1][1]}. ${S.items[2][1]}.`,actions:[{label:"Open Telemetry page",fn:()=>setPage("telemetry")}]}; }
+function thermAnswer(){ const x=ctxNow(); if(!x.started) return needRace(); setPage("telemetry"); const txt=$("c-therm-b").innerText.replace(/\n+/g," ").slice(0,360);
+  return {tag:"Engineer · car systems (simulated)",trace:[{call:`Engineer.thermal(driver="${SIM.mine}", lap=${x.lapNow})`,result:"brake, tyre, coolant read"}],plain:"Current readings: "+txt+" These come from a simple model on the circuit outline, not real sensors.",say:"I've opened the Telemetry page with the brake, tyre and coolant temperatures and any alerts."}; }
+function sectorAnswer(){ const x=ctxNow(); if(!x.started) return needRace(); const {R,me}=x, n=dN(me); if(n<2) return {tag:"Engineer · sectors",trace:[{call:"Engineer.sectors()",result:"needs 2 laps",ok:false}],plain:"Not enough laps yet; ask again after a couple of laps.",say:"Not enough laps yet."};
+  const i=n-1, s=lapSectors(me.id,i); let pb=[1e12,1e12,1e12]; for(let k=0;k<n-1;k++){ if(!okLap(R.tl[me.id][k],k)) continue; lapSectors(me.id,k).forEach((v,j)=>pb[j]=Math.min(pb[j],v)); }
+  const d=s.map((v,j)=>pb[j]<1e11?(v-pb[j])/1000:0), txt=`${me.code}'s last lap (L${R.tl[me.id][i].L}) was ${lapFmt(R.tl[me.id][i].lt)}: S1 ${f3(s[0])}, S2 ${f3(s[1])}, S3 ${f3(s[2])}. Against earlier personal bests that is ${d.map((v,j)=>`S${j+1} ${v>=0?"+":""}${v.toFixed(3)}s`).join(", ")}. ${x.me.pos>1?`${snapGap(x)}`:""}`;
+  return {tag:"Engineer · sector times (simulated)",trace:[{call:`Engineer.sectors(driver="${SIM.mine}", lap=${R.tl[me.id][i].L})`,result:`${lapFmt(R.tl[me.id][i].lt)}`}],plain:txt+" Sector splits are synthesized from lap times.",say:txt,actions:[{label:"Open Telemetry page",fn:()=>setPage("telemetry")}]}; }
+function snapGap(x){ const ah=x.snap[x.me.pos-2], r=ah.lastLt&&x.me.lastLt?(ah.lastLt-x.me.lastLt)/1000:null; return `${ah.code} is ${fmt(x.me.gapAhead).replace("+","")} ahead${r!=null?`, and you are ${r>0?"closing":"losing"} ${Math.abs(r).toFixed(2)}s a lap`:""}.`; }
+function mcAnswer(){ const x=ctxNow(), N=40, hist=new Array(10).fill(0); let sum=0; for(let s=0;s<N;s++){ const r=runSim(SIM.seed+2000+s,{mine:SIM.mine,strat:SIM.strat},[],SIM.track,SIM.wx), pos=r.final.findIndex(f=>f.id===SIM.mine)+1; hist[pos-1]++; sum+=pos; }
+  const win=100*hist[0]/N, pod=100*(hist[0]+hist[1]+hist[2])/N, mode=hist.indexOf(Math.max(...hist))+1;
+  const txt=`I ran ${N} seeded races for ${drv(SIM.mine).name} at ${x.T.name} with the current strategy. Average finish P${(sum/N).toFixed(1)}, most common P${mode}, win chance ${win.toFixed(0)}%, podium ${pod.toFixed(0)}%. The Strategy page runs this for all five strategies side by side.`;
+  return {tag:"Engineer · Monte Carlo (simulated)",trace:[{call:`RaceSimulator.monte_carlo(driver="${SIM.mine}", runs=${N}, circuit="${x.T.id}")`,result:`avg P${(sum/N).toFixed(1)}, win ${win.toFixed(0)}%`}],plain:txt,say:txt,actions:[{label:"Open Monte Carlo",fn:()=>setPage("strategy")}]}; }
+function deepEngineer(q){
+  if(!SIM.res) return null;
+  if(/brief me|briefing|situation report|sitrep|executive summary|summary for (the )?(strategist|engineer)/i.test(q)) return briefAnswer();
+  if(/fuel|lift and coast|lift-and-coast|\bl&c\b|save fuel|run out of fuel/i.test(q)&&!/explain|what is/i.test(q)) return fuelAnswer();
+  if(/cliff|tyre life|tire life|how long (will|can|do).*(tyre|tire)|when.*(tyre|tire)s?.*(die|go off|drop|fall)|tyre.*(last|going)/i.test(q)&&!/explain|what is/i.test(q)) return cliffAnswer();
+  if(/threat|under ?cut(ted)? (me|us)|can .*(under ?cut|jump) (me|us)|box to cover|danger zone|undercut window/i.test(q)&&!/what is/i.test(q)) return threatAnswer();
+  if(/rejoin|where (will|would) (we|i|he).*(come out|rejoin|emerge)|if we (box|pit|stop)( now| this lap)|pit window|drop map|traffic.*(pit|stop)/i.test(q)&&!/early|late|what if/i.test(q)) return dropAnswer();
+  if(/safety car.*(chance|probab|odds|risk|likely)|(chance|probab|odds|risk).*safety car|\bvsc\b|virtual safety/i.test(q)) return scChanceAnswer();
+  if(/\bsetup\b|wing (angle|level)|downforce|tyre pressure|tire pressure|ride height/i.test(q)&&!/explain|what is/i.test(q)) return setupAnswer();
+  if(/brake temp|coolant|overheat|thermal|tyre temp|tire temp|engine temp/i.test(q)) return thermAnswer();
+  if(/sector|purple|personal best|last lap/i.test(q)) return sectorAnswer();
+  if(/monte carlo|simulations?\b|odds of (a )?(win|podium)|chance of (winning|a podium)|win chance/i.test(q)) return mcAnswer();
+  return null;
+}
 function deepAnswer(q){
   if(!SIM.res) return null;
+  { const en=deepEngineer(q); if(en) return en; }
   const mentioned=DRIVERS.filter(d=>new RegExp("\\b"+d.id+"\\b|"+surname(d.id),"i").test(q)).map(d=>d.id);
   if(/what can you|capabilit|\bhelp\b|what do you do|features/i.test(q)) return helpAnswer();
   if(/champion|constructor|season|title|points|wdc|wcc/i.test(q)&&!/explain|what is|how many points|scoring/i.test(q)) return seasonAnswer(q);
@@ -1975,18 +2111,213 @@ function deepAnswer(q){
 }
 
 
+
+/* ================= engineer tools (all simulated, derived from the race model) ================= */
+const ENG={t:0,a:0,alert:false};
+const clampN=(x,a,b)=>Math.max(a,Math.min(b,x));
+const f3=ms=>(ms/1000).toFixed(3), f1=s=>s.toFixed(1);
+function secFr(T){ const h=hash32("sec"+T.id); const a=.29+(h%60)/1000, b=.33+((h>>8)%60)/1000; return [a,b,1-a-b]; }
+function lapSectors(id,i){ const R=SIM.res, T=TRACKS[SIM.track], l=R.tl[id][i], fr=secFr(T), r=rngFor(SIM.seed,i,id,"sec"); const j0=(r()-.5)*.014, j1=(r()-.5)*.014; const w=[fr[0]+j0,fr[1]+j1,0]; w[2]=1-w[0]-w[1]; return w.map(x=>x*l.lt); }
+const dN=c=>c.done?SIM.res.laps:Math.max(0,c.i);
+const okLap=(l,i)=>i>0&&!l.pit&&!l.sc&&!l.err;
+function ctxNow(){ const R=SIM.res,T=TRACKS[SIM.track],snap=simSnap(SIM.tau),lead=snap[0],lapNow=clampN(Math.floor(Math.max(0,lead.D))+1,1,R.laps),scNow=!lead.done&&lead.scLap,wxs=simWxAt(Math.max(0,lead.D)),me=snap.find(c=>c.id===SIM.mine);
+  return {R,T,snap,lead,lapNow,scNow,wxs,me,rem:R.laps-lapNow,started:SIM.tau>0}; }
+function gapsToLeader(snap){ const g=[0]; for(let i=1;i<snap.length;i++) g.push(g[i-1]+snap[i].gapAhead/1000); return g; }
+const needStart=m=>`<div class="hint">${m||"Start the race to see this."}</div>`;
+
+/* --- sector times, live delta --- */
+function engSectors(x){
+  const {R,snap,me,T}=x, best=[1e12,1e12,1e12,1e12], pb={};
+  snap.forEach(c=>{ pb[c.id]=[1e12,1e12,1e12,1e12]; for(let i=0;i<dN(c);i++){ const l=R.tl[c.id][i]; if(!okLap(l,i)) continue; const s=lapSectors(c.id,i); s.push(l.lt); s.forEach((v,k)=>{ if(v<pb[c.id][k]) pb[c.id][k]=v; if(v<best[k]) best[k]=v; }); } });
+  const cell=(v,k,ok,id)=>{ const c=!ok?"dim":(v<=best[k]+0.5?"pu":(v<=pb[id][k]+0.5?"gr":"ye")); return `<td class="sx ${c}">${f3(v)}</td>`; };
+  const rows=snap.map(c=>{ const n=dN(c); if(n<1) return `<tr class="${c.id===SIM.mine?"me":""}"><td class="p">${c.pos}</td><td class="c">${c.code}</td><td colspan="5" class="muted">no lap yet</td></tr>`; const i=n-1, l=R.tl[c.id][i], s=lapSectors(c.id,i), ok=okLap(l,i);
+    return `<tr class="${c.id===SIM.mine?"me":""}"><td class="p">${c.pos}</td><td class="c">${c.code}</td>${cell(s[0],0,ok,c.id)}${cell(s[1],1,ok,c.id)}${cell(s[2],2,ok,c.id)}${cell(l.lt,3,ok,c.id)}<td class="sx">${pb[c.id][3]<1e11?f3(pb[c.id][3]):"--"}</td></tr>`; }).join("");
+  let live=""; if(me){ const ah=snap[me.pos-2], bh=snap[me.pos]; const close=(a,b)=>{ if(!a.lastLt||!b.lastLt) return ""; const r=(a.lastLt-b.lastLt)/1000; return r; };
+    const parts=[]; if(ah){ const r=close(ah,me); parts.push(`<div><small>Ahead · ${ah.code}</small><b>${fmt(me.gapAhead)}</b>${r!==""?`<small>${r>0?"closing":"losing"} ${Math.abs(r).toFixed(2)}s/lap</small>`:""}</div>`); }
+    if(bh){ const r=close(me,bh); parts.push(`<div><small>Behind · ${bh.code}</small><b>${fmt(-bh.gapAhead)}</b>${r!==""?`<small>${r>0?"closing":"easing"} ${Math.abs(r).toFixed(2)}s/lap</small>`:""}</div>`); }
+    live=`<div class="kpis">${parts.join("")}<div><small>${me.code} best lap</small><b>${pb[me.id][3]<1e11?f3(pb[me.id][3]):"--"}</b></div></div>`; }
+  $("c-sect-b").innerHTML=live+`<table class="etab"><tr><th></th><th>Driver</th><th style="text-align:right">S1</th><th style="text-align:right">S2</th><th style="text-align:right">S3</th><th style="text-align:right">Lap</th><th style="text-align:right">Best</th></tr>${rows}</table><div class="leg"><span><i style="background:#8a2be2"></i>overall best</span><span><i style="background:#0c8a4f"></i>personal best</span><span><i style="background:#ffe27a"></i>slower</span><span>grey = pit, safety car or mistake lap</span></div><p class="muted">Sector splits are synthesized from each lap time with a fixed per-circuit split and small seeded variation, not from timing loops.</p>`;
+}
+/* --- rival stint profiling --- */
+function engRivals(x){
+  const {R,T,snap,lapNow}=x;
+  const rows=snap.map(c=>{ const tl=R.tl[c.id], n=dN(c), pts=[]; for(let i=n-1;i>=0;i--){ const l=tl[i]; if(l.pit||l.sc||l.err||i===0) { if(pts.length>=3||l.pit) break; else continue; } if(l.comp!==c.comp) break; pts.push([l.age,l.lt+SIMCFG.fuel*(l.L-1)]); }
+    let slope=null; if(pts.length>=3){ const m=pts.length, mx=pts.reduce((a,p)=>a+p[0],0)/m, my=pts.reduce((a,p)=>a+p[1],0)/m; let nu=0,de=0; pts.forEach(p=>{ nu+=(p[0]-mx)*(p[1]-my); de+=(p[0]-mx)**2; }); slope=de?nu/de:0; }
+    const life=lifeOf(c.comp,T), left=Math.max(0,life-c.age);
+    return {c,slope,life,left,cliff:lapNow+left,n:pts.length}; });
+  $("c-riv-b").innerHTML=`<table class="etab"><tr><th></th><th>Driver</th><th>Tyre</th><th style="text-align:right">Age</th><th style="text-align:right">Wear</th><th style="text-align:right">Cliff</th></tr>${rows.map(r=>`<tr class="${r.c.id===SIM.mine?"me":""}"><td class="p">${r.c.pos}</td><td class="c">${r.c.code}</td><td><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${TYRE[r.c.comp]};vertical-align:-1px"></span> ${r.c.comp[0]}</td><td class="sx">${r.c.age}L</td><td class="sx">${r.slope==null?"--":(r.slope>=0?"+":"")+(r.slope/1000).toFixed(3)+"s/lap"}</td><td class="sx">${r.left<=0?'<span class="pill bad">past</span>':(r.cliff>R.laps?"flag":(r.left<=3?`<span class="pill warn">L${r.cliff}</span>`:"L"+r.cliff))}</td></tr>`).join("")}</table><p class="muted">Wear = fuel-corrected lap-time slope over the current stint (needs 3 clean laps). Cliff = lap where the compound passes its modelled life at ${esc(T.name)}.</p>`;
+}
+/* --- telemetry vs ghost lap --- */
+function engGhost(x){
+  const {R,T,me}=x, B=$("c-ghost-b"); if(!TRK.n){ B.innerHTML=needStart("Circuit profile not ready."); return; }
+  const tl=R.tl[SIM.mine], idx=[]; for(let i=0;i<dN(me);i++) if(okLap(tl[i],i)) idx.push(i);
+  if(idx.length<2){ B.innerHTML=needStart("Needs two clean laps for "+me.code+". Start the race and let it run."); return; }
+  const last=idx[idx.length-1]; let ref=idx.slice(0,-1).reduce((a,b)=>tl[b].lt<tl[a].lt?b:a,idx[0]); const lastIsBest=tl[last].lt<=tl[ref].lt; const refLab=lastIsBest?"previous best":"best lap";
+  const fr=secFr(T), N=160, prof=i=>TRK.v[Math.floor(i/N*TRK.n)], cum=[fr[0],fr[0]+fr[1],1];
+  const trace=li=>{ const s=lapSectors(SIM.mine,li), sp=[], tt=[]; const sums=[0,0,0]; for(let i=0;i<N;i++){ const k=(i+.5)/N<cum[0]?0:((i+.5)/N<cum[1]?1:2); sums[k]+=1/prof(i); }
+    const acc=[0,0,0]; for(let i=0;i<N;i++){ const k=(i+.5)/N<cum[0]?0:((i+.5)/N<cum[1]?1:2); const fac=fr[k]*T.lapTime/s[k]; sp.push(prof(i)*fac); acc[k]+=1/prof(i); const before=(k>0?s.slice(0,k).reduce((a,b)=>a+b,0):0); tt.push(before+s[k]*acc[k]/sums[k]); } return {sp,tt,s}; };
+  const A=trace(last), Bt=trace(ref), delta=A.tt.map((v,i)=>(v-Bt.tt[i])/1000);
+  const W=640,H=250,pl=34,pr=8,X=i=>pl+(W-pl-pr)*i/(N-1), sy=v=>8+138*(1-(clampN(v,40,360)-40)/320), dm=Math.max(0.2,...delta.map(Math.abs))*1.15, dy=v=>186+34*(1-(v+dm)/(2*dm)/1);
+  let g=""; [100,200,300].forEach(v=>g+=`<line x1="${pl}" x2="${W-pr}" y1="${sy(v)}" y2="${sy(v)}" stroke="var(--line)"/><text x="${pl-4}" y="${sy(v)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">${v}</text>`);
+  [cum[0],cum[1]].forEach((c,k)=>{ const xx=X(c*(N-1)); g+=`<line x1="${xx}" x2="${xx}" y1="6" y2="${H-14}" stroke="${k?"#2b7be4":"#f5b700"}" stroke-dasharray="3 3"/>`; });
+  TRK.corners.forEach(c=>{ const xx=X(c.i/TRK.n*(N-1)); g+=`<text x="${xx}" y="${H-3}" text-anchor="middle" font-size="8.5" fill="var(--ink3)">${c.n}</text>`; });
+  const pl2=(arr,col,w,dash)=>`<polyline fill="none" stroke="${col}" stroke-width="${w}" ${dash?'stroke-dasharray="4 3"':""} points="${arr.map((v,i)=>X(i).toFixed(1)+","+sy(v).toFixed(1)).join(" ")}"/>`;
+  g+=pl2(Bt.sp,"#8a2be2",1.8,true)+pl2(A.sp,TEAMS[me.team].color,2.4,false);
+  g+=`<line x1="${pl}" x2="${W-pr}" y1="${dy(0)}" y2="${dy(0)}" stroke="var(--line2)"/><polyline fill="none" stroke="${TEAMS[me.team].color}" stroke-width="2" points="${delta.map((v,i)=>X(i).toFixed(1)+","+dy(v).toFixed(1)).join(" ")}"/><text x="${pl-4}" y="${dy(dm)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">+${dm.toFixed(1)}s</text><text x="${pl-4}" y="${dy(-dm)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">-${dm.toFixed(1)}s</text>`;
+  const ds=A.s.map((v,k)=>(v-Bt.s[k])/1000);
+  B.innerHTML=`<div class="kpis"><div><small>Last lap (L${tl[last].L})</small><b>${lapFmt(tl[last].lt)}</b></div><div><small>${refLab} (L${tl[ref].L})</small><b>${lapFmt(tl[ref].lt)}</b></div><div><small>Delta</small><b style="color:${tl[last].lt>tl[ref].lt?"var(--bad)":"var(--good)"}">${(tl[last].lt>tl[ref].lt?"+":"")+((tl[last].lt-tl[ref].lt)/1000).toFixed(3)}s</b></div></div><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Speed trace against ghost lap">${g}</svg><div class="leg"><span><i style="background:${TEAMS[me.team].color}"></i>${me.code} last lap</span><span><i style="background:#8a2be2"></i>ghost (${refLab})</span><span>lower: time delta · numbers = corners</span></div><p class="muted">Where the time went: ${ds.map((v,k)=>`S${k+1} ${v>=0?"+":""}${v.toFixed(3)}s`).join(", ")}. Traces are synthesized from the circuit's speed profile scaled to each lap's sector times, not real telemetry.</p>`;
+}
+/* --- tyre cliff predictor --- */
+function engCliff(x){
+  const {R,T,me,lapNow,wxs}=x, W=640,H=210,pl=34,pr=10,maxA=Math.max(lifeOf("HARD",T)+12,40), X=a=>pl+(W-pl-pr)*a/maxA;
+  const comps=["SOFT","MEDIUM","HARD"], dv=(c,a)=>tyreDeg(c,a,T.degM,0,T)/1000; let ymax=0; comps.forEach(c=>{ ymax=Math.max(ymax,dv(c,maxA)); }); ymax=Math.min(ymax,9); const Y=v=>10+(H-30)*(1-(clampN(v,-1,ymax)+1)/(ymax+1));
+  let g=""; for(let v=0;v<=ymax;v+=2) g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${pl-4}" y="${Y(v)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">+${v}s</text>`;
+  for(let a=0;a<=maxA;a+=10) g+=`<text x="${X(a)}" y="${H-4}" text-anchor="middle" font-size="9" fill="var(--ink3)">${a}</text>`;
+  comps.forEach(c=>{ const pts=[]; for(let a=0;a<=maxA;a++) pts.push(X(a).toFixed(1)+","+Y(dv(c,a)).toFixed(1)); const mine=me&&me.comp===c; g+=`<polyline fill="none" stroke="${TYRE[c]}" stroke-width="${mine?3.2:1.6}" opacity="${mine?1:.75}" points="${pts.join(" ")}"/>`; const L=lifeOf(c,T); g+=`<line x1="${X(L)}" x2="${X(L)}" y1="${Y(dv(c,L))-10}" y2="${H-18}" stroke="${TYRE[c]}" stroke-dasharray="2 3"/><text x="${X(L)+3}" y="${Y(dv(c,L))-12}" font-size="9" font-weight="700" fill="${TYRE[c]}">${c[0]} cliff ${L}</text>`; });
+  let info="";
+  if(me&&x.started&&TYRE[me.comp]&&(me.comp in SIMCFG.life)&&tyreType(me.comp)==="SLICK"){ const L=lifeOf(me.comp,T), a=me.age; g+=`<circle cx="${X(Math.min(a,maxA))}" cy="${Y(dv(me.comp,a))}" r="5" fill="${TYRE[me.comp]}" stroke="#fff" stroke-width="2"/>`;
+    const left=L-a, plan=R.tl[SIM.mine].find((l,i)=>l.pit&&i>=Math.max(0,me.i)); const next=dv(me.comp,a+1)-dv(me.comp,a);
+    info=`<div class="kpis"><div><small>${me.code} tyre</small><b>${me.comp[0]} · ${a}L</b></div><div><small>Loss per lap now</small><b>+${next.toFixed(2)}s</b></div><div><small>Predicted cliff</small><b>${left<=0?"PAST":(lapNow+left>R.laps?"After flag":"Lap "+(lapNow+left))}</b></div><div><small>Planned stop</small><b>${plan?"Lap "+plan.L:"none"}</b></div></div>${lapNow+left>R.laps&&left>0?`<div class="alertbox ok">These ${me.comp.toLowerCase()}s should reach the flag: the cliff is past lap ${R.laps}.</div>`:""}${left<=3&&left>0&&lapNow+left<=R.laps?`<div class="alertbox"><b>Cliff in ${left} lap${left>1?"s":""}.</b> Lap times will start falling away fast; the model's stop is ${plan?"lap "+plan.L:"not planned, consider one"}.</div>`:(left<=0?`<div class="alertbox"><b>Past the cliff.</b> Losing about ${(dv(me.comp,a)-dv(me.comp,L)).toFixed(1)}s a lap against fresh-life pace.</div>`:(lapNow+left>R.laps?"":`<div class="alertbox ok">${left} laps of useful life left on these ${me.comp.toLowerCase()}s.</div>`))}`; }
+  else if(me&&x.started) info=`<div class="alertbox ok">${me.code} is on ${me.comp.toLowerCase()}s; the wet-tyre curves depend on track wetness (${Math.round(wxs.w*100)}%), see the Strategy crossover window.</div>`;
+  $("c-cliff-b").innerHTML=info+`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Tyre degradation curves">${g}</svg><div class="leg"><span>x = laps on the tyre, y = time lost per lap against a fresh medium</span></div><p class="muted">Soft starts quicker but its curve climbs and hits its cliff earliest. Cliff laps scale with this circuit's tyre wear (${T.degM>1.05?"high":T.degM<0.9?"low":"average"}). Thermal degradation is folded into the same curve; see Car systems for temperatures.</p>`;
+}
+/* --- fuel, lift and coast, ERS --- */
+let ERSP=null;
+function ersProfile(){ if(ERSP&&ERSP.key===SIM.track&&ERSP.n===TRK.n) return ERSP; const N=TRK.n; if(!N) return null; const vt=Math.max(...TRK.v), d=[], dep=[0,0,0], fr=secFr(TRACKS[SIM.track]), cum=[fr[0],fr[0]+fr[1],1];
+  for(let i=0;i<N;i++){ const dpl=(TRK.thr[i]>=1&&TRK.v[i]<vt*0.985)?0.55:0; d.push(TRK.brk[i]*0.9-dpl); dep[(i+.5)/N<cum[0]?0:((i+.5)/N<cum[1]?1:2)]+=dpl; }
+  const net=d.reduce((a,b)=>a+b,0)/N; const soc=[]; let e=0; for(let i=0;i<N;i++){ e+=d[i]-net; soc.push(e); } const mn=Math.min(...soc), mx=Math.max(...soc)||1, sp=(mx-mn)||1; const out=soc.map(v=>22+70*(v-mn)/sp); const ds=dep.reduce((a,b)=>a+b,0)||1;
+  return ERSP={key:SIM.track,n:N,soc:out,dep:dep.map(v=>v/ds)}; }
+function fuelModel(x){ const {T,R,me}=x, burn=T.km*0.30, f0=R.laps*burn*1.012, D=clampN(me.D,0,R.laps), now=f0-burn*D, rem=R.laps-D;
+  return {burn,f0,now,rem,rows:[["Push",1.035,-0.15],["Standard",1,0],["Save",0.965,0.25]].map(([n,m,dt])=>{ const need=rem*burn*m, margin=now-need, lc=margin<0?clampN(-margin/need/0.0045,0,60):0; return {n,m,dt,margin,laps:margin/(burn*m),lc}; })}; }
+function engFuel(x){
+  const {me,T}=x, fm=fuelModel(x), E=ersProfile(); let ers="";
+  if(E&&x.started){ const f=((me.D%1)+1)%1, W=300,H=72, Xp=i=>4+(W-8)*i/(E.n-1), Yp=v=>H-6-(H-12)*(v-0)/100; const pts=E.soc.map((v,i)=>Xp(i).toFixed(1)+","+Yp(v).toFixed(1)).join(" "); const cur=E.soc[Math.floor(f*E.n)%E.n];
+    ers=`<h4 style="margin:12px 0 2px;font:italic 700 13px var(--font-display);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)">ERS (MGU-K) deployment map</h4><svg viewBox="0 0 ${W} ${H}"><polyline fill="none" stroke="#2b7be4" stroke-width="2" points="${pts}"/><line x1="${Xp(f*(E.n-1))}" x2="${Xp(f*(E.n-1))}" y1="4" y2="${H-4}" stroke="var(--accent)" stroke-width="2"/><text x="6" y="12" font-size="9" fill="var(--ink3)">battery over one lap</text></svg>
+    <div class="gg"><span>Battery now</span><s><i style="width:${cur.toFixed(0)}%;background:#2b7be4"></i></s><b>${cur.toFixed(0)}%</b></div>
+    <div class="gg"><span>Deploy S1</span><s><i style="width:${(E.dep[0]*100).toFixed(0)}%;background:#f5b700"></i></s><b>${(E.dep[0]*100).toFixed(0)}%</b></div><div class="gg"><span>Deploy S2</span><s><i style="width:${(E.dep[1]*100).toFixed(0)}%;background:#2b7be4"></i></s><b>${(E.dep[1]*100).toFixed(0)}%</b></div><div class="gg"><span>Deploy S3</span><s><i style="width:${(E.dep[2]*100).toFixed(0)}%;background:#8a2be2"></i></s><b>${(E.dep[2]*100).toFixed(0)}%</b></div><p class="muted">Harvest under braking, deploy on the straights; the share per sector comes from the circuit's speed profile. MGU-H no longer exists in current rules, so only the MGU-K is modelled. Illustrative.</p>`; }
+  const std=fm.rows[1];
+  $("c-fuel-b").innerHTML=!x.started?needStart():`<div class="kpis"><div><small>Fuel left</small><b>${fm.now.toFixed(1)} kg</b></div><div><small>Burn / lap</small><b>${fm.burn.toFixed(2)} kg</b></div><div><small>Laps to go</small><b>${Math.ceil(fm.rem)}</b></div></div><div class="gg"><span>Tank</span><s><i style="width:${Math.round(100*fm.now/fm.f0)}%;background:#0c8a4f"></i></s><b>${Math.round(100*fm.now/fm.f0)}%</b></div>
+  <table class="etab"><tr><th>Mode</th><th style="text-align:right">Margin</th><th style="text-align:right">Lift &amp; coast</th><th style="text-align:right">Lap time</th></tr>${fm.rows.map(r=>`<tr><td class="c">${r.n}</td><td class="sx">${r.margin>=0?"+":""}${r.margin.toFixed(1)} kg (${r.laps>=0?"+":""}${r.laps.toFixed(1)} L)</td><td class="sx">${r.lc>0?`<span class="pill ${r.lc>8?"bad":"warn"}">${r.lc.toFixed(1)}% of lap</span>`:'<span class="pill ok">none</span>'}</td><td class="sx">${r.dt>0?"+":""}${r.dt.toFixed(2)}s</td></tr>`).join("")}</table>
+  <p class="muted">Assumptions (illustrative): ${T.km*0.30>0?(T.km*0.30).toFixed(2):""} kg per lap at ${esc(T.name)}, a 1.2% margin in the tank, each 1% of the lap spent lifting and coasting saves about 0.45% fuel, and push mode burns 3.5% more for about 0.15s a lap. Keep about 1 kg back for the end-of-race sample.</p>${ers}`;
+}
+/* --- thermal + aero --- */
+let THM=null;
+function thermProfile(){ if(THM&&THM.key===SIM.track&&THM.n===TRK.n) return THM; const N=TRK.n; if(!N) return null; let tb=300; const b=[]; for(let r=0;r<3;r++){ for(let i=0;i<N;i++){ tb=tb+TRK.brk[i]*55-(tb-230)*0.011; if(r===2) b.push(tb); } } const mn=Math.min(...b), mx=Math.max(...b)||1, sp=(mx-mn)||1; return THM={key:SIM.track,n:N,brake:b.map(v=>300+700*(v-mn)/sp)}; }
+function engTherm(x){
+  const {me,T,wxs,scNow}=x, P=thermProfile(), B=$("c-therm-b"); if(!P||!x.started){ B.innerHTML=needStart(); return; }
+  const f=((me.D%1)+1)%1, i=Math.floor(f*TRK.n)%TRK.n, X=WX[SIM.wx], w=wxs.w, kmh=Math.max(60,trkAt(f).v);
+  let brake=P.brake[i]*(1-0.12*w)*(scNow?0.8:1), tsurf=78+50*clampN(TRK.k[i]*2.2,0,1)+0.55*me.age-22*w+(me.gapAhead<1000&&me.pos>1?7*(1-me.gapAhead/1000):0), tcore=88+0.3*me.age+0.12*(tsurf-80)-8*w;
+  let cool=96-0.02*(kmh-100)+(me.gapAhead<1000&&me.pos>1?9*(1-me.gapAhead/1000):0)+(X.air-26)*0.4+(scNow?-6:0); cool=clampN(cool,84,122);
+  const st=(v,w1,w2)=>v>=w2?"bad":(v>=w1?"warn":"ok");
+  const G=(lab,v,lo,hi,w1,w2,unit)=>`<div class="gg"><span>${lab}</span><s><i style="width:${clampN(100*(v-lo)/(hi-lo),2,100)}%;background:${st(v,w1,w2)==="bad"?"var(--bad)":(st(v,w1,w2)==="warn"?"var(--warn)":"var(--good)")}"></i><u style="left:${100*(w1-lo)/(hi-lo)}%"></u></s><b>${Math.round(v)}${unit}</b></div>`;
+  const alerts=[]; if(brake>=950) alerts.push(["bad",`Brake rotors ${Math.round(brake)} °C: brake earlier, open the cooling duct, avoid lock-ups.`]); else if(brake>=880) alerts.push(["warn",`Brake rotors running hot (${Math.round(brake)} °C) into the next heavy stop.`]);
+  if(tsurf>=112) alerts.push(["bad",`Tyre surface ${Math.round(tsurf)} °C: overheating, expect graining and a faster drop-off.`]); else if(tsurf>=104) alerts.push(["warn",`Tyre surface ${Math.round(tsurf)} °C, near the top of the window.`]);
+  if(cool>=112) alerts.push(["bad",`Coolant ${Math.round(cool)} °C: lift and get out of the dirty air.`]); else if(cool>=106) alerts.push(["warn",`Coolant ${Math.round(cool)} °C: following closely is heating the engine.`]);
+  const burnt=clampN(me.D/x.R.laps,0,1), bal=46.0+0.9*(1-burnt)-0.25*clampN(me.age/lifeOf(me.comp,T),0,1);
+  B.innerHTML=G("Brake rotor",brake,250,1050,880,950," °C")+G("Tyre surface",tsurf,60,130,104,112," °C")+G("Tyre core",tcore,70,120,104,112," °C")+G("Coolant",cool,80,125,106,112," °C")
+   +(alerts.length?alerts.map(a=>`<div class="alertbox" style="border-color:${a[0]==="bad"?"var(--bad)":"var(--warn)"}">${esc(a[1])}</div>`).join(""):`<div class="alertbox ok">All temperatures inside their windows.</div>`)
+   +`<div class="kpis" style="margin-top:10px"><div><small>Aero balance (front)</small><b>${bal.toFixed(1)}%</b></div><div><small>Drift this stint</small><b>${(bal-(46.0+0.9)).toFixed(2)}%</b></div></div><p class="muted">Balance drifts as fuel burns off and the tyres wear. If the car turns more understeery by the next stop, add about ${(Math.abs(bal-46.9)*2.2).toFixed(1)} clicks of front flap. Temperatures come from a simple braking and cornering model on the circuit outline; everything here is illustrative, not real sensor data.</p>`;
+}
+/* --- setup advisor --- */
+function setupAdvice(T){ const X=WX[SIM.wx], v=T.km/(T.lapTime/3.6e6), df=clampN((290-v)/110,0,1), wet=SIM.wx==="heavy"||SIM.wx==="light"||SIM.wx==="dryout"; const lvl=clampN(Math.round(1+df*8)+(wet?1:0),1,10);
+  return {v,df,lvl,items:[["Downforce level",`${lvl} / 10 (${df<0.4?"low, trading cornering for straight-line speed":df<0.7?"medium, a balance of both":"high, cornering grip matters most"})`],["Wing balance",df<0.4?"Rear-biased trim to stay stable at top speed":"Front-biased trim for turn-in and slow corners"],["Gearing",df<0.4?"Long final drive for top speed":(df>0.8?"Short ratios for traction out of slow corners":"Mid ratios")],["Tyre pressures",`${(X.trk-35)*0.04+(T.degM>1.05?0.3:0)+(wet?-0.8:0)>=0?"+":""}${((X.trk-35)*0.04+(T.degM>1.05?0.3:0)+(wet?-0.8:0)).toFixed(1)} psi vs the baseline (${X.trk} °C track${T.degM>1.05?", abrasive surface":""})`],["Brake cooling",T.turns/T.km>3.2?"Open ducts: heavy braking zones close together":"Standard ducts"],["Ride height",df>0.7?"Raise slightly for kerbs and bumps":"Run low for the straights"]]}; }
+function engSetup(x){ const {T}=x, S=setupAdvice(T); $("c-setup-b").innerHTML=`<div class="kpis"><div><small>Avg speed</small><b>${Math.round(S.v)} km/h</b></div><div><small>Downforce</small><b>${S.lvl}/10</b></div></div><table class="etab">${S.items.map(r=>`<tr><td class="c" style="font-size:13px">${r[0]}</td><td style="white-space:normal">${esc(r[1])}</td></tr>`).join("")}</table><p class="muted">Rule-based from average speed, corner density, tyre wear, track temperature and the weather scenario. Illustrative advice for the simulation, not a real engineering setup.</p>`; }
+
+/* --- strategy: pit window drop map --- */
+function dropMap(x){ const {snap,me,T,scNow}=x, gl=gapsToLeader(snap), loss=(scNow?T.pitLossSC:T.pitLoss)/1000, rj=gl[me.pos-1]+loss; const others=snap.map((c,i)=>({c,g:gl[i]})).filter(o=>o.c.id!==me.id); const ahead=others.filter(o=>o.g<rj), behind=others.filter(o=>o.g>=rj); const np=ahead.length+1, a=ahead[ahead.length-1], b=behind[0];
+  const gA=a?rj-a.g:null, gB=b?b.g-rj:null; return {rj,loss,np,a,b,gA,gB,clean:gA==null||gA>1.8,others,gl}; }
+function engDrop(x){
+  const B=$("c-drop-b"); if(!x.started){ B.innerHTML=needStart(); return; } const {me,snap}=x; if(me.done){ B.innerHTML=needStart("Race finished."); return; }
+  const d=dropMap(x), order=[...d.others.map(o=>({id:o.c.id,code:o.c.code,g:o.g,team:o.c.team}))]; order.push({id:"GHOST",code:me.code+" (pit)",g:d.rj,team:me.team,ghost:true}); order.sort((p,q)=>p.g-q.g);
+  const rows=order.map((o,i)=>`<tr class="${o.ghost?"me":""}"><td class="p">${i+1}</td><td class="c"><span style="display:inline-block;width:4px;height:14px;background:${TEAMS[o.team].color};vertical-align:-2px;margin-right:6px"></span>${o.code}</td><td class="sx">${o.ghost?'<span class="pill info">rejoin</span>':(o.id===me.id?"now":"")}</td><td class="sx">${i===0?"Leader":"+"+o.g.toFixed(1)+"s"}</td></tr>`).join("");
+  B.innerHTML=`<div class="kpis"><div><small>Pit loss</small><b>${d.loss.toFixed(1)}s</b></div><div><small>Now</small><b>P${me.pos}</b></div><div><small>Rejoin</small><b>P${d.np}</b></div></div><div class="alertbox ${d.clean?"ok":""}">${d.clean?`<b>Clean air.</b> ${d.a?`${d.gA.toFixed(1)}s behind ${d.a.c.code}`:"You would lead"}${d.b?`, ${d.gB.toFixed(1)}s ahead of ${d.b.c.code}`:""}.`:`<b>Traffic.</b> You would rejoin ${d.gA.toFixed(1)}s behind ${d.a.c.code}, in their dirty air${d.b?`, with ${d.b.c.code} ${d.gB.toFixed(1)}s behind`:""}.`}</div><table class="etab"><tr><th></th><th>Driver</th><th></th><th style="text-align:right">Gap to leader</th></tr>${rows}</table><p class="muted">Assumes everyone else stays out on this lap${x.scNow?" and uses the cheaper safety-car pit loss":""}. Gaps come from the live timing model.</p>`;
+}
+/* --- strategy: undercut threat matrix --- */
+function freshGain(c,x){ const {T,wxs,rem}=x, nc=pickCompound(Math.max(1,rem-1),T); let s=0; for(let k=1;k<=2;k++) s+=(tyreDeg(c.comp,c.age+k,T.degM,wxs.w,T)-tyreDeg(nc,k,T.degM,wxs.w,T))/1000; return {gain:Math.max(0,s-0.8),nc}; }
+function threatRows(x){ const {snap,me}=x, gl=gapsToLeader(snap), mi=me.pos-1, out=[];
+  [1,2].forEach(k=>{ const j=mi+k; if(j<snap.length){ const r=snap[j], g=gl[j]-gl[mi], fg=freshGain(r,x); out.push({r,side:"behind",g,fg,v:r.pitNow?["IN PIT","info"]:(g<fg.gain?["DANGER","bad"]:(g<fg.gain+1.5?["WATCH","warn"]:["SAFE","ok"]))}); } });
+  [1,2].forEach(k=>{ const j=mi-k; if(j>=0){ const r=snap[j], g=gl[mi]-gl[j], fg=freshGain(me,x); out.push({r,side:"ahead",g,fg,v:r.pitNow?["IN PIT","info"]:(g<fg.gain?["UNDERCUT ON","ok"]:(g<fg.gain+1.5?["CLOSE","warn"]:["NO","info"]))}); } });
+  return out; }
+function engThreat(x){
+  const B=$("c-threat-b"); if(!x.started||x.me.done){ B.innerHTML=needStart(); return; } const rows=threatRows(x), danger=rows.find(r=>r.side==="behind"&&r.v[1]==="bad"), on=rows.find(r=>r.side==="ahead"&&r.v[1]==="ok");
+  B.innerHTML=(danger?`<div class="alertbox"><b>Box to cover.</b> ${danger.r.code} is ${danger.g.toFixed(1)}s behind and a fresh set is worth about ${danger.fg.gain.toFixed(1)}s over two laps, enough to jump you.</div>`:(on?`<div class="alertbox ok"><b>Undercut window.</b> ${on.r.code} is ${on.g.toFixed(1)}s ahead and your fresh tyres are worth about ${on.fg.gain.toFixed(1)}s over two laps.</div>`:`<div class="alertbox ok">No undercut danger and no window right now.</div>`))
+  +`<table class="etab"><tr><th>Rival</th><th>Side</th><th style="text-align:right">Gap</th><th>Tyres</th><th style="text-align:right">Fresh gain</th><th>Verdict</th></tr>${rows.map(r=>`<tr><td class="c">${r.r.code}</td><td>${r.side}</td><td class="sx">${r.g.toFixed(1)}s</td><td>${r.r.comp[0]} ${r.r.age}L</td><td class="sx">+${r.fg.gain.toFixed(1)}s</td><td><span class="pill ${r.v[1]}">${r.v[0]}</span></td></tr>`).join("")}</table><p class="muted">Fresh gain = the pace difference over two laps between worn tyres and a new set (${esc(x.T.name)} wear rate), minus about 0.8s for the out-lap. If the gap is smaller than that, the stopping car comes out ahead once the other car also stops.</p>`;
+}
+/* --- strategy: safety car --- */
+function scHazard(x){ const {T,R}=x, X=WX[SIM.wx], expected=Math.min(1.6,T.inc*X.inc*1.35), lam=expected/Math.max(10,R.laps-16), p5=1-Math.exp(-5*lam); return {expected,lam,p5,p10:1-Math.exp(-10*lam)}; }
+function engSC(x){
+  const B=$("c-sc-b"), h=scHazard(x), {T,me,scNow,R}=x; if(!x.started){ B.innerHTML=needStart(); return; }
+  const saving=(T.pitLoss-T.pitLossSC)/1000, life=lifeOf(me.comp,T), ageFrac=me.age/life, rec=ageFrac>=0.5?`Worth boxing under a safety car: your ${me.comp.toLowerCase()}s are ${me.age} laps old (about ${Math.round(ageFrac*100)}% of life) and the stop costs ${saving.toFixed(1)}s less.`:`Stay out under a safety car: tyres only ${Math.round(ageFrac*100)}% worn, so a stop would not repay.`;
+  let sc=""; if(scNow){ const tgt=T.lapTime*1.34; sc=`<div class="alertbox"><b>Safety car out.</b> Delta target: hold roughly ${lapFmt(tgt)} a lap, no overtaking, keep tyres and brakes warm by weaving gently. Pitting costs ${(T.pitLossSC/1000).toFixed(1)}s instead of ${(T.pitLoss/1000).toFixed(1)}s.</div>`; }
+  B.innerHTML=sc+`<div class="kpis"><div><small>Next 5 laps</small><b>${(h.p5*100).toFixed(0)}%</b></div><div><small>Next 10 laps</small><b>${(h.p10*100).toFixed(0)}%</b></div><div><small>Expected this race</small><b>${h.expected.toFixed(1)}</b></div></div><div class="gg"><span>Risk now</span><s><i style="width:${Math.min(100,h.p5*100*2.5)}%;background:${h.p5>0.15?"var(--bad)":(h.p5>0.08?"var(--warn)":"var(--good)")}"></i></s><b>${h.p5>0.15?"High":(h.p5>0.08?"Medium":"Low")}</b></div><div class="alertbox ok">${esc(rec)}</div><p class="muted">Chance comes from this circuit's incident rate (${T.inc>0.45?"high":(T.inc<0.2?"low":"medium")}) and the weather scenario in the model, not from real history. Wet races make neutralisations more likely. A virtual safety car is not modelled separately.</p>`;
+}
+/* --- strategy: crossover --- */
+function engXover(x){
+  const {R,T,lapNow,wxs}=x, B=$("c-xo-b"), W=R.W; const chips=[]; let first=null, cur=tyreType(bestTyre(wxs.w,Math.max(1,R.laps-lapNow),T));
+  for(let K=lapNow;K<=Math.min(R.laps,lapNow+11);K++){ const wf=W[Math.min(R.laps+1,K)], bt=bestTyre(wf,R.laps-K,T), ty=tyreType(bt); if(first==null&&ty!==cur&&K>lapNow) first=K; chips.push(`<span style="background:${bt==="INTER"?"#2fa84f":(bt==="WET"?"#2b7be4":"#3d4252")}">${bt==="SOFT"||bt==="MEDIUM"||bt==="HARD"?"S":bt[0]}<em>L${K}</em></span>`); }
+  B.innerHTML=`<div class="kpis"><div><small>Track wetness</small><b>${Math.round(wxs.w*100)}%</b></div><div><small>Quickest now</small><b>${cur==="SLICK"?"Slicks":cur==="INTER"?"Inters":"Full wets"}</b></div><div><small>Crossover</small><b>${first?"Lap "+first:"none in 11"}</b></div></div><div class="xo">${chips.join("")}</div><div class="alertbox ${first?"":"ok"}">${first?`<b>Crossover on lap ${first}.</b> The quickest tyre changes to ${TYN[tyreType(bestTyre(W[Math.min(R.laps+1,first)],R.laps-first,T))]}; boxing a lap early is cheaper than a lap late.`:`No change of quickest tyre in the next 11 laps.`}</div><p class="muted">S = slicks (grey), I = intermediates (green), W = full wets (blue). Based on the simulator's wetness forecast, not a real radar. Rivals that gamble first are visible in the sector table on the Telemetry page.</p>`;
+}
+/* --- strategy: briefing --- */
+function briefData(x){
+  const {me,snap,T,R,lapNow,scNow}=x, items=[], fm=fuelModel(x), th=threatRows(x), d=dropMap(x), h=scHazard(x), life=lifeOf(me.comp,T), left=life-me.age; const behind=snap[me.pos], ahead=snap[me.pos-2];
+  items.push(`<b>Race:</b> ${drv(me.id).name} P${me.pos}${ahead?`, ${fmt(me.gapAhead).replace("+","")} behind ${ahead.code}`:", leading"}${behind?`, ${fmt(behind.gapAhead).replace("+","")} ahead of ${behind.code}`:""}. Lap ${lapNow} of ${R.laps}${scNow?", safety car out":""}.`);
+  if(tyreType(me.comp)==="SLICK") items.push(`<b>Tyres:</b> ${me.comp.toLowerCase()}s, ${me.age} lap${me.age===1?"":"s"} old, ${lapNow+Math.max(0,left)>R.laps?"no cliff before the flag":"cliff around lap "+(lapNow+Math.max(0,left))+(left<=3?" (close)":"")}.`); else items.push(`<b>Tyres:</b> ${me.comp.toLowerCase()}s, ${me.age} laps old.`);
+  const std=fm.rows[1], push=fm.rows[0]; items.push(`<b>Fuel:</b> ${fm.now.toFixed(1)} kg, ${std.margin>=0?"+":""}${std.margin.toFixed(1)} kg margin in standard mode; push mode would need ${push.lc.toFixed(1)}% lift and coast.`);
+  const dg=th.find(r=>r.side==="behind"&&r.v[1]==="bad"), on=th.find(r=>r.side==="ahead"&&r.v[1]==="ok");
+  items.push(`<b>Threats:</b> ${dg?`${dg.r.code} can undercut you (${dg.g.toFixed(1)}s behind, worth ${dg.fg.gain.toFixed(1)}s).`:"no rival can jump you with a stop right now."} ${on?`You can undercut ${on.r.code} (${on.g.toFixed(1)}s ahead).`:""}`);
+  items.push(`<b>Pit window:</b> a stop now rejoins P${d.np}, ${d.clean?"in clean air":"in traffic"}.`);
+  items.push(`<b>Safety car:</b> ${(h.p5*100).toFixed(0)}% chance in the next 5 laps, ${(h.p10*100).toFixed(0)}% in 10.`);
+  let reco,why; if(dg){ reco="Box to cover"; why=`${dg.r.code} threatens an undercut.`; } else if(left<=2&&lapNow+left<=R.laps&&tyreType(me.comp)==="SLICK"){ reco="Pit within 2 laps"; why="Tyres are at their cliff."; } else if(on&&d.clean){ reco="Undercut now"; why=`${on.r.code} is inside your fresh-tyre gain and you rejoin in clean air.`; } else if(scNow&&left<life*0.5){ reco="Stay out"; why="Tyres are fresh; a safety car stop would not repay."; } else { reco="Stay out"; why="No threat, no window, tyres inside their life."; }
+  return {items,reco,why}; }
+function engBrief(x){ const B=$("c-brief-b"); if(!x.started||x.me.done){ B.innerHTML=needStart(x.me&&x.me.done?"Race finished. Run another seed.":null); return; } const b=briefData(x); B.innerHTML=`<div class="reco">${esc(b.reco)}<small>${esc(b.why)}</small></div><ul class="brief">${b.items.map(s=>"<li>"+s+"</li>").join("")}</ul><p style="margin:8px 0 0"><button class="btn sm" type="button" id="brief-ask">Read it out in Copilot</button></p>`; $("brief-ask").onclick=()=>{ setPage("copilot"); ask("Brief me"); }; }
+/* --- strategy: Monte Carlo --- */
+const MC={running:false,res:null,key:""};
+async function mcRun(N){ if(MC.running) return; MC.running=true; const opts=[["auto","Team plan"],["early","Pit early"],["late","Pit late"],["onestop","One stop"],["twostop","Two stops"]], out=[], key=[SIM.track,SIM.wx,SIM.mine,SIM.seed].join("|"); const prog=$("mc-prog");
+  for(let oi=0;oi<opts.length;oi++){ const [k,n]=opts[oi], hist=new Array(10).fill(0); let sum=0; for(let s=0;s<N;s++){ const r=runSim(SIM.seed+1000+s,{mine:SIM.mine,strat:k},[],SIM.track,SIM.wx), pos=r.final.findIndex(f=>f.id===SIM.mine)+1; hist[pos-1]++; sum+=pos; if(s%6===5){ if(prog) prog.textContent=`Running ${n}: ${s+1}/${N}…`; await new Promise(r=>setTimeout(r,0)); } } out.push({k,n,hist,avg:sum/N,N}); }
+  MC.res=out; MC.key=key; MC.running=false; engMC(ctxNow(),true); }
+function mcColors(){ return ["#e10600","#f5601f","#f5b700","#d8d33a","#9fd35a","#5cc77a","#37b5a0","#3b8fd0","#5a6fd0","#6b7080"]; }
+function engMC(x,force){
+  const B=$("c-mc-b"); if(MC.running&&!force) return; const col=mcColors(), stale=MC.res&&MC.key!==[SIM.track,SIM.wx,SIM.mine,SIM.seed].join("|");
+  const btn=`<p style="margin:0 0 6px"><button class="btn primary sm" type="button" id="mc-go" ${MC.running?"disabled":""}>Run ${MC.res&&!stale?"again":"60 races per strategy"}</button> <span class="muted" id="mc-prog">${MC.running?"Running…":""}</span></p>`;
+  if(!MC.res||stale){ B.innerHTML=btn+`<p class="muted">Runs 60 seeded races for each of 5 strategies (300 in all) for ${esc(drv(SIM.mine).name)} at ${esc(x.T.name)} and charts the finishing positions. It takes a few seconds in the browser.</p>`; $("mc-go").onclick=()=>mcRun(60); return; }
+  const best=MC.res.slice().sort((a,b)=>a.avg-b.avg)[0];
+  B.innerHTML=btn+MC.res.map(r=>{ const win=100*r.hist[0]/r.N, pod=100*(r.hist[0]+r.hist[1]+r.hist[2])/r.N; return `<div class="mcrow"><b>${esc(r.n)}</b> ${r===best?'<span class="pill ok">best average</span>':""}<small>avg P${r.avg.toFixed(1)} · win ${win.toFixed(0)}% · podium ${pod.toFixed(0)}%</small><div class="mcbar">${r.hist.map((c,i)=>c?`<i title="P${i+1}: ${(100*c/r.N).toFixed(0)}%" style="width:${100*c/r.N}%;background:${col[i]}"></i>`:"").join("")}</div></div>`; }).join("")+`<div class="leg">${col.map((c,i)=>`<span><i style="background:${c}"></i>P${i+1}</span>`).join("")}</div><p class="muted">${MC.res[0].N*MC.res.length} full races, each with different seeds (so different incidents, weather and starts), same circuit and scenario. This is an ensemble of seeded simulations run on demand, not a per-lap live forecast.</p>`;
+  $("mc-go").onclick=()=>mcRun(60);
+}
+/* --- strategy: radio intel (rule-based) --- */
+function radioTone(e){ const s=(e.title+" "+(e.detail||"")).toLowerCase();
+  if(/spin|crash|stuck|incident|debris|collision|off track|lock/.test(s)) return ["Frustrated / urgent","bad","Possible safety car: be ready to box or hold position."];
+  if(/rain|wet|drizzle|shower|damp|crossover/.test(s)) return ["Cautious","info","Check the crossover window before the next lap."];
+  if(/fastest/.test(s)) return ["Positive","ok","Rival has pace on those tyres; compare stints."];
+  if(/passes/.test(s)) return [e.viaPit?"Neutral":"Excited",e.viaPit?"info":"ok",e.viaPit?"Order changed through the pits; re-check gaps.":"Position change on track; check who is now in your window."];
+  if(/pits/.test(s)) return ["Tactical","warn","Rival stop: run the undercut matrix and the drop map."];
+  if(/safety|green flag/.test(s)) return ["Neutral","info","Delta and tyre temperature management."];
+  return ["Neutral","info","No action."]; }
+function engRadio(x){
+  const B=$("c-radio-b"); if(!x.started){ B.innerHTML=needStart(); return; } const R=x.R, ev=R.events.filter(e=>e.t<=SIM.tau&&e.kind!=="start").slice(-9).reverse();
+  B.innerHTML=ev.length?ev.map(e=>{ const tn=radioTone(e), tc=e.a&&drv(e.a)?TEAMS[drv(e.a).team].color:"#6b7080"; return `<div class="radio-row"><i style="background:${tc}"></i><div><b>L${e.L} · ${esc(e.title)}</b><div class="a">Action: ${esc(tn[2])}</div></div><span class="pill ${tn[1]}">${tn[0]}</span></div>`; }).join("")+`<p class="muted">Tone and action items come from keyword rules on the simulated race-control and team-radio text, not from speech recognition or real driver audio. A production version would add a speech-to-text model.</p>`:needStart("No radio traffic yet.");
+}
+/* --- ticking --- */
+function engTick(){
+  if(!SIM.res||S.mode!=="sim") return; const pg=document.body.dataset.page, now=performance.now();
+  if(pg!=="telemetry"&&pg!=="strategy"){ if(now-ENG.a>900){ ENG.a=now; if(SIM.running&&SIM.tau>0){ const x=ctxNow(); if(!x.me.done){ const d=threatRows(x).find(r=>r.side==="behind"&&r.v[1]==="bad"); const nb=$("nav-strategy"); if(d&&!ENG.alert){ nb.classList.add("dot"); ENG.alert=true; } else if(!d) ENG.alert=false; } } } return; }
+  if(now-ENG.t<250) return; ENG.t=now; const x=ctxNow();
+  if(pg==="telemetry"){ x.me&&(engSectors(x),engRivals(x),engGhost(x),engCliff(x),engFuel(x),engTherm(x),engSetup(x)); }
+  else { engBrief(x); engDrop(x); engThreat(x); engSC(x); engXover(x); engMC(x); engRadio(x); }
+}
+
 /* ================= pages ================= */
-const PAGES=["race","analysis","copilot","season"];
+const PAGES=["race","telemetry","strategy","analysis","copilot","season"], SIMONLY=["telemetry","strategy","season"];
 function setPage(pg,fromHash){
-  if(!PAGES.includes(pg)) pg="race"; if(pg==="season"&&S.mode!=="sim") pg="race";
+  if(!PAGES.includes(pg)) pg="race"; if(SIMONLY.includes(pg)&&S.mode!=="sim") pg="race";
   document.body.dataset.page=pg; PAGES.forEach(k=>$("nav-"+k).setAttribute("aria-pressed",k===pg));
   if(pg==="copilot"){ $("nav-copilot").classList.remove("dot"); const L=$("alx-log"); setTimeout(()=>{ L.scrollTop=L.scrollHeight; },0); }
   if(!fromHash){ try{ history.replaceState(null,"","#"+pg); }catch(e){} }
-  window.scrollTo(0,0); try{ render(true); }catch(e){}
+  if(pg==="strategy"){ $("nav-strategy").classList.remove("dot"); ENG.alert=false; } ENG.t=0; window.scrollTo(0,0); try{ render(true); }catch(e){} try{ engTick(); }catch(e){}
 }
 $("pages").onclick=e=>{ const b=e.target.closest("button[data-pg]"); if(b) setPage(b.dataset.pg); };
 window.addEventListener("hashchange",()=>setPage((location.hash||"").slice(1),true));
-document.addEventListener("keydown",e=>{ if(e.target.closest("input,select,textarea")||e.metaKey||e.ctrlKey||e.altKey) return; const i="1234".indexOf(e.key); if(i>=0) setPage(PAGES[i]); });
+document.addEventListener("keydown",e=>{ if(e.target.closest("input,select,textarea")||e.metaKey||e.ctrlKey||e.altKey) return; const i="123456".indexOf(e.key); if(i>=0) setPage(PAGES[i]); });
 function fitNav(){ const h=document.querySelector("header.top"); if(h) document.body.style.setProperty("--hh",h.offsetHeight+"px"); }
 window.addEventListener("resize",fitNav); fitNav();
 

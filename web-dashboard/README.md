@@ -50,3 +50,27 @@ A tab bar under the header (keys 1 to 4, or `#race`, `#analysis`, `#copilot`, `#
 - **Analysis:** weather and grip, tyre wear, lap chart and lap times (Simulator); pit wall board and trends (Replay).
 - **Copilot:** the Alexa+ (simulated) chat with a grouped "Ask me" list. A yellow dot on the tab shows new team radio while you are elsewhere.
 - **Championship (Simulator):** both standings tables side by side and the round calendar.
+
+## Engineer tools (v8): six pages
+
+Two new Simulator-only pages, **Telemetry** and **Strategy** (keys 2 and 3; Analysis, Copilot and Championship move to 4 to 6). Everything is computed in the browser from the simulated race. Nothing is real telemetry, and nothing is AWS-validated.
+
+| Requested feature | Where | Status |
+|---|---|---|
+| Live delta, gaps ahead/behind, sector times, personal bests | Telemetry: sector table | Simulated (sector splits synthesized from lap times) |
+| Ghost-lap overlay | Telemetry: ghost lap | Simulated (speed trace from circuit curvature) |
+| Tyre degradation, cliff prediction | Telemetry: tyre cliff, rival stint profiling | Simulated model |
+| Fuel-to-finish matrix, lift-and-coast, MGU-K / battery map | Telemetry: fuel and energy | Simulated, illustrative numbers |
+| Thermal alerts, aero balance drift | Telemetry: car systems | Simulated |
+| Setup advisor | Telemetry: setup advisor | Rule-based per circuit |
+| Pit window drop map, undercut threat matrix | Strategy | Simulated |
+| Safety car probability, box-under-SC advice | Strategy: safety car outlook | Model from circuit incident rate; no VSC model |
+| Weather / crossover window | Strategy: crossover | Uses the simulator's weather scenario, not a radar |
+| Monte Carlo strategy simulator | Strategy: 5 strategies x 60 seeds, finishing-position bars | Simulated |
+| Automated briefing | Strategy: engineer briefing | Rule-based |
+| Radio tone and action items | Strategy: radio intel | Keyword rules on simulated race-control text; no speech-to-text |
+| Alexa+ questions for all of the above | Copilot | "Brief me", "fuel to finish", "when is the tyre cliff", "can anyone undercut me", "where do we rejoin", "safety car chance", "setup", "brake temps", "sectors", "Monte Carlo odds" |
+| Rule explainers (track limits, parc ferme, penalties, blue flags) | Copilot | General explainers, not the official regulations |
+| Real-time ingestion, Kafka/Redis, FastF1, speech-to-text | See `docs/TELEMETRY_ROADMAP.md` | **Roadmap only, not built** |
+
+Screenshots: `screenshots/page-telemetry.png`, `screenshots/page-strategy.png`.
