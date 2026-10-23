@@ -1,5 +1,7 @@
 # Pit Wall Copilot — Gate 0 + Gate 1 + Gate 2 + Gate 3 + Gate 4 + Gate 5
 
+> **Web dashboard:** open `web-dashboard/index.html` for a themed (Broadcast / Heritage) replay of the local demo, or connect it to a local backend. See `web-dashboard/README.md`.
+
 Agentic race-strategy companion for Amazon Fire TV + Alexa+.
 **This repository currently implements Gate 0 through Gate 4 in full**,
 plus the parts of **Gate 5** that are actually buildable without real

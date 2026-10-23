@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en" data-theme="broadcast">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pit Wall Copilot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0c0f; --bg2:#101216; --panel:#15181d; --panel2:#1b1f26; --line:#272c35; --line2:#343a45;
+  --ink:#f3f4f6; --ink2:#a4abb8; --ink3:#6c7482;
+  --accent:#e10600; --accent-ink:#fff; --good:#19d27a; --warn:#ffd23f; --bad:#ff4d4d; --purple:#b44cff;
+  --track:#2a2f39; --track-edge:#3b424f; --kerb:#e10600;
+  --font-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --font-body:"Barlow",system-ui,sans-serif;
+  --radius:10px; --radius-sm:6px; --panel-border:1px solid var(--line);
+  --num-weight:700; --h-tracking:.04em; --h-case:uppercase;
+}
+html[data-theme="heritage"]{
+  --bg:#0c241c; --bg2:#0f2c22; --panel:#133a2c; --panel2:#174434; --line:#2a5a46; --line2:#3b7059;
+  --ink:#f1e8d0; --ink2:#c2bb9f; --ink3:#8d9a86;
+  --accent:#c9a24b; --accent-ink:#1b1608; --good:#8fcf8a; --warn:#e8c25c; --bad:#d9594b; --purple:#c9a24b;
+  --track:#0a1d16; --track-edge:#c9a24b; --kerb:#f1e8d0;
+  --font-display:"Bodoni Moda","Didot",Georgia,serif;
+  --font-body:"Libre Franklin",system-ui,sans-serif;
+  --radius:2px; --radius-sm:1px; --panel-border:1px solid var(--line2);
+  --num-weight:700; --h-tracking:.02em; --h-case:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.4}
+body{min-height:100vh;background:
+  radial-gradient(1200px 500px at 70% -10%, color-mix(in srgb,var(--accent) 9%, transparent), transparent 60%), var(--bg)}
+html[data-theme="heritage"] body{background:
+  repeating-linear-gradient(45deg, rgba(255,255,255,.012) 0 2px, transparent 2px 6px), var(--bg)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-family:var(--font-display);font-weight:var(--num-weight);font-variant-numeric:tabular-nums}
+
+/* ---------- top bar ---------- */
+.top{display:flex;align-items:center;gap:20px;padding:14px 24px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg2) 92%,transparent);position:sticky;top:0;z-index:20;backdrop-filter:blur(6px)}
+.brand{display:flex;align-items:baseline;gap:12px;min-width:0}
+.brand h1{margin:0;font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+html[data-theme="heritage"] .brand h1{font-size:25px;text-transform:none;letter-spacing:.01em;font-style:italic}
+.brand small{color:var(--ink3);font-size:12px;white-space:nowrap}
+.stripe{width:6px;align-self:stretch;background:var(--accent);border-radius:1px;margin-right:-4px}
+.lapbox{display:flex;align-items:baseline;gap:8px;margin-left:12px}
+.lapbox .lap{font-size:40px;line-height:1}
+.lapbox .of{color:var(--ink3);font-size:18px}
+.flag{display:inline-flex;align-items:center;gap:8px;padding:4px 12px;border:1px solid var(--line2);border-radius:999px;font-size:13px;font-weight:600}
+.flag i{width:10px;height:10px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px color-mix(in srgb,var(--good) 25%,transparent)}
+.flag.done i{background:var(--warn);box-shadow:0 0 0 3px color-mix(in srgb,var(--warn) 25%,transparent)}
+.flag.idle i{background:var(--ink3);box-shadow:none}
+.spacer{flex:1}
+.seg{display:inline-flex;border:1px solid var(--line2);border-radius:var(--radius-sm);overflow:hidden}
+.seg button{background:transparent;border:0;padding:7px 14px;font-size:13px;font-weight:600;color:var(--ink2)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+
+/* ---------- layout ---------- */
+main{display:grid;grid-template-columns:330px minmax(0,1fr) 360px;gap:16px;padding:16px 24px 24px;align-items:start}
+.card{background:var(--panel);border:var(--panel-border);border-radius:var(--radius);overflow:hidden}
+.card>h2{margin:0;padding:12px 16px;font-family:var(--font-display);font-size:15px;letter-spacing:var(--h-tracking);text-transform:var(--h-case);font-weight:700;color:var(--ink2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+html[data-theme="heritage"] .card>h2{font-size:17px;font-style:italic;color:var(--accent);font-weight:600;border-bottom:1px solid var(--line2)}
+.card>h2 span{white-space:nowrap;font-family:var(--font-body);font-size:12px;color:var(--ink3);font-weight:500;letter-spacing:0;text-transform:none;font-style:normal}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+
+/* ---------- timing tower ---------- */
+.tower{list-style:none;margin:0;padding:0;position:relative}
+.row{display:grid;grid-template-columns:34px 5px 1fr auto auto;gap:10px;align-items:center;padding:0 14px 0 8px;height:58px;border-bottom:1px solid var(--line);position:absolute;left:0;right:0;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.row .pos{font-size:28px;text-align:center}
+.row .bar{width:5px;height:34px;border-radius:2px}
+.row .who{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.row .code{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:.04em}
+html[data-theme="heritage"] .row .code{letter-spacing:0;font-size:20px}
+.row .team{font-size:11px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .gap{font-size:20px;text-align:right;min-width:68px}
+.row .gap small{display:block;font-family:var(--font-body);font-size:11px;font-weight:500;color:var(--ink3)}
+.tyre{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:17px;border:3px solid var(--c);color:var(--ink);background:var(--bg2);position:relative}
+.tyre em{position:absolute;bottom:-9px;right:-8px;font:600 10px var(--font-body);background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:0 4px;font-style:normal;color:var(--ink2)}
+.row.hl{background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
+.row.tgt{background:linear-gradient(90deg,color-mix(in srgb,var(--ink3) 18%,transparent),transparent 70%)}
+.tower-note{padding:10px 16px 14px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line)}
+
+/* ---------- track ---------- */
+.trackcard{position:relative}
+.trackwrap{position:relative;aspect-ratio:800/470;background:
+  radial-gradient(500px 260px at 50% 50%, color-mix(in srgb,var(--panel2) 80%,transparent), transparent 80%)}
+html[data-theme="heritage"] .trackwrap{background:radial-gradient(500px 280px at 50% 50%, #0f3025, transparent 80%)}
+svg.track{width:100%;height:100%;display:block}
+.carlabel{font-family:var(--font-display);font-weight:800;font-size:15px;paint-order:stroke;stroke:var(--bg);stroke-width:4px;fill:var(--ink)}
+.car-dot{stroke:var(--bg);stroke-width:3}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-top:1px solid var(--line);background:var(--bg2)}
+.btn{background:var(--panel2);border:1px solid var(--line2);border-radius:var(--radius-sm);padding:9px 18px;font-weight:700;font-family:var(--font-display);letter-spacing:.08em;font-size:16px;text-transform:uppercase}
+html[data-theme="heritage"] .btn{text-transform:none;letter-spacing:.02em;font-size:17px;font-style:italic}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.scrub{flex:1;min-width:160px;accent-color:var(--accent)}
+.pace{font-size:12px;color:var(--ink3)}
+
+/* ---------- pit board ---------- */
+.board{margin:16px;padding:18px 18px 16px;border-radius:var(--radius);border:2px solid var(--line2);background:#050607;text-align:center;position:relative;overflow:hidden}
+html[data-theme="heritage"] .board{background:#0a1d16;border:3px double var(--ink2)}
+.board .who{font-size:13px;color:var(--ink3);margin-bottom:2px}
+.board .big{font-family:var(--font-display);font-weight:800;font-size:68px;line-height:.95;letter-spacing:.06em;text-transform:uppercase}
+html[data-theme="heritage"] .board .big{text-transform:none;letter-spacing:0;font-style:italic;font-size:62px}
+.board.open{border-color:var(--good)}
+.board.open .big{color:var(--good);animation:pulse 1.4s ease-in-out infinite}
+.board.closed .big{color:var(--ink2)}
+.board .sub{display:flex;justify-content:space-around;margin-top:18px;font-size:13px;color:var(--ink2)}
+.board .sub b{display:block;font-family:var(--font-display);font-size:26px;color:var(--ink);font-weight:700}
+@keyframes pulse{50%{opacity:.62}}
+
+/* ---------- strategy ---------- */
+.gauge-wrap{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:12px 16px}
+.gauge{width:150px;height:92px}
+.gauge .pct{font-family:var(--font-display);font-weight:800;font-size:34px;fill:var(--ink);text-anchor:middle}
+.kv{display:grid;grid-template-columns:1fr auto;gap:4px 12px;font-size:13px;color:var(--ink2)}
+.kv b{color:var(--ink);font-weight:600;text-align:right}
+.range{margin:4px 16px 14px;position:relative;height:38px}
+.range .axis{position:absolute;left:0;right:0;top:18px;height:2px;background:var(--line2)}
+.range .span{position:absolute;top:12px;height:14px;border-radius:2px;background:color-mix(in srgb,var(--good) 55%,transparent);border:1px solid var(--good)}
+.range .zero{position:absolute;top:6px;bottom:2px;width:2px;background:var(--ink2)}
+.range .med{position:absolute;top:8px;width:3px;height:22px;background:var(--ink)}
+.range .lbl{position:absolute;bottom:-6px;font-size:10px;color:var(--ink3);transform:translateX(-50%);white-space:nowrap}
+.assump{padding:0 16px 14px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11px;padding:3px 9px;border:1px solid var(--line2);border-radius:999px;color:var(--ink2);background:var(--bg2)}
+button.chip{cursor:pointer}
+button.chip:hover{border-color:var(--accent);color:var(--ink)}
+.simrow{padding:12px 16px 16px;border-top:1px solid var(--line);font-size:13px;color:var(--ink2)}
+.simbars{display:grid;gap:6px;margin-top:8px}
+.simbars div{display:grid;grid-template-columns:96px 1fr 62px;gap:8px;align-items:center}
+.simbars i{display:block;height:12px;border-radius:2px;background:var(--accent)}
+.simbars i.alt{background:var(--ink3)}
+
+/* ---------- alerts + ask ---------- */
+.alert{padding:12px 16px;border-bottom:1px solid var(--line);display:grid;gap:4px}
+.alert .h{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3)}
+.alert .t{font-family:var(--font-display);font-size:20px;font-weight:700;color:var(--good)}
+.alert .d{font-size:13px;color:var(--ink2)}
+.empty{padding:16px;color:var(--ink3);font-size:13px}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:600;text-align:left;font-size:13px;text-decoration:underline;text-underline-offset:3px}
+html[data-theme="broadcast"] .linkbtn{color:#ff6a62}
+.ask{padding:12px 16px 4px;display:flex;gap:8px}
+.ask input{flex:1;min-width:0;background:var(--bg2);border:1px solid var(--line2);color:var(--ink);border-radius:var(--radius-sm);padding:10px 12px;font:inherit}
+.chips{padding:8px 16px 12px;display:flex;flex-wrap:wrap;gap:6px}
+.answer{margin:0 16px 16px;padding:12px;border:1px solid var(--line2);border-radius:var(--radius-sm);background:var(--bg2);font-size:14px}
+.answer.refuse{border-color:var(--warn)}
+.answer .st{font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:6px}
+.answer .ev{margin-top:8px;font-size:12px;color:var(--ink3);display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.answer .ev b{color:var(--ink2);font-weight:600}
+
+/* ---------- toast + dialog ---------- */
+.toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
+.toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.toast .t{font-family:var(--font-display);font-weight:800;font-size:26px;color:var(--good);letter-spacing:.05em;text-transform:uppercase}
+html[data-theme="heritage"] .toast .t{text-transform:none;font-style:italic;letter-spacing:0}
+.toast .d{color:var(--ink2);font-size:14px}
+.toast .x{margin-top:8px}
+dialog{background:var(--panel);color:var(--ink);border:2px solid var(--line2);border-radius:var(--radius);padding:0;width:min(760px,94vw);max-height:88vh}
+dialog::backdrop{background:rgba(0,0,0,.7)}
+dialog header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+dialog header h3{margin:0;font-family:var(--font-display);font-size:24px;letter-spacing:var(--h-tracking);text-transform:var(--h-case)}
+dialog .body{padding:16px 20px 20px;overflow:auto;max-height:70vh;font-size:15px}
+dialog .facts{display:grid;grid-template-columns:200px 1fr;gap:4px 14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:13px}
+dialog .facts dt{color:var(--ink3);font-weight:600}
+dialog .facts dd{margin:0}
+
+.cfg{display:none;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 24px;border-bottom:1px solid var(--line);background:var(--bg2);font-size:13px}
+.cfg.on{display:flex}
+.cfg input{background:var(--bg);border:1px solid var(--line2);color:var(--ink);border-radius:var(--radius-sm);padding:6px 10px;font:inherit}
+.cfg .note{color:var(--ink3)}
+footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
+
+@media (max-width:1180px){main{grid-template-columns:1fr 1fr}.col.mid{grid-column:1/-1;order:-1}}
+@media (max-width:760px){
+  main{grid-template-columns:1fr;padding:12px 16px}
+  .top{flex-wrap:wrap;padding:12px 16px;gap:10px}
+  .brand small{display:none}
+  .lapbox{margin-left:0}
+  dialog .facts{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="stripe"></div>
+  <div class="brand"><h1>Pit Wall Copilot</h1><small>Synthetic demo. All data fictional.</small></div>
+  <div class="lapbox"><span class="num lap" id="lap">--</span><span class="of num">/ <span id="total">58</span></span></div>
+  <span class="flag idle" id="flag"><i></i><span id="flagtxt">Ready</span></span>
+  <div class="spacer"></div>
+  <div class="seg" role="group" aria-label="Data source">
+    <button id="src-replay" aria-pressed="true">Replay</button>
+    <button id="src-live" aria-pressed="false">Live backend</button>
+  </div>
+  <div class="seg" role="group" aria-label="Theme">
+    <button id="th-broadcast" aria-pressed="true">Broadcast</button>
+    <button id="th-heritage" aria-pressed="false">Heritage</button>
+  </div>
+</header>
+
+<div class="cfg" id="cfg">
+  <label>Backend <input id="cfg-url" value="http://127.0.0.1:8123" size="24"></label>
+  <label>Demo token <input id="cfg-token" type="password" placeholder="printed by the backend at startup" size="30" autocomplete="off"></label>
+  <button class="btn" id="cfg-connect" style="padding:6px 14px;font-size:14px">Connect</button>
+  <span class="note" id="cfg-note">Serve this folder from http://localhost:8081 (python -m http.server 8081) so the backend allows it. The token stays in this tab's memory only.</span>
+</div>
+
+<main>
+  <section class="col">
+    <div class="card">
+      <h2>Timing <span id="tower-lap"></span></h2>
+      <ol class="tower" id="tower"></ol>
+      <div class="tower-note">Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.</div>
+    </div>
+    <div class="card">
+      <h2>Alerts <span id="alert-count"></span></h2>
+      <div id="alerts"><div class="empty">No alerts yet. The watch on CAR_04 against CAR_03 raises one when the window opens.</div></div>
+    </div>
+  </section>
+
+  <section class="col mid">
+    <div class="card trackcard">
+      <h2>Circuit <span>Fictional layout, car spacing from real timing gaps</span></h2>
+      <div class="trackwrap"><svg class="track" id="track" viewBox="0 0 800 470" role="img" aria-label="Circuit map with live car positions"></svg></div>
+      <div class="controls">
+        <button class="btn primary" id="b-start">Start</button>
+        <button class="btn" id="b-pause">Pause</button>
+        <button class="btn" id="b-reset">Reset</button>
+        <input class="scrub" id="scrub" type="range" min="0" max="4" step="0.01" value="0" aria-label="Race progress">
+        <div class="seg" role="group" aria-label="Speed" id="speed">
+          <button data-s="1" aria-pressed="true">1x</button><button data-s="2" aria-pressed="false">2x</button><button data-s="4" aria-pressed="false">4x</button>
+        </div>
+        <span class="pace" id="pacetxt"></span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Pit wall board <span id="board-sub"></span></h2>
+      <div class="board closed" id="board">
+        <div class="who" id="board-who">CAR_04 vs CAR_03</div>
+        <div class="big" id="board-big">Stay out</div>
+        <div class="sub">
+          <div>Pit lap<b class="num" id="b-lap">--</b></div>
+          <div>Margin<b class="num" id="b-margin">--</b></div>
+          <div>Chance ahead<b class="num" id="b-prob">--</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="col">
+    <div class="card">
+      <h2>Strategy battle <span id="sb-sub">CAR_04 vs CAR_03</span></h2>
+      <div class="gauge-wrap">
+        <svg class="gauge" viewBox="0 0 150 92" aria-hidden="true">
+          <path d="M15 80 A60 60 0 0 1 135 80" fill="none" stroke="var(--line2)" stroke-width="12" stroke-linecap="butt"/>
+          <path id="g-fill" d="M15 80 A60 60 0 0 1 135 80" fill="none" stroke="var(--good)" stroke-width="12" stroke-dasharray="0 400"/>
+          <line id="g-open" x1="0" y1="0" x2="0" y2="0" stroke="var(--ink)" stroke-width="2"/>
+          <text class="pct" id="g-pct" x="75" y="78">--</text>
+        </svg>
+        <div class="kv">
+          <span>Window</span><b id="sb-window">--</b>
+          <span>Tyre age</span><b id="sb-tyre">--</b>
+          <span>Traffic</span><b id="sb-traffic">--</b>
+          <span>Trials</span><b id="sb-trials">--</b>
+        </div>
+      </div>
+      <div class="range" id="range" aria-label="Margin range"></div>
+      <div class="assump" id="assump"></div>
+      <div class="simrow" id="simrow"></div>
+    </div>
+    <div class="card">
+      <h2>Why now? <span>grounded in real values</span></h2>
+      <div class="empty" id="why-empty">Open the window alert to see the explanation.</div>
+      <div style="padding:12px 16px;display:none" id="why-box"><button class="linkbtn" id="why-open">Read why the window opened</button></div>
+    </div>
+    <div class="card">
+      <h2>Ask the pit wall <span id="ask-src">recorded replies</span></h2>
+      <form class="ask" id="askform"><input id="askin" placeholder="Can CAR_04 undercut CAR_03?" aria-label="Question"><button class="btn primary" style="padding:8px 14px;font-size:15px">Ask</button></form>
+      <div class="chips" id="chips">
+        <button class="chip" data-q="Can CAR_04 undercut CAR_03?">Can CAR_04 undercut CAR_03?</button>
+        <button class="chip" data-q="What is the pit lane speed limit?">Pit lane speed limit?</button>
+        <button class="chip" data-q="What is the weather forecast?">Weather forecast?</button>
+      </div>
+      <div id="answer"></div>
+    </div>
+  </section>
+</main>
+
+<footer>Local demo with fictional data. Nothing here is AWS-validated or production-ready. Replay mode plays real responses recorded from the local backend; Live mode talks to a backend you run yourself.</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <div class="t" id="toast-t"></div><div class="d" id="toast-d"></div>
+  <div class="x"><button class="linkbtn" id="toast-why">Why did it open?</button> &nbsp; <button class="linkbtn" id="toast-x">Dismiss</button></div>
+</div>
+
+<dialog id="dlg"><header><h3 id="dlg-t"></h3><button class="btn" id="dlg-x" style="padding:6px 14px;font-size:14px">Close</button></header><div class="body" id="dlg-b"></div></dialog>
+
+<script>
+const REPLAY = {"frames": [{"state": {"race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "state_version": 0, "lap": 24, "total_laps": 58, "race_time_ms": 4820000, "track_state": "GREEN", "generated_at": "2026-10-23T11:07:01.906130Z", "scenario_id": "scenario-demo-01", "synthetic": true, "drivers": [{"driver_id": "CAR_03", "display_name": "M. Renaud", "team_name": "Northstar Racing", "position": 3, "gap_to_leader_ms": 14200, "gap_to_ahead_ms": 14200, "compound": "MEDIUM", "tire_age_laps": 22, "base_pace_ms": 91800, "current_lap_pace_ms": 92050, "pit_stops": 1, "pit_window": [26, 31], "traffic_factor": 0.05}, {"driver_id": "CAR_04", "display_name": "J. Okafor", "team_name": "Velocity GP", "position": 4, "gap_to_leader_ms": 17600, "gap_to_ahead_ms": 3400, "compound": "MEDIUM", "tire_age_laps": 18, "base_pace_ms": 91650, "current_lap_pace_ms": 91700, "pit_stops": 1, "pit_window": [25, 30], "traffic_factor": 0.1}, {"driver_id": "CAR_07", "display_name": "T. Lindqvist", "team_name": "Aurora Motorsport", "position": 7, "gap_to_leader_ms": 29400, "gap_to_ahead_ms": 11800, "compound": "HARD", "tire_age_laps": 9, "base_pace_ms": 92300, "current_lap_pace_ms": 92310, "pit_stops": 1, "pit_window": [29, 34], "traffic_factor": 0.05}, {"driver_id": "CAR_11", "display_name": "R. Vasquez", "team_name": "Northstar Racing", "position": 11, "gap_to_leader_ms": 41200, "gap_to_ahead_ms": 11800, "compound": "SOFT", "tire_age_laps": 5, "base_pace_ms": 91950, "current_lap_pace_ms": 91900, "pit_stops": 2, "pit_window": [30, 35], "traffic_factor": 0.0}]}, "undercut": {"calculation_id": "undercut-42e7e2f4-6f5d-47c6-93a6-e5dd0d97cadf", "model_version": "strategy-engine-v1", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "source_state_version": 0, "candidate": "CAR_04", "target": "CAR_03", "window": "CLOSED", "expected_margin_ms": -320, "comparison_horizon_lap": 28, "pit_schedules": [{"driver_id": "CAR_04", "pit_lap": 25, "compound_after_pit": "SOFT"}, {"driver_id": "CAR_03", "pit_lap": 26, "compound_after_pit": "SOFT"}], "candidate_tire_age_laps": 18, "target_tire_age_laps": 22, "traffic_classification": "LIGHT", "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "target_responds_after_1_lap(s)"], "confidence": {"trials": 200, "median_margin_ms": -114, "p10_margin_ms": -2597, "p90_margin_ms": 2025, "probability_ahead": 0.455, "model_seed": 48127}}}, {"state": {"race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "state_version": 1, "lap": 25, "total_laps": 58, "race_time_ms": 4912000, "track_state": "GREEN", "generated_at": "2026-10-23T11:07:03.925127Z", "scenario_id": "scenario-demo-01", "synthetic": true, "drivers": [{"driver_id": "CAR_03", "display_name": "M. Renaud", "team_name": "Northstar Racing", "position": 3, "gap_to_leader_ms": 14500, "gap_to_ahead_ms": 14500, "compound": "MEDIUM", "tire_age_laps": 23, "base_pace_ms": 91800, "current_lap_pace_ms": 92180, "pit_stops": 1, "pit_window": [26, 31], "traffic_factor": 0.05}, {"driver_id": "CAR_04", "display_name": "J. Okafor", "team_name": "Velocity GP", "position": 4, "gap_to_leader_ms": 17400, "gap_to_ahead_ms": 2900, "compound": "MEDIUM", "tire_age_laps": 19, "base_pace_ms": 91650, "current_lap_pace_ms": 91680, "pit_stops": 1, "pit_window": [25, 30], "traffic_factor": 0.1}, {"driver_id": "CAR_07", "display_name": "T. Lindqvist", "team_name": "Aurora Motorsport", "position": 7, "gap_to_leader_ms": 29900, "gap_to_ahead_ms": 12500, "compound": "HARD", "tire_age_laps": 10, "base_pace_ms": 92300, "current_lap_pace_ms": 92340, "pit_stops": 1, "pit_window": [29, 34], "traffic_factor": 0.05}, {"driver_id": "CAR_11", "display_name": "R. Vasquez", "team_name": "Northstar Racing", "position": 11, "gap_to_leader_ms": 41800, "gap_to_ahead_ms": 11900, "compound": "SOFT", "tire_age_laps": 6, "base_pace_ms": 91950, "current_lap_pace_ms": 91920, "pit_stops": 2, "pit_window": [30, 35], "traffic_factor": 0.0}]}, "undercut": {"calculation_id": "undercut-7315cedc-0965-423a-aa90-52bfa80f7f69", "model_version": "strategy-engine-v1", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "source_state_version": 1, "candidate": "CAR_04", "target": "CAR_03", "window": "CLOSED", "expected_margin_ms": 255, "comparison_horizon_lap": 29, "pit_schedules": [{"driver_id": "CAR_04", "pit_lap": 26, "compound_after_pit": "SOFT"}, {"driver_id": "CAR_03", "pit_lap": 27, "compound_after_pit": "SOFT"}], "candidate_tire_age_laps": 19, "target_tire_age_laps": 23, "traffic_classification": "LIGHT", "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "target_responds_after_1_lap(s)"], "confidence": {"trials": 200, "median_margin_ms": 461, "p10_margin_ms": -2151, "p90_margin_ms": 2695, "probability_ahead": 0.59, "model_seed": 48127}}}, {"state": {"race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "state_version": 2, "lap": 26, "total_laps": 58, "race_time_ms": 5004000, "track_state": "GREEN", "generated_at": "2026-10-23T11:07:05.928111Z", "scenario_id": "scenario-demo-01", "synthetic": true, "drivers": [{"driver_id": "CAR_03", "display_name": "M. Renaud", "team_name": "Northstar Racing", "position": 3, "gap_to_leader_ms": 14750, "gap_to_ahead_ms": 14750, "compound": "MEDIUM", "tire_age_laps": 24, "base_pace_ms": 91800, "current_lap_pace_ms": 92310, "pit_stops": 1, "pit_window": [26, 31], "traffic_factor": 0.1}, {"driver_id": "CAR_04", "display_name": "J. Okafor", "team_name": "Velocity GP", "position": 4, "gap_to_leader_ms": 17150, "gap_to_ahead_ms": 2400, "compound": "MEDIUM", "tire_age_laps": 20, "base_pace_ms": 91650, "current_lap_pace_ms": 91660, "pit_stops": 1, "pit_window": [25, 30], "traffic_factor": 0.1}, {"driver_id": "CAR_07", "display_name": "T. Lindqvist", "team_name": "Aurora Motorsport", "position": 7, "gap_to_leader_ms": 30500, "gap_to_ahead_ms": 13350, "compound": "HARD", "tire_age_laps": 11, "base_pace_ms": 92300, "current_lap_pace_ms": 92370, "pit_stops": 1, "pit_window": [29, 34], "traffic_factor": 0.05}, {"driver_id": "CAR_11", "display_name": "R. Vasquez", "team_name": "Northstar Racing", "position": 11, "gap_to_leader_ms": 42450, "gap_to_ahead_ms": 11950, "compound": "SOFT", "tire_age_laps": 7, "base_pace_ms": 91950, "current_lap_pace_ms": 91940, "pit_stops": 2, "pit_window": [30, 35], "traffic_factor": 0.0}]}, "undercut": {"calculation_id": "undercut-478dc2a1-b113-4613-b524-56f7e6c462a6", "model_version": "strategy-engine-v1", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "source_state_version": 2, "candidate": "CAR_04", "target": "CAR_03", "window": "CLOSED", "expected_margin_ms": 910, "comparison_horizon_lap": 30, "pit_schedules": [{"driver_id": "CAR_04", "pit_lap": 27, "compound_after_pit": "SOFT"}, {"driver_id": "CAR_03", "pit_lap": 28, "compound_after_pit": "SOFT"}], "candidate_tire_age_laps": 20, "target_tire_age_laps": 24, "traffic_classification": "LIGHT", "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "target_responds_after_1_lap(s)"], "confidence": {"trials": 200, "median_margin_ms": 1094, "p10_margin_ms": -1626, "p90_margin_ms": 3456, "probability_ahead": 0.705, "model_seed": 48127}}}, {"state": {"race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "state_version": 3, "lap": 27, "total_laps": 58, "race_time_ms": 5096000, "track_state": "GREEN", "generated_at": "2026-10-23T11:07:07.931165Z", "scenario_id": "scenario-demo-01", "synthetic": true, "drivers": [{"driver_id": "CAR_03", "display_name": "M. Renaud", "team_name": "Northstar Racing", "position": 3, "gap_to_leader_ms": 15000, "gap_to_ahead_ms": 15000, "compound": "MEDIUM", "tire_age_laps": 25, "base_pace_ms": 91800, "current_lap_pace_ms": 92450, "pit_stops": 1, "pit_window": [26, 31], "traffic_factor": 0.1}, {"driver_id": "CAR_04", "display_name": "J. Okafor", "team_name": "Velocity GP", "position": 4, "gap_to_leader_ms": 17000, "gap_to_ahead_ms": 2000, "compound": "MEDIUM", "tire_age_laps": 21, "base_pace_ms": 91650, "current_lap_pace_ms": 91650, "pit_stops": 1, "pit_window": [25, 30], "traffic_factor": 0.1}, {"driver_id": "CAR_07", "display_name": "T. Lindqvist", "team_name": "Aurora Motorsport", "position": 7, "gap_to_leader_ms": 31100, "gap_to_ahead_ms": 14100, "compound": "HARD", "tire_age_laps": 12, "base_pace_ms": 92300, "current_lap_pace_ms": 92400, "pit_stops": 1, "pit_window": [29, 34], "traffic_factor": 0.1}, {"driver_id": "CAR_11", "display_name": "R. Vasquez", "team_name": "Northstar Racing", "position": 11, "gap_to_leader_ms": 43100, "gap_to_ahead_ms": 12000, "compound": "SOFT", "tire_age_laps": 8, "base_pace_ms": 91950, "current_lap_pace_ms": 91960, "pit_stops": 2, "pit_window": [30, 35], "traffic_factor": 0.0}]}, "undercut": {"calculation_id": "undercut-31230631-71af-4544-82f4-573c166a4caf", "model_version": "strategy-engine-v1", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "source_state_version": 3, "candidate": "CAR_04", "target": "CAR_03", "window": "OPEN", "expected_margin_ms": 1385, "comparison_horizon_lap": 31, "pit_schedules": [{"driver_id": "CAR_04", "pit_lap": 28, "compound_after_pit": "SOFT"}, {"driver_id": "CAR_03", "pit_lap": 29, "compound_after_pit": "SOFT"}], "candidate_tire_age_laps": 21, "target_tire_age_laps": 25, "traffic_classification": "LIGHT", "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "target_responds_after_1_lap(s)"], "confidence": {"trials": 200, "median_margin_ms": 1582, "p10_margin_ms": -1281, "p90_margin_ms": 4038, "probability_ahead": 0.775, "model_seed": 48127}}}, {"state": {"race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "state_version": 4, "lap": 28, "total_laps": 58, "race_time_ms": 5188000, "track_state": "GREEN", "generated_at": "2026-10-23T11:07:09.936418Z", "scenario_id": "scenario-demo-01", "synthetic": true, "drivers": [{"driver_id": "CAR_03", "display_name": "M. Renaud", "team_name": "Northstar Racing", "position": 3, "gap_to_leader_ms": 15300, "gap_to_ahead_ms": 15300, "compound": "MEDIUM", "tire_age_laps": 26, "base_pace_ms": 91800, "current_lap_pace_ms": 92520, "pit_stops": 1, "pit_window": [26, 31], "traffic_factor": 0.15}, {"driver_id": "CAR_04", "display_name": "J. Okafor", "team_name": "Velocity GP", "position": 4, "gap_to_leader_ms": 17100, "gap_to_ahead_ms": 1800, "compound": "MEDIUM", "tire_age_laps": 22, "base_pace_ms": 91650, "current_lap_pace_ms": 91640, "pit_stops": 1, "pit_window": [25, 30], "traffic_factor": 0.1}, {"driver_id": "CAR_07", "display_name": "T. Lindqvist", "team_name": "Aurora Motorsport", "position": 7, "gap_to_leader_ms": 31700, "gap_to_ahead_ms": 14600, "compound": "HARD", "tire_age_laps": 13, "base_pace_ms": 92300, "current_lap_pace_ms": 92430, "pit_stops": 1, "pit_window": [29, 34], "traffic_factor": 0.1}, {"driver_id": "CAR_11", "display_name": "R. Vasquez", "team_name": "Northstar Racing", "position": 11, "gap_to_leader_ms": 43700, "gap_to_ahead_ms": 12000, "compound": "SOFT", "tire_age_laps": 9, "base_pace_ms": 91950, "current_lap_pace_ms": 91980, "pit_stops": 2, "pit_window": [30, 35], "traffic_factor": 0.0}]}, "undercut": {"calculation_id": "undercut-16459cf1-de2d-486e-b571-c1c5e6ff0a8c", "model_version": "strategy-engine-v1", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "source_state_version": 4, "candidate": "CAR_04", "target": "CAR_03", "window": "OPEN", "expected_margin_ms": 1740, "comparison_horizon_lap": 32, "pit_schedules": [{"driver_id": "CAR_04", "pit_lap": 29, "compound_after_pit": "SOFT"}, {"driver_id": "CAR_03", "pit_lap": 30, "compound_after_pit": "SOFT"}], "candidate_tire_age_laps": 22, "target_tire_age_laps": 26, "traffic_classification": "LIGHT", "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "target_responds_after_1_lap(s)"], "confidence": {"trials": 200, "median_margin_ms": 1936, "p10_margin_ms": -962, "p90_margin_ms": 4475, "probability_ahead": 0.825, "model_seed": 48127}}}], "alert": {"alert_id": "alert-f1a1cde3-0a82-4fa2-ab6c-d8cdbce7b4fc", "evaluation_id": "eval-02c7be04-d292-4e4b-9370-d7d708c2fcee", "watch_id": "watch-fe3fb582-b63e-4e39-8537-8c913198f58e", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "state_version": 3, "previous_status": "CLOSED", "new_status": "OPEN", "triggering_snapshot": {"race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "state_version": 3, "lap": 27, "total_laps": 58, "race_time_ms": 5096000, "track_state": "GREEN", "generated_at": "2026-10-23T11:07:07.931165Z", "scenario_id": "scenario-demo-01", "synthetic": true, "drivers": [{"driver_id": "CAR_03", "display_name": "M. Renaud", "team_name": "Northstar Racing", "position": 3, "gap_to_leader_ms": 15000, "gap_to_ahead_ms": 15000, "compound": "MEDIUM", "tire_age_laps": 25, "base_pace_ms": 91800, "current_lap_pace_ms": 92450, "pit_stops": 1, "pit_window": [26, 31], "traffic_factor": 0.1}, {"driver_id": "CAR_04", "display_name": "J. Okafor", "team_name": "Velocity GP", "position": 4, "gap_to_leader_ms": 17000, "gap_to_ahead_ms": 2000, "compound": "MEDIUM", "tire_age_laps": 21, "base_pace_ms": 91650, "current_lap_pace_ms": 91650, "pit_stops": 1, "pit_window": [25, 30], "traffic_factor": 0.1}, {"driver_id": "CAR_07", "display_name": "T. Lindqvist", "team_name": "Aurora Motorsport", "position": 7, "gap_to_leader_ms": 31100, "gap_to_ahead_ms": 14100, "compound": "HARD", "tire_age_laps": 12, "base_pace_ms": 92300, "current_lap_pace_ms": 92400, "pit_stops": 1, "pit_window": [29, 34], "traffic_factor": 0.1}, {"driver_id": "CAR_11", "display_name": "R. Vasquez", "team_name": "Northstar Racing", "position": 11, "gap_to_leader_ms": 43100, "gap_to_ahead_ms": 12000, "compound": "SOFT", "tire_age_laps": 8, "base_pace_ms": 91950, "current_lap_pace_ms": 91960, "pit_stops": 2, "pit_window": [30, 35], "traffic_factor": 0.0}]}, "deterministic_result": {"calculation_id": "undercut-4be59851-b1d1-4d74-8e5f-bcb6687ed716", "model_version": "strategy-engine-v1", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "source_state_version": 3, "candidate": "CAR_04", "target": "CAR_03", "window": "OPEN", "expected_margin_ms": 1385, "comparison_horizon_lap": 31, "pit_schedules": [{"driver_id": "CAR_04", "pit_lap": 28, "compound_after_pit": "SOFT"}, {"driver_id": "CAR_03", "pit_lap": 29, "compound_after_pit": "SOFT"}], "candidate_tire_age_laps": 21, "target_tire_age_laps": 25, "traffic_classification": "LIGHT", "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "target_responds_after_1_lap(s)"], "confidence": {"trials": 200, "median_margin_ms": 1582, "p10_margin_ms": -1281, "p90_margin_ms": 4038, "probability_ahead": 0.775, "model_seed": 48127}}, "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "target_responds_after_1_lap(s)"], "model_version": "strategy-engine-v1", "idempotency_key": "442aca35-ebde-4859-b66e-bd7801a17556:watch-fe3fb582-b63e-4e39-8537-8c913198f58e:3:OPEN", "created_at": "2026-10-23T11:07:07.935356Z"}, "explain": {"explanation_id": "expl-6725249e-0855-43f2-9401-e2ec0251668f", "alert_id": "alert-f1a1cde3-0a82-4fa2-ab6c-d8cdbce7b4fc", "watch_id": "watch-fe3fb582-b63e-4e39-8537-8c913198f58e", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "narrative": "On lap 27, the undercut watch on CAR_04 against CAR_03 moved from CLOSED to OPEN. Pit Wall Copilot's deterministic simulation projects CAR_04 finishing the comparison window 1385ms ahead of CAR_03 if CAR_04 pits now and CAR_03 responds the following lap, keeping the undercut window OPEN. Across 200 seeded Monte Carlo trials, CAR_04 comes out ahead in 77.5% of outcomes (P10=-1281ms, P90=4038ms). Relevant sporting-rules context: The Undercut, Pit Lane Procedure and Pit Loss, Tire Compounds and Degradation.", "citations": [{"doc_id": "sr-undercut-001", "title": "The Undercut", "source_path": "docs/sporting-rules/undercut.md", "excerpt": "An undercut is a strategic pit-stop sequence in which a car pits for fresh\ntires before a rival it is racing on track. Because a fresh set of tires\nproduces faster lap times than a worn set, the pitting car can gain enough\ntime on its out-lap and the following lap to emerge ahead of the rival\nonce the rival makes its own stop \u2014 even though the pitting car spent time\nstationary in the pit lane.\n\nThe undercut is only effective within a limited window: it depends on the\nsize of the gap between the two cars immediately before the stop, how\nquickly tire performance falls off with age for the compou", "score": 3}, {"doc_id": "sr-pitlane-001", "title": "Pit Lane Procedure and Pit Loss", "source_path": "docs/sporting-rules/pit-lane.md", "excerpt": "Every pit stop costs a car track position measured in lost time, commonly\ncalled \"pit loss.\" Pit loss is made up of four components, each of which\nPit Wall Copilot's strategy engine models separately and adds together\nexactly once, on the lap the stop occurs:\n\n1. **Pit entry** \u2014 the reduced-speed transit from the racing line into\n   the pit lane, governed by a mandatory pit-lane speed limit.\n2. **Lane transit** \u2014 travelling the length of the pit lane itself at the\n   speed limit, which is far slower than racing speed.\n3. **Stationary time** \u2014 the time the car is physically stopped at its\n   pi", "score": 1}, {"doc_id": "sr-tires-001", "title": "Tire Compounds and Degradation", "source_path": "docs/sporting-rules/tire-compounds.md", "excerpt": "Three dry-weather tire compounds are available for this demo series: SOFT,\nMEDIUM and HARD. They trade outright pace for durability:\n\n- **SOFT** tires are the fastest compound over a single lap when new, but\n  their performance drops off the quickest as the laps accumulate.\n- **MEDIUM** tires sit in between \u2014 a balanced choice for a stint of\n  moderate length.\n- **HARD** tires are the slowest compound when new, but degrade the most\n  slowly, making them well suited to a long stint late in a race.\n\nA tire's age \u2014 the number of laps completed since it was fitted \u2014 governs\nhow much time it has lo", "score": 1}], "grounded_facts": {"candidate": "CAR_04", "target": "CAR_03", "previous_status": "CLOSED", "new_status": "OPEN", "window": "OPEN", "triggering_lap": "27", "state_version": "3", "expected_margin_ms": "1385", "comparison_horizon_lap": "31", "candidate_tire_age_laps": "21", "target_tire_age_laps": "25", "traffic_classification": "LIGHT", "trials": "200", "median_margin_ms": "1582", "p10_margin_ms": "-1281", "p90_margin_ms": "4038", "probability_ahead": "77.5%", "model_version": "strategy-engine-v1", "assumptions": "green_flag; normal_pit_loss; clean_exit; target_responds_after_1_lap(s)"}, "llm_provider": "template", "model_id": "template-v1", "grounding_warnings": [], "created_at": "2026-10-23T11:07:09.991566Z", "degraded": false}, "simulate": {"calculation_id": "simulate-8572e724-471c-4a54-a8c1-9c19fbb7daea", "model_version": "strategy-engine-v1", "race_id": "demo-race-001", "run_id": "442aca35-ebde-4859-b66e-bd7801a17556", "source_state_version": 4, "driver_id": "CAR_04", "pit_now_lap": 29, "wait_lap": 31, "wait_laps": 2, "comparison_horizon_lap": 33, "compound_after_pit": "SOFT", "delta_ms": 4475, "assumptions": ["green_flag", "normal_pit_loss", "clean_exit", "no_competing_car_modeled"], "confidence": {"trials": 200, "median_margin_ms": 4790, "p10_margin_ms": 919, "p90_margin_ms": 7993, "probability_ahead": 0.945, "model_seed": 48127}}, "regulation": {"query": "What is the pit lane speed limit", "found": true, "evidence": [{"document_id": "reg-pitlane-001", "section_id": "reg-pitlane-001-components", "title": "Pit loss components", "version": "1.0", "support_status": "SUPPORTED", "excerpt": "Pit loss is made up of four components, each modeled separately and added\ntogether exactly once, on the lap the stop occurs: pit entry (the\nreduced-speed transit into the pit lane), lane transit (traveling the\nlength of the pit lane at the mandatory speed limit), stationary time (the\ntime physically stopped at the pit box), and pit exit (the transit back\nonto the racing line). There is no fifth component and no separate penalty\nadded beyond these four.", "source_path": "docs/sporting-rules/regulations/pit-lane.md"}], "available": true}, "agent": {"query": "Can CAR_04 undercut CAR_03?", "status": "SUPPORTED", "confidence": 0.95, "narrative": "CAR_04 vs CAR_03: the undercut window is OPEN. Expected margin is 1740ms, with a 82.5% probability CAR_04 ends up ahead (from a 200-trial simulation). Recommended pit lap for CAR_04: 29.", "evidence": [{"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "source_state_version", "value": "4"}, {"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "candidate", "value": "CAR_04"}, {"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "target", "value": "CAR_03"}, {"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "window", "value": "OPEN"}, {"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "expected_margin_ms", "value": "1740"}, {"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "probability_ahead", "value": "0.825"}, {"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "pit_schedule.CAR_04", "value": "pit_lap=29,compound_after_pit=TireCompound.SOFT"}, {"type": "strategy_calculation", "source_id": "undercut-e66ca9d6-56e0-42c7-81c0-720d45246671", "field": "pit_schedule.CAR_03", "value": "pit_lap=30,compound_after_pit=TireCompound.SOFT"}], "created_at": "2026-10-23T11:07:10.007831Z"}, "agentRefusal": {"query": "What is the weather forecast?", "status": "UNSUPPORTED", "confidence": 0.0, "narrative": "I don't have information to answer that. I can answer questions about the current race state (gaps, tires, track status, the leader) or the sporting rules I have on file, but I won't guess beyond that.", "evidence": [], "created_at": "2026-10-23T11:07:10.011146Z"}};
+
+/* ================= data + state ================= */
+const TEAM = {"Northstar Racing":"#2fb7ff","Velocity GP":"#ff6a1f","Aurora Motorsport":"#b46cff"};
+const TYRE = {SOFT:"#ff3b3b",MEDIUM:"#ffd23f",HARD:"#f2f2f2"};
+const CODE = id => ({CAR_03:"REN",CAR_04:"OKA",CAR_07:"LIN",CAR_11:"VAS"})[id] || id;
+const $ = id => document.getElementById(id);
+const fmt = ms => (ms>=0?"+":"-")+(Math.abs(ms)/1000).toFixed(1)+"s";
+
+const S = {
+  mode:"replay", frames:[], cursor:0, running:false, speed:1, lapSec:6,
+  alerts:[], lastWindow:null, shownAlert:null, explain:null,
+  live:{url:"",token:"",timer:null,seenVersions:new Set(),status:"STOPPED"},
+};
+
+function loadReplay(){
+  S.frames = REPLAY.frames.map(f=>({state:f.state, uc:f.undercut}));
+  S.alerts=[]; S.cursor=0; S.running=false; S.lastWindow=S.frames[0].uc.window; S.shownAlert=null;
+  $("scrub").max = S.frames.length-1;
+}
+
+/* ================= theme ================= */
+function setTheme(t){
+  document.documentElement.dataset.theme=t;
+  $("th-broadcast").setAttribute("aria-pressed",t==="broadcast");
+  $("th-heritage").setAttribute("aria-pressed",t==="heritage");
+  try{localStorage.setItem("pwc-theme",t)}catch(e){}
+  drawTrack(); render(true);
+}
+$("th-broadcast").onclick=()=>setTheme("broadcast");
+$("th-heritage").onclick=()=>setTheme("heritage");
+try{const t=localStorage.getItem("pwc-theme"); if(t) document.documentElement.dataset.theme=t;}catch(e){}
+
+/* ================= circuit ================= */
+const PATH = "M130 300 C 88 210, 150 92, 290 104 S 470 196, 545 132 S 722 66, 728 190 S 648 330, 562 342 S 468 436, 330 420 S 160 398, 130 300 Z";
+let pathEl=null, plen=0;
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function drawTrack(){
+  const svg=$("track"), her=document.documentElement.dataset.theme==="heritage";
+  svg.innerHTML=`
+    <defs><pattern id="chk" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#fff"/><rect x="4" y="4" width="4" height="4" fill="#fff"/><rect x="4" width="4" height="4" fill="#000"/><rect y="4" width="4" height="4" fill="#000"/></pattern></defs>
+    <path d="${PATH}" fill="none" stroke="${css("--track-edge")}" stroke-width="${her?30:34}" stroke-linejoin="round" opacity="${her?.9:1}"/>
+    <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="${her?26:28}" stroke-linejoin="round"/>
+    <path id="centre" d="${PATH}" fill="none" stroke="${her?"#c9a24b":"#5a6270"}" stroke-width="1.5" stroke-dasharray="${her?"2 9":"10 12"}" opacity=".7"/>
+    <g id="sf"></g><g id="cars"></g>`;
+  pathEl=$("centre"); plen=pathEl.getTotalLength();
+  const p0=pathEl.getPointAtLength(1), p1=pathEl.getPointAtLength(6);
+  const a=Math.atan2(p1.y-p0.y,p1.x-p0.x)*180/Math.PI;
+  $("sf").innerHTML=`<g transform="translate(${p0.x} ${p0.y}) rotate(${a})"><rect x="-3" y="-16" width="6" height="32" fill="url(#chk)"/></g>
+    <text x="${p0.x-40}" y="${p0.y+36}" fill="${css("--ink3")}" font-size="11" font-family="${css("--font-body")}">Start / finish</text>`;
+  $("cars").innerHTML="";
+}
+function ptAt(frac){const f=((frac%1)+1)%1;return pathEl.getPointAtLength(f*plen)}
+
+/* ================= interpolation ================= */
+function lerp(a,b,t){return a+(b-a)*t}
+function sample(){
+  const n=S.frames.length; if(!n) return null;
+  const c=Math.min(Math.max(S.cursor,0),n-1), i=Math.floor(c), j=Math.min(i+1,n-1), t=c-i;
+  const A=S.frames[i], B=S.frames[j];
+  const drivers=A.state.drivers.map(d=>{
+    const e=B.state.drivers.find(x=>x.driver_id===d.driver_id)||d;
+    return {...d, gapL:lerp(d.gap_to_leader_ms,e.gap_to_leader_ms,t), gapA:lerp(d.gap_to_ahead_ms,e.gap_to_ahead_ms,t), key:d.driver_id};
+  });
+  return {i,j,t,c,A,B,drivers,lapFloat:A.state.lap+t,frame:t>0.5?B:A};
+}
+
+/* ================= render ================= */
+const towerEls={};
+function render(force){
+  const s=sample(); if(!s) return;
+  const st=s.A.state;
+  $("lap").textContent=Math.min(st.lap+(s.t>0.5?1:0),S.frames[S.frames.length-1].state.lap);
+  $("total").textContent=st.total_laps;
+  $("tower-lap").textContent="Lap "+$("lap").textContent;
+  const done=!S.running&&S.cursor>=S.frames.length-1;
+  const fl=$("flag"); fl.className="flag"+(done?" done":(S.running?"":" idle"));
+  $("flagtxt").textContent = done ? "Run complete" : (S.running ? "Green flag" : (S.cursor>0?"Paused":"Ready"));
+
+  // tower
+  const ul=$("tower"); const sorted=[...s.drivers].sort((a,b)=>a.position-b.position);
+  ul.style.height=(sorted.length*58)+"px";
+  sorted.forEach((d,idx)=>{
+    let li=towerEls[d.key];
+    if(!li){
+      li=document.createElement("li"); li.className="row";
+      li.innerHTML=`<span class="pos num"></span><span class="bar"></span><span class="who"><span class="code"></span><span class="team"></span></span><span class="gap num"></span><span class="tyre"><span class="tl"></span><em></em></span>`;
+      ul.appendChild(li); towerEls[d.key]=li;
+    }
+    li.style.transform=`translateY(${idx*58}px)`;
+    li.classList.toggle("hl",d.driver_id==="CAR_04"); li.classList.toggle("tgt",d.driver_id==="CAR_03");
+    li.querySelector(".pos").textContent=d.position;
+    li.querySelector(".bar").style.background=TEAM[d.team_name]||"#888";
+    li.querySelector(".code").textContent=CODE(d.driver_id);
+    li.querySelector(".team").textContent=d.display_name+" · "+d.team_name;
+    li.querySelector(".gap").innerHTML=fmt(d.gapA)+"<small>to car ahead</small>";
+    const ty=li.querySelector(".tyre"); ty.style.setProperty("--c",TYRE[d.compound]||"#999");
+    ty.querySelector(".tl").textContent=d.compound[0]; ty.querySelector("em").textContent=d.tire_age_laps+"L";
+  });
+
+  // cars on circuit
+  if(pathEl){
+    const g=$("cars");
+    s.drivers.forEach(d=>{
+      const gapLaps=d.gapL/d.base_pace_ms;
+      const p=ptAt(s.lapFloat/1.0 - gapLaps);
+      let el=g.querySelector(`[data-id="${d.key}"]`);
+      if(!el){
+        el=document.createElementNS("http://www.w3.org/2000/svg","g"); el.dataset.id=d.key;
+        el.innerHTML=`<circle class="car-dot" r="11"/><text class="carlabel" y="-17" text-anchor="middle"></text>`;
+        g.appendChild(el);
+      }
+      el.setAttribute("transform",`translate(${p.x} ${p.y})`);
+      const c=el.querySelector("circle"); c.setAttribute("fill",TEAM[d.team_name]||"#888");
+      c.setAttribute("r", d.driver_id==="CAR_04"?13:11);
+      c.setAttribute("stroke", d.driver_id==="CAR_04"?css("--accent"):css("--bg"));
+      const tx=el.querySelector("text"); tx.textContent=CODE(d.driver_id); tx.setAttribute("y", d.driver_id==="CAR_04"?"32":"-17");
+    });
+  }
+
+  // strategy
+  const uc = s.frame.uc, open = uc.window==="OPEN";
+  const pr = uc.confidence.probability_ahead;
+  $("g-pct").textContent=Math.round(pr*100)+"%";
+  const L=Math.PI*60; $("g-fill").setAttribute("stroke-dasharray",`${L*pr} 400`);
+  $("g-fill").setAttribute("stroke", open?"var(--good)":"var(--warn)");
+  const th=0.72, ang=Math.PI*(1-th), cx=75, cy=80, r1=48, r2=72;
+  const gl=$("g-open"); gl.setAttribute("x1",cx+r1*Math.cos(ang)); gl.setAttribute("y1",cy-r1*Math.sin(ang)); gl.setAttribute("x2",cx+r2*Math.cos(ang)); gl.setAttribute("y2",cy-r2*Math.sin(ang));
+  $("sb-window").textContent=uc.window; $("sb-window").style.color=open?"var(--good)":"var(--warn)";
+  $("sb-tyre").textContent=`${uc.candidate_tire_age_laps}L vs ${uc.target_tire_age_laps}L`;
+  $("sb-traffic").textContent=uc.traffic_classification.toLowerCase();
+  $("sb-trials").textContent=uc.confidence.trials;
+  const lo=uc.confidence.p10_margin_ms, hi=uc.confidence.p90_margin_ms, md=uc.confidence.median_margin_ms;
+  const min=-4000,max=7000, pc=v=>((Math.min(Math.max(v,min),max)-min)/(max-min)*100)+"%";
+  $("range").innerHTML=`<div class="axis"></div><div class="span" style="left:${pc(lo)};width:calc(${pc(hi)} - ${pc(lo)})"></div><div class="zero" style="left:${pc(0)}"></div><div class="med" style="left:${pc(md)}"></div>
+    <span class="lbl" style="left:${pc(lo)}">${fmt(lo)}</span><span class="lbl" style="left:${pc(hi)}">${fmt(hi)}</span><span class="lbl" style="left:${pc(0)};top:-8px;bottom:auto">level</span>`;
+  $("assump").innerHTML=uc.assumptions.map(a=>`<span class="chip">${a.replace(/_/g," ").replace(/\(s\)/,"")}</span>`).join("");
+  const sim=REPLAY.simulate;
+  $("simrow").innerHTML=`Pit now (lap ${sim.pit_now_lap}) against waiting ${sim.wait_laps} laps for CAR_04: pitting now is projected <b style="color:var(--ink)">${(sim.delta_ms/1000).toFixed(1)}s</b> faster over the window to lap ${sim.comparison_horizon_lap}.
+    <div class="simbars"><div><span>Pit now</span><i style="width:100%"></i><b class="num">${(sim.delta_ms/1000).toFixed(1)}s</b></div><div><span>Wait ${sim.wait_laps} laps</span><i class="alt" style="width:8%"></i><b class="num">baseline</b></div></div>`;
+
+  // pit board
+  const sched=(uc.pit_schedules||[]).find(p=>p.driver_id===uc.candidate);
+  $("board").className="board "+(open?"open":"closed");
+  $("board-big").textContent=open?"Box this lap":"Stay out";
+  $("board-who").textContent=`${CODE(uc.candidate)} vs ${CODE(uc.target)} · lap ${uc.source_state_version!=null?st.lap:"--"}`;
+  $("b-lap").textContent=sched?sched.pit_lap:"--";
+  $("b-margin").textContent=fmt(uc.expected_margin_ms);
+  $("b-prob").textContent=Math.round(pr*100)+"%";
+
+  // window flip -> alert
+  if(S.lastWindow!==null && uc.window!==S.lastWindow && s.frame===(s.t>0.5?s.B:s.A) && (S.running||S.mode==="live")) onWindowFlip(uc);
+  S.lastWindow=uc.window;
+  $("scrub").value=S.cursor;
+  $("pacetxt").textContent=S.mode==="replay"?`${S.lapSec/S.speed}s per lap`:"live";
+}
+
+/* ================= alerts ================= */
+function addAlert(a){
+  if(S.alerts.find(x=>x.alert_id===a.alert_id)) return;
+  S.alerts.unshift(a);
+  const r=a.deterministic_result;
+  $("alert-count").textContent=S.alerts.length+" total";
+  $("alerts").innerHTML=S.alerts.map(x=>{
+    const d=x.deterministic_result;
+    return `<div class="alert"><div class="h"><span>Lap ${x.triggering_snapshot.lap}</span><span>${new Date(x.created_at).toLocaleTimeString()}</span></div>
+      <div class="t">Undercut window ${x.new_status.toLowerCase()}</div>
+      <div class="d">${d.candidate} vs ${d.target}. Expected margin ${fmt(d.expected_margin_ms)}, ${Math.round(d.confidence.probability_ahead*100)}% chance ahead.</div></div>`;}).join("");
+  $("why-box").style.display="block"; $("why-empty").style.display="none";
+}
+function onWindowFlip(uc){
+  if(uc.window!=="OPEN") return;
+  const a = S.mode==="replay"?REPLAY.alert:S.liveAlert;
+  if(S.mode==="replay"){ addAlert(a); S.explain=REPLAY.explain; }
+  const d=uc;
+  $("toast-t").textContent="Undercut window open";
+  $("toast-d").textContent=`${d.candidate} can pit for lap ${(d.pit_schedules[0]||{}).pit_lap??"--"} and come out ${fmt(d.expected_margin_ms)} ahead of ${d.target}, ${Math.round(d.confidence.probability_ahead*100)}% of ${d.confidence.trials} trials.`;
+  $("toast").classList.add("show");
+  clearTimeout(onWindowFlip.t); onWindowFlip.t=setTimeout(()=>$("toast").classList.remove("show"),9000);
+}
+$("toast-x").onclick=()=>$("toast").classList.remove("show");
+function showWhy(){
+  const e=S.explain||REPLAY.explain;
+  $("dlg-t").textContent="Why did the window open?";
+  $("dlg-b").innerHTML=`<p style="margin-top:0">${esc(e.narrative)}</p><dl class="facts">${Object.entries(e.grounded_facts).map(([k,v])=>`<dt>${k.replace(/_/g," ")}</dt><dd>${esc(String(v))}</dd>`).join("")}</dl>`;
+  $("dlg").showModal(); $("toast").classList.remove("show");
+}
+$("toast-why").onclick=showWhy; $("why-open").onclick=showWhy; $("dlg-x").onclick=()=>$("dlg").close();
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+/* ================= ask ================= */
+async function ask(q){
+  q=q.trim(); if(!q) return;
+  let r;
+  if(S.mode==="live"){
+    try{ r=await liveFetch("/v1/agent/query","POST",{race_id:"demo-race-001",query:q}); }catch(e){ showAnswer({status:"UNSUPPORTED",narrative:"Could not reach the backend: "+e.message,evidence:[]}); return; }
+    // regulation question in live mode
+    if(/speed limit|pit lane speed|regulation|rule/i.test(q)){ try{ const reg=await liveFetch("/v1/regulations?query="+encodeURIComponent(q)); showReg(reg); return;}catch(e){} }
+    showAnswer(r); return;
+  }
+  if(/undercut|chance.*ahead/i.test(q)) r=REPLAY.agent;
+  else if(/speed limit|pit lane|pit-lane|regulation/i.test(q)){ showReg(REPLAY.regulation); return; }
+  else r=REPLAY.agentRefusal;
+  showAnswer(r);
+}
+function showAnswer(r){
+  const ok=r.status==="SUPPORTED";
+  $("answer").innerHTML=`<div class="answer ${ok?"":"refuse"}"><div class="st" style="color:${ok?"var(--good)":"var(--warn)"}">${ok?"ANSWERED FROM RACE DATA":"NOT ANSWERED, NO GUESSING"}</div>${esc(r.narrative)}${r.evidence&&r.evidence.length?`<div class="ev">${r.evidence.filter(e=>!/^pit_schedule/.test(e.field)).map(e=>`<b>${e.field.replace(/_/g," ")}</b><span>${esc(String(e.value))}</span>`).join("")}</div>`:""}</div>`;
+}
+function showReg(r){
+  if(!r.found){ showAnswer({status:"UNSUPPORTED",narrative:"No matching rule on file.",evidence:[]}); return; }
+  const e=r.evidence[0];
+  $("answer").innerHTML=`<div class="answer"><div class="st" style="color:var(--good)">FROM THE RULES ON FILE</div><b>${esc(e.title)}</b> (${esc(e.document_id)} v${esc(e.version)})<br><span style="color:var(--ink2)">${esc(e.excerpt)}</span><div class="ev"><b>source</b><span>${esc(e.source_path)}</span></div><div style="margin-top:8px;color:var(--ink3);font-size:12px">The rules on file describe how pit lane speed is applied but do not state a number, so none is shown.</div></div>`;
+}
+$("askform").onsubmit=e=>{e.preventDefault();ask($("askin").value)};
+$("chips").onclick=e=>{const q=e.target.dataset&&e.target.dataset.q; if(q){$("askin").value=q;ask(q)}};
+
+/* ================= playback ================= */
+let last=performance.now();
+function tick(now){
+  const dt=(now-last)/1000; last=now;
+  if(S.mode==="replay"&&S.running){
+    S.cursor=Math.min(S.cursor+dt*S.speed/S.lapSec,S.frames.length-1);
+    if(S.cursor>=S.frames.length-1){S.running=false;}
+    render();
+  } else if(S.mode==="live"){
+    const target=S.frames.length-1;
+    if(S.cursor<target){S.cursor=Math.min(S.cursor+dt/2.8,target)}
+    render();
+  }
+  requestAnimationFrame(tick);
+}
+$("b-start").onclick=async()=>{
+  if(S.mode==="replay"){ if(S.cursor>=S.frames.length-1){resetReplay()} S.running=true; $("toast").classList.remove("show"); }
+  else liveCmd("start");
+};
+$("b-pause").onclick=()=>{ if(S.mode==="replay") S.running=false; else liveCmd("pause"); render(); };
+$("b-reset").onclick=()=>{ if(S.mode==="replay") resetReplay(); else liveCmd("reset"); };
+function resetReplay(){ S.running=false; S.cursor=0; S.alerts=[]; S.lastWindow=S.frames[0].uc.window;
+  $("alerts").innerHTML='<div class="empty">No alerts yet. The watch on CAR_04 against CAR_03 raises one when the window opens.</div>'; $("alert-count").textContent="";
+  $("why-box").style.display="none"; $("why-empty").style.display="block"; $("toast").classList.remove("show"); render(true); }
+$("scrub").oninput=e=>{ if(S.mode!=="replay") return; S.running=false; S.cursor=parseFloat(e.target.value); S.lastWindow=sample().frame.uc.window; render(); };
+$("speed").onclick=e=>{ const s=e.target.dataset&&e.target.dataset.s; if(!s) return; S.speed=+s; [...$("speed").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===s)); };
+
+/* ================= live backend ================= */
+async function liveFetch(path,method="GET",body){
+  const L=S.live; const h={"Content-Type":"application/json"}; if(L.token) h["X-Demo-Access-Token"]=L.token;
+  const r=await fetch(L.url+path,{method,headers:h,body:body?JSON.stringify(body):undefined});
+  if(!r.ok) throw new Error(r.status+" "+(await r.text()).slice(0,120));
+  return r.json();
+}
+async function liveCmd(c){ try{ await liveFetch("/v1/demo/"+c,"POST"); if(c==="reset"){S.frames=[];S.cursor=0;S.live.seenVersions.clear();S.alerts=[];$("alerts").innerHTML='<div class="empty">No alerts yet.</div>';} }catch(e){ $("cfg-note").textContent="Command failed: "+e.message; } }
+async function livePoll(){
+  const R="demo-race-001";
+  try{
+    const st=await liveFetch(`/v1/races/${R}/state`);
+    const key=st.run_id+":"+st.state_version;
+    if(!S.live.seenVersions.has(key)){
+      S.live.seenVersions.add(key);
+      let uc; try{ uc=await liveFetch(`/v1/races/${R}/strategy/undercut`,"POST",{candidate_driver:"CAR_04",target_driver:"CAR_03"}); }catch(e){ uc=S.frames.length?S.frames[S.frames.length-1].uc:null; }
+      if(uc){
+        if(S.frames.length && S.frames[S.frames.length-1].state.run_id!==st.run_id){S.frames=[];S.cursor=0;}
+        S.frames.push({state:st,uc}); $("scrub").max=Math.max(1,S.frames.length-1);
+        if(S.frames.length===1){S.cursor=0;S.lastWindow=uc.window}
+        try{ const al=await liveFetch(`/v1/races/${R}/alerts`); if(al.length){ S.liveAlert=al[0]; addAlert(al[0]); try{S.explain=await liveFetch(`/v1/races/${R}/alerts/${al[0].alert_id}/explain`)}catch(e){} } }catch(e){}
+      }
+    }
+    const ds=await liveFetch("/v1/demo/status"); S.running=ds.status==="RUNNING";
+    $("cfg-note").textContent="Connected to "+S.live.url+" ("+ds.status.toLowerCase()+")";
+  }catch(e){ $("cfg-note").textContent="Not connected: "+e.message+". Is the backend running with CORS allowed for this page?"; }
+}
+function setMode(m){
+  S.mode=m; $("src-replay").setAttribute("aria-pressed",m==="replay"); $("src-live").setAttribute("aria-pressed",m==="live");
+  $("cfg").classList.toggle("on",m==="live"); clearInterval(S.live.timer);
+  $("ask-src").textContent=m==="live"?"your backend":"recorded replies";
+  if(m==="replay"){ loadReplay(); resetReplay(); }
+  else { S.frames=[]; S.cursor=0; S.running=false; S.alerts=[]; S.live.seenVersions.clear(); $("alerts").innerHTML='<div class="empty">Connect to a backend to see live alerts.</div>'; }
+}
+$("src-replay").onclick=()=>setMode("replay"); $("src-live").onclick=()=>setMode("live");
+$("cfg-connect").onclick=()=>{ S.live.url=$("cfg-url").value.replace(/\/$/,""); S.live.token=$("cfg-token").value; S.live.seenVersions.clear(); S.frames=[]; clearInterval(S.live.timer); livePoll(); S.live.timer=setInterval(livePoll,600); };
+
+/* ================= boot ================= */
+loadReplay(); drawTrack(); setTheme(document.documentElement.dataset.theme||"broadcast"); render(true);
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
