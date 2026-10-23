@@ -8,42 +8,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0b0c0f; --bg2:#101216; --panel:#15181d; --panel2:#1b1f26; --line:#272c35; --line2:#343a45;
-  --ink:#f3f4f6; --ink2:#a4abb8; --ink3:#6c7482;
-  --accent:#e10600; --accent-ink:#fff; --good:#19d27a; --warn:#ffd23f; --bad:#ff4d4d; --purple:#b44cff;
-  --track:#2a2f39; --track-edge:#3b424f; --kerb:#e10600;
+  --bg:#e9ecf1; --bg2:#f5f6f9; --panel:#ffffff; --panel2:#f0f2f6; --line:#e1e4ea; --line2:#c9cfda;
+  --ink:#15151e; --ink2:#464b59; --ink3:#767c8c;
+  --accent:#e10600; --accent-ink:#fff; --good:#00995a; --warn:#c98400; --bad:#e10600;
+  --track:#4a505e; --grass:#dde7dc; --kerb-a:#ffffff; --kerb-b:#e10600; --lane:#ffffff;
   --font-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --font-body:"Barlow",system-ui,sans-serif;
-  --radius:10px; --radius-sm:6px; --panel-border:1px solid var(--line);
-  --num-weight:700; --h-tracking:.04em; --h-case:uppercase;
+  --radius:12px; --radius-sm:7px; --panel-border:1px solid var(--line);
+  --shadow:0 1px 2px rgba(21,21,30,.06),0 8px 22px rgba(21,21,30,.06);
+  --num-weight:700; --h-tracking:.05em; --h-case:uppercase; --alexa:#00b7ee;
 }
 html[data-theme="heritage"]{
-  --bg:#0c241c; --bg2:#0f2c22; --panel:#133a2c; --panel2:#174434; --line:#2a5a46; --line2:#3b7059;
-  --ink:#f1e8d0; --ink2:#c2bb9f; --ink3:#8d9a86;
-  --accent:#c9a24b; --accent-ink:#1b1608; --good:#8fcf8a; --warn:#e8c25c; --bad:#d9594b; --purple:#c9a24b;
-  --track:#0a1d16; --track-edge:#c9a24b; --kerb:#f1e8d0;
+  --bg:#dbe7dc; --bg2:#eaf2ea; --panel:#f8fbf6; --panel2:#e9f1e8; --line:#c8d9c8; --line2:#a7bfa8;
+  --ink:#0f3a2b; --ink2:#38574a; --ink3:#6a8574;
+  --accent:#0f5a3f; --accent-ink:#f8fbf6; --good:#1c8a4c; --warn:#a97800; --bad:#b5342a;
+  --track:#2b3a33; --grass:#cfe1cb; --kerb-a:#f8fbf6; --kerb-b:#b8902f; --lane:#f1e8d0;
   --font-display:"Bodoni Moda","Didot",Georgia,serif;
   --font-body:"Libre Franklin",system-ui,sans-serif;
-  --radius:2px; --radius-sm:1px; --panel-border:1px solid var(--line2);
+  --radius:3px; --radius-sm:2px; --panel-border:1px solid var(--line2);
+  --shadow:0 1px 0 rgba(15,58,43,.08),0 6px 16px rgba(15,58,43,.07);
   --num-weight:700; --h-tracking:.02em; --h-case:none;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.4}
-body{min-height:100vh;background:
-  radial-gradient(1200px 500px at 70% -10%, color-mix(in srgb,var(--accent) 9%, transparent), transparent 60%), var(--bg)}
-html[data-theme="heritage"] body{background:
-  repeating-linear-gradient(45deg, rgba(255,255,255,.012) 0 2px, transparent 2px 6px), var(--bg)}
+body{min-height:100vh;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,var(--bg)) 0,var(--bg) 320px)}
+
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .num{font-family:var(--font-display);font-weight:var(--num-weight);font-variant-numeric:tabular-nums}
 
 /* ---------- top bar ---------- */
-.top{display:flex;align-items:center;gap:20px;padding:14px 24px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg2) 92%,transparent);position:sticky;top:0;z-index:20;backdrop-filter:blur(6px)}
+.top{display:flex;align-items:center;gap:20px;padding:14px 24px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--panel) 94%,transparent);position:sticky;top:0;z-index:20;backdrop-filter:blur(6px)}
 .brand{display:flex;align-items:baseline;gap:12px;min-width:0}
 .brand h1{margin:0;font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 html[data-theme="heritage"] .brand h1{font-size:25px;text-transform:none;letter-spacing:.01em;font-style:italic}
 .brand small{color:var(--ink3);font-size:12px;white-space:nowrap}
-.stripe{width:6px;align-self:stretch;background:var(--accent);border-radius:1px;margin-right:-4px}
+.stripe{width:8px;align-self:stretch;background:repeating-linear-gradient(0deg,var(--accent) 0 8px,var(--ink) 8px 16px);border-radius:1px;margin-right:-4px}
 .lapbox{display:flex;align-items:baseline;gap:8px;margin-left:12px}
 .lapbox .lap{font-size:40px;line-height:1}
 .lapbox .of{color:var(--ink3);font-size:18px}
@@ -58,7 +58,7 @@ html[data-theme="heritage"] .brand h1{font-size:25px;text-transform:none;letter-
 
 /* ---------- layout ---------- */
 main{display:grid;grid-template-columns:330px minmax(0,1fr) 360px;gap:16px;padding:16px 24px 24px;align-items:start}
-.card{background:var(--panel);border:var(--panel-border);border-radius:var(--radius);overflow:hidden}
+.card{background:var(--panel);border:var(--panel-border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
 .card>h2{margin:0;padding:12px 16px;font-family:var(--font-display);font-size:15px;letter-spacing:var(--h-tracking);text-transform:var(--h-case);font-weight:700;color:var(--ink2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
 html[data-theme="heritage"] .card>h2{font-size:17px;font-style:italic;color:var(--accent);font-weight:600;border-bottom:1px solid var(--line2)}
 .card>h2 span{white-space:nowrap;font-family:var(--font-body);font-size:12px;color:var(--ink3);font-weight:500;letter-spacing:0;text-transform:none;font-style:normal}
@@ -78,17 +78,15 @@ html[data-theme="heritage"] .row .code{letter-spacing:0;font-size:20px}
 .tyre{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-weight:800;font-size:17px;border:3px solid var(--c);color:var(--ink);background:var(--bg2);position:relative}
 .tyre em{position:absolute;bottom:-9px;right:-8px;font:600 10px var(--font-body);background:var(--panel2);border:1px solid var(--line2);border-radius:8px;padding:0 4px;font-style:normal;color:var(--ink2)}
 .row.hl{background:linear-gradient(90deg,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
-.row.tgt{background:linear-gradient(90deg,color-mix(in srgb,var(--ink3) 18%,transparent),transparent 70%)}
+.row.tgt{background:linear-gradient(90deg,color-mix(in srgb,var(--ink3) 14%,transparent),transparent 70%)}
 .tower-note{padding:10px 16px 14px;font-size:12px;color:var(--ink3);border-top:1px solid var(--line)}
 
 /* ---------- track ---------- */
 .trackcard{position:relative}
-.trackwrap{position:relative;aspect-ratio:800/470;background:
-  radial-gradient(500px 260px at 50% 50%, color-mix(in srgb,var(--panel2) 80%,transparent), transparent 80%)}
-html[data-theme="heritage"] .trackwrap{background:radial-gradient(500px 280px at 50% 50%, #0f3025, transparent 80%)}
+.trackwrap{position:relative;aspect-ratio:800/470;background:var(--grass)}
 svg.track{width:100%;height:100%;display:block}
-.carlabel{font-family:var(--font-display);font-weight:800;font-size:15px;paint-order:stroke;stroke:var(--bg);stroke-width:4px;fill:var(--ink)}
-.car-dot{stroke:var(--bg);stroke-width:3}
+.carlabel{font-family:var(--font-display);font-weight:800;font-size:15px;paint-order:stroke;stroke:#fff;stroke-width:4px;fill:#15151e}
+.car-dot{stroke:#fff;stroke-width:3;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
 .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:14px 16px;border-top:1px solid var(--line);background:var(--bg2)}
 .btn{background:var(--panel2);border:1px solid var(--line2);border-radius:var(--radius-sm);padding:9px 18px;font-weight:700;font-family:var(--font-display);letter-spacing:.08em;font-size:16px;text-transform:uppercase}
 html[data-theme="heritage"] .btn{text-transform:none;letter-spacing:.02em;font-size:17px;font-style:italic}
@@ -99,12 +97,11 @@ html[data-theme="heritage"] .btn{text-transform:none;letter-spacing:.02em;font-s
 .pace{font-size:12px;color:var(--ink3)}
 
 /* ---------- pit board ---------- */
-.board{margin:16px;padding:18px 18px 16px;border-radius:var(--radius);border:2px solid var(--line2);background:#050607;text-align:center;position:relative;overflow:hidden}
-html[data-theme="heritage"] .board{background:#0a1d16;border:3px double var(--ink2)}
+.board{margin:16px;padding:18px 18px 16px;border-radius:var(--radius);border:3px solid var(--line2);background:var(--panel2);text-align:center;position:relative;overflow:hidden}
 .board .who{font-size:13px;color:var(--ink3);margin-bottom:2px}
 .board .big{font-family:var(--font-display);font-weight:800;font-size:68px;line-height:.95;letter-spacing:.06em;text-transform:uppercase}
 html[data-theme="heritage"] .board .big{text-transform:none;letter-spacing:0;font-style:italic;font-size:62px}
-.board.open{border-color:var(--good)}
+.board.open{border-color:var(--good);background:color-mix(in srgb,var(--good) 10%,var(--panel))}
 .board.open .big{color:var(--good);animation:pulse 1.4s ease-in-out infinite}
 .board.closed .big{color:var(--ink2)}
 .board .sub{display:flex;justify-content:space-around;margin-top:18px;font-size:13px;color:var(--ink2)}
@@ -140,7 +137,7 @@ button.chip:hover{border-color:var(--accent);color:var(--ink)}
 .alert .d{font-size:13px;color:var(--ink2)}
 .empty{padding:16px;color:var(--ink3);font-size:13px}
 .linkbtn{background:none;border:0;padding:0;color:var(--accent);font-weight:600;text-align:left;font-size:13px;text-decoration:underline;text-underline-offset:3px}
-html[data-theme="broadcast"] .linkbtn{color:#ff6a62}
+
 .ask{padding:12px 16px 4px;display:flex;gap:8px}
 .ask input{flex:1;min-width:0;background:var(--bg2);border:1px solid var(--line2);color:var(--ink);border-radius:var(--radius-sm);padding:10px 12px;font:inherit}
 .chips{padding:8px 16px 12px;display:flex;flex-wrap:wrap;gap:6px}
@@ -149,6 +146,35 @@ html[data-theme="broadcast"] .linkbtn{color:#ff6a62}
 .answer .st{font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:6px}
 .answer .ev{margin-top:8px;font-size:12px;color:var(--ink3);display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
 .answer .ev b{color:var(--ink2);font-weight:600}
+
+
+/* ---------- Alexa+ ---------- */
+.alx-top{display:flex;align-items:center;gap:14px;padding:14px 16px 6px}
+.orb{width:54px;height:54px;border-radius:50%;flex:none;background:radial-gradient(circle at 50% 50%,#fff 0 22%,transparent 23%),conic-gradient(from 0deg,#00caff,#1a5cff,#00caff);box-shadow:0 0 0 4px color-mix(in srgb,var(--alexa) 22%,transparent);position:relative}
+.orb::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid var(--alexa);opacity:0}
+.orb.listening{animation:spin 1.2s linear infinite}
+.orb.listening::after,.orb.speaking::after{animation:ring 1.3s ease-out infinite}
+.orb.speaking{animation:breathe 1s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes ring{0%{transform:scale(.8);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+@keyframes breathe{50%{transform:scale(1.08)}}
+.alx-meta{flex:1;min-width:0}
+.alx-state{font-weight:600;font-size:14px}
+.alx-sp{font-size:12px;color:var(--ink3);display:flex;gap:6px;align-items:center;margin-top:3px}
+.mic{width:46px;height:46px;border-radius:50%;border:0;background:var(--alexa);color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px color-mix(in srgb,var(--alexa) 45%,transparent)}
+.mic[disabled]{background:var(--line2);box-shadow:none;cursor:not-allowed}
+.mic.on{background:var(--accent)}
+.alx-log{padding:8px 16px;display:grid;gap:10px;max-height:420px;overflow:auto}
+.bub{max-width:92%;padding:10px 12px;border-radius:14px;font-size:14px}
+.bub.me{justify-self:end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:3px}
+.bub.al{justify-self:start;background:var(--bg2);border:1px solid var(--line2);border-bottom-left-radius:3px}
+.bub.pro{justify-self:stretch;max-width:100%;border:1px solid var(--good);background:color-mix(in srgb,var(--good) 9%,var(--panel));border-radius:10px}
+.bub .tag{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;margin-bottom:4px;color:var(--alexa)}
+.bub.pro .tag{color:var(--good)}
+.bub.ref .tag{color:var(--warn)}
+.bub .ev{margin-top:8px;font-size:12px;color:var(--ink3);display:grid;grid-template-columns:auto 1fr;gap:2px 10px}
+.bub .ev b{color:var(--ink2);font-weight:600}
+.alx-foot{padding:0 16px 14px;font-size:11px;color:var(--ink3)}
 
 /* ---------- toast + dialog ---------- */
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
@@ -195,7 +221,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
     <button id="src-live" aria-pressed="false">Live backend</button>
   </div>
   <div class="seg" role="group" aria-label="Theme">
-    <button id="th-broadcast" aria-pressed="true">Broadcast</button>
+    <button id="th-broadcast" aria-pressed="true">Grand Prix</button>
     <button id="th-heritage" aria-pressed="false">Heritage</button>
   </div>
 </header>
@@ -275,15 +301,22 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="empty" id="why-empty">Open the window alert to see the explanation.</div>
       <div style="padding:12px 16px;display:none" id="why-box"><button class="linkbtn" id="why-open">Read why the window opened</button></div>
     </div>
-    <div class="card">
-      <h2>Ask the pit wall <span id="ask-src">recorded replies</span></h2>
-      <form class="ask" id="askform"><input id="askin" placeholder="Can CAR_04 undercut CAR_03?" aria-label="Question"><button class="btn primary" style="padding:8px 14px;font-size:15px">Ask</button></form>
+    <div class="card alexa">
+      <h2>Alexa+ <span id="ask-src">simulated experience</span></h2>
+      <div class="alx-top">
+        <div class="orb" id="orb" aria-hidden="true"></div>
+        <div class="alx-meta"><div id="alx-state" class="alx-state">Ready. Tap the mic or pick a phrase.</div>
+          <label class="alx-sp"><input type="checkbox" id="alx-speak" checked> Speak answers aloud</label></div>
+        <button class="mic" id="mic" aria-label="Talk to Alexa+" title="Talk to Alexa+"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg></button>
+      </div>
+      <div class="alx-log" id="alx-log" aria-live="polite"><div class="empty" id="alx-empty">Say "Alexa, ask Pit Wall Copilot..." or type below.</div></div>
+      <form class="ask" id="askform"><input id="askin" placeholder="Ask Pit Wall Copilot" aria-label="Question"><button class="btn primary" style="padding:8px 14px;font-size:15px">Send</button></form>
       <div class="chips" id="chips">
-        <button class="chip" data-q="Can CAR_04 undercut CAR_03?">Can CAR_04 undercut CAR_03?</button>
+        <button class="chip" data-q="Can CAR_04 undercut CAR_03?">Can car 4 undercut car 3?</button>
         <button class="chip" data-q="What is the pit lane speed limit?">Pit lane speed limit?</button>
         <button class="chip" data-q="What is the weather forecast?">Weather forecast?</button>
       </div>
-      <div id="answer"></div>
+      <div class="alx-foot">Simulated in the browser. Voice uses your browser's speech features; this is not a real Alexa device.</div>
     </div>
   </section>
 </main>
@@ -302,7 +335,7 @@ const REPLAY = {"frames": [{"state": {"race_id": "demo-race-001", "run_id": "442
 
 /* ================= data + state ================= */
 const TEAM = {"Northstar Racing":"#2fb7ff","Velocity GP":"#ff6a1f","Aurora Motorsport":"#b46cff"};
-const TYRE = {SOFT:"#ff3b3b",MEDIUM:"#ffd23f",HARD:"#f2f2f2"};
+const TYRE = {SOFT:"#e8002d",MEDIUM:"#f5b700",HARD:"#8d93a1"};
 const CODE = id => ({CAR_03:"REN",CAR_04:"OKA",CAR_07:"LIN",CAR_11:"VAS"})[id] || id;
 const $ = id => document.getElementById(id);
 const fmt = ms => (ms>=0?"+":"-")+(Math.abs(ms)/1000).toFixed(1)+"s";
@@ -338,16 +371,17 @@ function css(v){return getComputedStyle(document.documentElement).getPropertyVal
 function drawTrack(){
   const svg=$("track"), her=document.documentElement.dataset.theme==="heritage";
   svg.innerHTML=`
-    <defs><pattern id="chk" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#fff"/><rect x="4" y="4" width="4" height="4" fill="#fff"/><rect x="4" width="4" height="4" fill="#000"/><rect y="4" width="4" height="4" fill="#000"/></pattern></defs>
-    <path d="${PATH}" fill="none" stroke="${css("--track-edge")}" stroke-width="${her?30:34}" stroke-linejoin="round" opacity="${her?.9:1}"/>
-    <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="${her?26:28}" stroke-linejoin="round"/>
-    <path id="centre" d="${PATH}" fill="none" stroke="${her?"#c9a24b":"#5a6270"}" stroke-width="1.5" stroke-dasharray="${her?"2 9":"10 12"}" opacity=".7"/>
+    <defs><pattern id="chk" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#fff"/><rect x="4" y="4" width="4" height="4" fill="#fff"/><rect x="4" width="4" height="4" fill="#15151e"/><rect y="4" width="4" height="4" fill="#15151e"/></pattern></defs>
+    <path d="${PATH}" fill="none" stroke="${css("--kerb-a")}" stroke-width="36" stroke-linejoin="round"/>
+    <path d="${PATH}" fill="none" stroke="${css("--kerb-b")}" stroke-width="36" stroke-linejoin="round" stroke-dasharray="14 14"/>
+    <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="29" stroke-linejoin="round"/>
+    <path id="centre" d="${PATH}" fill="none" stroke="${css("--lane")}" stroke-width="1.6" stroke-dasharray="9 12" opacity=".55"/>
     <g id="sf"></g><g id="cars"></g>`;
   pathEl=$("centre"); plen=pathEl.getTotalLength();
   const p0=pathEl.getPointAtLength(1), p1=pathEl.getPointAtLength(6);
   const a=Math.atan2(p1.y-p0.y,p1.x-p0.x)*180/Math.PI;
   $("sf").innerHTML=`<g transform="translate(${p0.x} ${p0.y}) rotate(${a})"><rect x="-3" y="-16" width="6" height="32" fill="url(#chk)"/></g>
-    <text x="${p0.x-40}" y="${p0.y+36}" fill="${css("--ink3")}" font-size="11" font-family="${css("--font-body")}">Start / finish</text>`;
+    <text x="${p0.x-40}" y="${p0.y+36}" fill="${css("--ink2")}" font-size="11" font-family="${css("--font-body")}">Start / finish</text>`;
   $("cars").innerHTML="";
 }
 function ptAt(frac){const f=((frac%1)+1)%1;return pathEl.getPointAtLength(f*plen)}
@@ -413,7 +447,7 @@ function render(force){
       el.setAttribute("transform",`translate(${p.x} ${p.y})`);
       const c=el.querySelector("circle"); c.setAttribute("fill",TEAM[d.team_name]||"#888");
       c.setAttribute("r", d.driver_id==="CAR_04"?13:11);
-      c.setAttribute("stroke", d.driver_id==="CAR_04"?css("--accent"):css("--bg"));
+      c.setAttribute("stroke", d.driver_id==="CAR_04"?css("--ink"):"#fff");
       const tx=el.querySelector("text"); tx.textContent=CODE(d.driver_id); tx.setAttribute("y", d.driver_id==="CAR_04"?"32":"-17");
     });
   }
@@ -475,6 +509,7 @@ function onWindowFlip(uc){
   const d=uc;
   $("toast-t").textContent="Undercut window open";
   $("toast-d").textContent=`${d.candidate} can pit for lap ${(d.pit_schedules[0]||{}).pit_lap??"--"} and come out ${fmt(d.expected_margin_ms)} ahead of ${d.target}, ${Math.round(d.confidence.probability_ahead*100)}% of ${d.confidence.trials} trials.`;
+  alexaProactive(`Heads up. The undercut window just opened for car ${d.candidate.replace(/\D/g,"").replace(/^0/,"")} against car ${d.target.replace(/\D/g,"").replace(/^0/,"")}. Expected margin ${(d.expected_margin_ms/1000).toFixed(1)} seconds, ${Math.round(d.confidence.probability_ahead*100)} percent chance of coming out ahead.`);
   $("toast").classList.add("show");
   clearTimeout(onWindowFlip.t); onWindowFlip.t=setTimeout(()=>$("toast").classList.remove("show"),9000);
 }
@@ -488,32 +523,65 @@ function showWhy(){
 $("toast-why").onclick=showWhy; $("why-open").onclick=showWhy; $("dlg-x").onclick=()=>$("dlg").close();
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 
-/* ================= ask ================= */
-async function ask(q){
-  q=q.trim(); if(!q) return;
-  let r;
+/* ================= Alexa+ ================= */
+const spokenText=s=>s.replace(/CAR_0?(\d+)/g,"car $1").replace(/(\d+)ms/g,"$1 milliseconds").replace(/(\d+(?:\.\d+)?)%/g,"$1 percent").replace(/\s+/g," ");
+let speaking=false;
+function setOrb(cls,txt){ $("orb").className="orb "+(cls||""); if(txt) $("alx-state").textContent=txt; }
+function speak(text){
+  if(!$("alx-speak").checked||!("speechSynthesis" in window)){ setOrb("","Ready."); return; }
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(spokenText(text)); u.rate=1.02;
+    u.onstart=()=>setOrb("speaking","Speaking…"); u.onend=u.onerror=()=>setOrb("","Ready."); speechSynthesis.speak(u);}catch(e){ setOrb("","Ready."); }
+}
+function logBubble(cls,tag,html){
+  const em=$("alx-empty"); if(em) em.remove();
+  const d=document.createElement("div"); d.className="bub "+cls; d.innerHTML=(tag?`<span class="tag">${tag}</span>`:"")+html;
+  const L=$("alx-log"); L.appendChild(d); L.scrollTop=L.scrollHeight;
+}
+function evHtml(ev){ ev=(ev||[]).filter(e=>!/^pit_schedule/.test(e.field)); return ev.length?`<div class="ev">${ev.map(e=>`<b>${e.field.replace(/_/g," ")}</b><span>${esc(String(e.value))}</span>`).join("")}</div>`:""; }
+async function resolveQuestion(q){
   if(S.mode==="live"){
-    try{ r=await liveFetch("/v1/agent/query","POST",{race_id:"demo-race-001",query:q}); }catch(e){ showAnswer({status:"UNSUPPORTED",narrative:"Could not reach the backend: "+e.message,evidence:[]}); return; }
-    // regulation question in live mode
-    if(/speed limit|pit lane speed|regulation|rule/i.test(q)){ try{ const reg=await liveFetch("/v1/regulations?query="+encodeURIComponent(q)); showReg(reg); return;}catch(e){} }
-    showAnswer(r); return;
+    if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)){ const reg=await liveFetch("/v1/regulations?query="+encodeURIComponent(q)); return fromReg(reg); }
+    const r=await liveFetch("/v1/agent/query","POST",{race_id:"demo-race-001",query:q}); return fromAgent(r);
   }
-  if(/undercut|chance.*ahead/i.test(q)) r=REPLAY.agent;
-  else if(/speed limit|pit lane|pit-lane|regulation/i.test(q)){ showReg(REPLAY.regulation); return; }
-  else r=REPLAY.agentRefusal;
-  showAnswer(r);
+  if(/undercut|chance.*ahead/i.test(q)) return fromAgent(REPLAY.agent);
+  if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)) return fromReg(REPLAY.regulation);
+  return fromAgent(REPLAY.agentRefusal);
 }
-function showAnswer(r){
-  const ok=r.status==="SUPPORTED";
-  $("answer").innerHTML=`<div class="answer ${ok?"":"refuse"}"><div class="st" style="color:${ok?"var(--good)":"var(--warn)"}">${ok?"ANSWERED FROM RACE DATA":"NOT ANSWERED, NO GUESSING"}</div>${esc(r.narrative)}${r.evidence&&r.evidence.length?`<div class="ev">${r.evidence.filter(e=>!/^pit_schedule/.test(e.field)).map(e=>`<b>${e.field.replace(/_/g," ")}</b><span>${esc(String(e.value))}</span>`).join("")}</div>`:""}</div>`;
-}
-function showReg(r){
-  if(!r.found){ showAnswer({status:"UNSUPPORTED",narrative:"No matching rule on file.",evidence:[]}); return; }
+function fromAgent(r){ const ok=r.status==="SUPPORTED"; return {ok,tag:ok?"Pit Wall Copilot · from race data":"Pit Wall Copilot · not answered, no guessing",text:r.narrative,say:r.narrative,evidence:r.evidence}; }
+function fromReg(r){
+  if(!r.found) return {ok:false,tag:"Pit Wall Copilot · no matching rule",text:"No matching rule on file.",say:"I couldn't find a matching rule.",evidence:[]};
   const e=r.evidence[0];
-  $("answer").innerHTML=`<div class="answer"><div class="st" style="color:var(--good)">FROM THE RULES ON FILE</div><b>${esc(e.title)}</b> (${esc(e.document_id)} v${esc(e.version)})<br><span style="color:var(--ink2)">${esc(e.excerpt)}</span><div class="ev"><b>source</b><span>${esc(e.source_path)}</span></div><div style="margin-top:8px;color:var(--ink3);font-size:12px">The rules on file describe how pit lane speed is applied but do not state a number, so none is shown.</div></div>`;
+  return {ok:true,tag:"Pit Wall Copilot · from the rules on file",text:`<b>${esc(e.title)}</b> (${esc(e.document_id)} v${esc(e.version)}). ${esc(e.excerpt)}<br><span style="color:var(--ink3)">The rules on file describe how pit lane speed is applied but state no number, so none is given.</span>`,html:true,say:"The rules on file describe how pit lane speed is applied, but they don't state a number, so I won't guess one.",evidence:[{field:"source",value:e.source_path}]};
 }
-$("askform").onsubmit=e=>{e.preventDefault();ask($("askin").value)};
-$("chips").onclick=e=>{const q=e.target.dataset&&e.target.dataset.q; if(q){$("askin").value=q;ask(q)}};
+async function ask(q){
+  q=q.trim().replace(/^alexa[,.]?\s*(ask )?(pit wall copilot)?[,:]?\s*/i,""); if(!q) return;
+  logBubble("me","",esc(q)); setOrb("listening","Thinking…");
+  try{
+    const r=await resolveQuestion(q);
+    logBubble("al"+(r.ok?"":" ref"),r.tag,(r.html?r.text:esc(r.text))+evHtml(r.evidence));
+    setOrb("","Ready."); speak(r.say);
+  }catch(e){ logBubble("al ref","Pit Wall Copilot · error",esc("Could not reach the backend: "+e.message)); setOrb("","Ready."); }
+}
+function alexaProactive(text){
+  logBubble("pro","Alexa+ · proactive notification",esc(text)); speak(text);
+}
+$("askform").onsubmit=e=>{e.preventDefault();const v=$("askin").value;$("askin").value="";ask(v)};
+$("chips").onclick=e=>{const q=e.target.dataset&&e.target.dataset.q; if(q) ask(q)};
+(function(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition, mic=$("mic");
+  if(!SR){ mic.disabled=true; mic.title="Voice input isn't supported in this browser. Type or tap a phrase instead."; return; }
+  let rec=null;
+  mic.onclick=()=>{
+    if(rec){ rec.stop(); return; }
+    try{ speechSynthesis.cancel(); }catch(e){}
+    rec=new SR(); rec.lang="en-US"; rec.interimResults=false;
+    mic.classList.add("on"); setOrb("listening","Listening…");
+    rec.onresult=ev=>{ const tx=ev.results[0][0].transcript; ask(tx); };
+    rec.onerror=ev=>{ setOrb("","Voice input unavailable ("+ev.error+"). Type instead."); };
+    rec.onend=()=>{ mic.classList.remove("on"); rec=null; if($("orb").classList.contains("listening")&&$("alx-state").textContent==="Listening…") setOrb("","Ready."); };
+    rec.start();
+  };
+})();
 
 /* ================= playback ================= */
 let last=performance.now();
@@ -572,7 +640,7 @@ async function livePoll(){
 function setMode(m){
   S.mode=m; $("src-replay").setAttribute("aria-pressed",m==="replay"); $("src-live").setAttribute("aria-pressed",m==="live");
   $("cfg").classList.toggle("on",m==="live"); clearInterval(S.live.timer);
-  $("ask-src").textContent=m==="live"?"your backend":"recorded replies";
+  $("ask-src").textContent=m==="live"?"live backend":"simulated experience";
   if(m==="replay"){ loadReplay(); resetReplay(); }
   else { S.frames=[]; S.cursor=0; S.running=false; S.alerts=[]; S.live.seenVersions.clear(); $("alerts").innerHTML='<div class="empty">Connect to a backend to see live alerts.</div>'; }
 }
