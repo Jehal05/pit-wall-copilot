@@ -41,3 +41,12 @@ Screenshots: `screenshots/broadcast-*.png`.
 
 - **Championship card (Simulator mode):** drivers' and constructors' standings over the eight circuits, with the real 25-18-15 points scale, wins, podiums and a title-maths line. "Simulate next round" / "Simulate season" run races instantly; a race you watch to the flag replaces that circuit's round. Stored in this browser only. Results come from invented team pace, not real standings.
 - **Alexa+ (simulated) now explains in detail:** race recap, "why did we pit?" (tyre age, safety car, weather, positions before and after), how a specific overtake happened, a strategy what-if that re-runs the race over 8 seeds per strategy, a circuit guide, driver cards, the championship (with tables), and explainers for DRS, undercut/overcut, dirty air, tyres, safety car, wet-weather crossover, points and how the copilot itself works. Every answer still shows the tool calls behind it, and unsupported questions are declined.
+
+## Layout (v7): four pages
+
+A tab bar under the header (keys 1 to 4, or `#race`, `#analysis`, `#copilot`, `#season` in the URL) keeps each job on its own page, while the lap counter and flag status stay in the header on every page.
+
+- **Race:** timing tower, circuit map with start lights, onboard panel and controls, and race control (plus the strategy battle in Replay).
+- **Analysis:** weather and grip, tyre wear, lap chart and lap times (Simulator); pit wall board and trends (Replay).
+- **Copilot:** the Alexa+ (simulated) chat with a grouped "Ask me" list. A yellow dot on the tab shows new team radio while you are elsewhere.
+- **Championship (Simulator):** both standings tables side by side and the round calendar.

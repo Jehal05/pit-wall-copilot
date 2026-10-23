@@ -57,7 +57,7 @@ html[data-theme="heritage"] .brand h1{font-size:25px;text-transform:none;letter-
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 
 /* ---------- layout ---------- */
-main{display:grid;grid-template-columns:330px minmax(0,1fr) 360px;gap:16px;padding:16px 24px 24px;align-items:start}
+main{grid-template-columns:330px minmax(0,1fr) 360px;gap:16px;padding:16px 24px 24px;align-items:start}
 .card{background:var(--panel);border:var(--panel-border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
 .card>h2{margin:0;padding:12px 16px;font-family:var(--font-display);font-size:15px;letter-spacing:var(--h-tracking);text-transform:var(--h-case);font-weight:700;color:var(--ink2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
 html[data-theme="heritage"] .card>h2{font-size:17px;font-style:italic;color:var(--accent);font-weight:600;border-bottom:1px solid var(--line2)}
@@ -183,8 +183,8 @@ button.chip:hover{border-color:var(--accent);color:var(--ink)}
 .telem b{display:block;font-family:var(--font-display);font-size:19px;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
 .telem .fl{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--good);margin-right:6px}
 .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.pair .board{margin:12px}
-.pair .board .big{font-size:46px}
+.board{margin:12px}
+.board .big{font-size:46px}
 .charts{padding:10px 12px 12px;display:grid;gap:10px}
 .charts figure{margin:0}
 .charts figcaption{font-size:12px;color:var(--ink2);font-weight:600;margin-bottom:2px;display:flex;justify-content:space-between}
@@ -414,8 +414,46 @@ html:not([data-theme="heritage"]) .row .code{font-style:italic;font-size:23px;le
 .bub ul{margin:4px 0 2px;padding-left:18px}.bub li{margin:2px 0}
 .bub h4{margin:8px 0 2px;font:italic 700 14px var(--font-display);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 
+
+/* ---------- v7: separate pages ---------- */
+body{--hh:64px}
+.pages{display:flex;gap:4px;padding:0 24px;background:#15151e;position:sticky;top:var(--hh);z-index:19;overflow-x:auto}
+.pages button{position:relative;background:transparent;border:0;color:#b9bdca;font:italic 800 16px var(--font-display);letter-spacing:.12em;text-transform:uppercase;padding:11px 22px 11px 18px;display:inline-flex;align-items:center;gap:9px;white-space:nowrap}
+.pages button i{font-style:normal;font-size:11px;background:#3a3d4b;color:#fff;padding:0 6px;transform:skewX(-14deg)}
+.pages button:hover{color:#fff}
+.pages button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.pages button[aria-pressed="true"] i{background:#fff;color:var(--accent)}
+.pages button.dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#ffd200;box-shadow:0 0 0 3px rgba(255,210,0,.3);animation:blink 1s infinite}
+html[data-theme="heritage"] .pages button{font-style:italic;letter-spacing:.04em;text-transform:none;font-family:var(--font-display)}
+main.pg{display:none}
+body[data-page="race"] main[data-pg="race"]{display:grid}
+body[data-page="analysis"] main[data-pg="analysis"]{display:grid}
+body[data-page="copilot"] main[data-pg="copilot"]{display:grid}
+body[data-page="season"] main[data-pg="season"]{display:grid}
+main.an{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+main.cp{grid-template-columns:minmax(0,1fr) 360px;max-width:1280px;margin:0 auto;width:100%}
+main.se{grid-template-columns:minmax(0,1fr);max-width:1180px;margin:0 auto;width:100%}
+main.cp .alx-log{max-height:none;height:min(62vh,640px)}
+main.cp .alx-top{padding-top:14px}
+.asks{padding:6px 14px 14px;display:grid;gap:12px}
+.asks h5{margin:0 0 5px;font:italic 800 12px var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.asks .cc{display:flex;flex-wrap:wrap;gap:6px}
+.asks .chip{font-size:12.5px;padding:5px 11px}
+.asks .chip:hover{border-color:var(--accent);color:var(--accent)}
+.feed{max-height:680px}
+#stand{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:8px 28px;padding:6px 16px 8px;align-items:start}
+.stblk h3{margin:8px 0 2px;font:italic 800 15px var(--font-display);letter-spacing:.1em;text-transform:uppercase}
+.stand td{padding:7px 6px}
+main.se .rounds{padding:14px 16px 4px}
+main.se .rd{font-size:13px;padding:3px 12px 3px 8px}
+main.se .stabs{padding:6px 16px 2px;font-size:13px}
+main.se .sbtns{padding:10px 16px 8px}
+@media (max-width:1180px){main.an{grid-template-columns:1fr}main.cp{grid-template-columns:1fr}#stand{grid-template-columns:1fr}.col.mid{order:-1;grid-column:1/-1}}
+@media (max-width:760px){.pages{padding:0 8px}.pages button{padding:10px 14px 10px 10px;font-size:14px}main.cp .alx-log{height:55vh}}
+
+#charts svg{height:auto}
 /* ---------- toast + dialog ---------- */
-.toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
+.toast{position:fixed;left:50%;top:auto;bottom:28px;transform:translate(-50%,30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
 .toast .t{font-family:var(--font-display);font-weight:800;font-size:26px;color:var(--good);letter-spacing:.05em;text-transform:uppercase}
 html[data-theme="heritage"] .toast .t{text-transform:none;font-style:italic;letter-spacing:0}
@@ -436,7 +474,7 @@ dialog .facts dd{margin:0}
 .cfg .note{color:var(--ink3)}
 footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
 
-@media (max-width:1180px){main{grid-template-columns:1fr 1fr}.col.mid{grid-column:1/-1;order:-1}}
+@media (max-width:1180px){main[data-pg="race"]{grid-template-columns:1fr 1fr}.col.mid{grid-column:1/-1;order:-1}}
 @media (max-width:760px){
   main{grid-template-columns:1fr;padding:12px 16px}
   .top{flex-wrap:wrap;padding:12px 16px;gap:10px}
@@ -447,7 +485,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body data-view="replay">
+<body data-view="replay" data-page="race">
 <header class="top">
   <div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="brand"><h1>Pit Wall <em>Copilot</em></h1><small id="brand-sub">Synthetic demo. All data fictional.</small></div>
@@ -473,19 +511,20 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
   <span class="note" id="cfg-note">Serve this folder from http://localhost:8081 (python -m http.server 8081) so the backend allows it. The token stays in this tab's memory only.</span>
 </div>
 
-<main>
+<nav class="pages" id="pages" aria-label="Pages">
+  <button type="button" data-pg="race" id="nav-race" aria-pressed="true"><i>1</i>Race</button>
+  <button type="button" data-pg="analysis" id="nav-analysis" aria-pressed="false"><i>2</i>Analysis</button>
+  <button type="button" data-pg="copilot" id="nav-copilot" aria-pressed="false"><i>3</i>Copilot</button>
+  <button type="button" data-pg="season" id="nav-season" class="only-sim" aria-pressed="false"><i>4</i>Championship</button>
+</nav>
+<main class="pg" data-pg="race">
   <section class="col">
     <div class="card">
       <h2>Timing <span id="tower-lap"></span></h2>
       <ol class="tower" id="tower"></ol>
       <div class="tower-note" id="tower-note">Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.</div>
     </div>
-    <div class="card">
-      <h2>Race control <span id="alert-count"></span></h2>
-      <div id="alerts" class="feed"><div class="empty">Press Start. Lap events and strategy alerts appear here as they happen.</div></div>
-    </div>
   </section>
-
   <section class="col mid">
     <div class="card trackcard">
       <h2>Circuit <span id="circ-sub">Fictional layout, car spacing from real timing gaps</span></h2>
@@ -508,8 +547,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
         <span class="pace" id="pacetxt"></span>
         <button class="btn call" id="b-call" disabled title="Available when the undercut window is open">Show the call</button>
       </div>
-    </div>
-    <div class="controls only-sim" id="sim-controls" style="border:1px solid var(--line);border-top:0;border-radius:0 0 var(--radius) var(--radius);margin-top:-16px">
+    <div class="controls only-sim" id="sim-controls">
       <button class="btn primary" id="s-start">Start</button>
       <button class="btn" id="s-pause">Pause</button>
       <button class="btn" id="s-reset">Reset</button>
@@ -519,32 +557,8 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="seg" role="group" aria-label="Speed" id="sspeed"><button data-s="1" aria-pressed="false">1x</button><button data-s="2" aria-pressed="true">2x</button><button data-s="4" aria-pressed="false">4x</button><button data-s="8" aria-pressed="false">8x</button></div>
       <button class="btn call" id="s-sc">Safety car</button>
     </div>
-    <div class="card only-sim" id="wxcard"><h2>Weather and grip <span>simulated, not real data</span></h2>
-      <div class="wxgrid" id="wx-now"></div>
-      <div class="radar"><svg id="wx-radar" viewBox="0 0 640 106" role="img" aria-label="Weather timeline for the race"></svg></div>
-      <div class="radar-key"><span><i style="background:#4f86d6"></i>Track wetness (faded = forecast)</span><span><i style="background:#2fa84f"></i>Fastest tyre: intermediates</span><span><i style="background:#2b7be4"></i>Full wets</span><span><i style="background:var(--line2)"></i>Slicks</span><span id="radar-me">Your driver's tyres</span></div>
-    </div>
-    <div class="card only-sim"><h2>Race charts <span>from the simulated laps</span></h2><div class="charts" id="simcharts"></div></div>
-    <div class="pair only-replay">
-    <div class="card">
-      <h2>Pit wall board <span id="board-sub"></span></h2>
-      <div class="board closed" id="board">
-        <div class="who" id="board-who">CAR_04 vs CAR_03</div>
-        <div class="big" id="board-big">Stay out</div>
-        <div class="sub">
-          <div>Pit lap<b class="num" id="b-lap">--</b></div>
-          <div>Margin<b class="num" id="b-margin">--</b></div>
-          <div>Chance ahead<b class="num" id="b-prob">--</b></div>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <h2>Trends <span>from each lap's calculation</span></h2>
-      <div class="charts" id="charts"></div>
-    </div>
     </div>
   </section>
-
   <section class="col">
     <div class="card only-replay">
       <h2>Strategy battle <span id="sb-sub">CAR_04 vs CAR_03</span></h2>
@@ -566,20 +580,54 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="assump" id="assump"></div>
       <div class="simrow" id="simrow"></div>
     </div>
+    <div class="card">
+      <h2>Race control <span id="alert-count"></span></h2>
+      <div id="alerts" class="feed"><div class="empty">Press Start. Lap events and strategy alerts appear here as they happen.</div></div>
+    </div>
+  </section>
+</main>
+
+<main class="pg an" data-pg="analysis">
+  <section class="col only-sim">
+    <div class="card only-sim" id="wxcard"><h2>Weather and grip <span>simulated, not real data</span></h2>
+      <div class="wxgrid" id="wx-now"></div>
+      <div class="radar"><svg id="wx-radar" viewBox="0 0 640 106" role="img" aria-label="Weather timeline for the race"></svg></div>
+      <div class="radar-key"><span><i style="background:#4f86d6"></i>Track wetness (faded = forecast)</span><span><i style="background:#2fa84f"></i>Fastest tyre: intermediates</span><span><i style="background:#2b7be4"></i>Full wets</span><span><i style="background:var(--line2)"></i>Slicks</span><span id="radar-me">Your driver's tyres</span></div>
+    </div>
     <div class="card only-sim">
       <h2>Tyres and race model <span>tyre age / life, in laps</span></h2>
       <div id="tyres" style="padding:8px 0 4px"></div>
       <div class="assump" id="trk-chips"></div>
       <div class="alx-foot">Team pace and driver form are invented for the simulation, circuit traits are rough, and the weather is simulated. Separate from the backend strategy engine, which only runs on the replay. Circuit outlines are simplified from the open f1-circuits data (OpenStreetMap contributors).</div>
     </div>
-    <div class="card only-sim" id="seasoncard">
-      <h2>Championship <span id="season-sub">simulated season</span></h2>
-      <div class="rounds" id="rounds"></div>
-      <div class="stabs"><div class="seg" role="group" aria-label="Standings"><button id="st-d" aria-pressed="true">Drivers</button><button id="st-c" aria-pressed="false">Constructors</button></div><span id="season-note"></span></div>
-      <div id="stand"></div>
-      <div class="sbtns"><button class="btn primary" id="se-next" type="button">Simulate next round</button><button class="btn" id="se-all" type="button">Simulate season</button><button class="btn" id="se-reset" type="button">Reset</button></div>
-      <div class="alx-foot">Real 25-18-15 points scale. Results are simulated from invented team pace, not real standings. A race you watch to the flag replaces that circuit's round. Saved in this browser only.</div>
+  </section>
+  <section class="col only-sim">
+    <div class="card only-sim"><h2>Race charts <span>from the simulated laps</span></h2><div class="charts" id="simcharts"></div></div>
+  </section>
+  <section class="col only-replay">
+    <div class="card">
+      <h2>Pit wall board <span id="board-sub"></span></h2>
+      <div class="board closed" id="board">
+        <div class="who" id="board-who">CAR_04 vs CAR_03</div>
+        <div class="big" id="board-big">Stay out</div>
+        <div class="sub">
+          <div>Pit lap<b class="num" id="b-lap">--</b></div>
+          <div>Margin<b class="num" id="b-margin">--</b></div>
+          <div>Chance ahead<b class="num" id="b-prob">--</b></div>
+        </div>
+      </div>
     </div>
+  </section>
+  <section class="col only-replay">
+    <div class="card">
+      <h2>Trends <span>from each lap's calculation</span></h2>
+      <div class="charts" id="charts"></div>
+    </div>
+  </section>
+</main>
+
+<main class="pg cp" data-pg="copilot">
+  <section class="col">
     <div class="card alexa">
       <h2>Pit Wall Copilot <span id="ask-src">Alexa+ simulated</span></h2>
       <div class="alx-top">
@@ -591,22 +639,33 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       </div>
       <div class="alx-log" id="alx-log" aria-live="polite"><div class="empty" id="alx-empty">Ask in plain language, tap a phrase, or press the mic. Every answer shows the tool calls behind it.</div></div>
       <form class="ask" id="askform"><input id="askin" placeholder="Ask Pit Wall Copilot" aria-label="Question"><button class="btn primary" style="padding:8px 14px;font-size:15px">Send</button></form>
-      <div class="chips" id="chips">
-        <button class="chip only-replay" data-q="Can CAR_04 undercut CAR_03?">Can car 4 undercut car 3?</button>
-        <button class="chip only-replay" data-q="What is the pit lane speed limit?">Pit lane speed limit?</button>
-        <button class="chip" data-q="What is the weather forecast?">Weather forecast?</button>
-        <button class="chip only-sim" data-q="Who is leading?">Who is leading?</button>
-        <button class="chip only-sim" data-q="How are we doing?">How are we doing?</button>
-        <button class="chip only-sim" data-q="Should we box now?">Box now?</button>
-        <button class="chip only-sim" data-q="Who leads the championship?">Championship</button>
-        <button class="chip only-sim" data-q="Explain the race so far">Explain the race</button>
-        <button class="chip only-sim" data-q="What if we pit early or late?">What if we pit early?</button>
-        <button class="chip only-sim" data-q="Why did we pit?">Why did we pit?</button>
-        <button class="chip" data-q="Explain DRS">Explain DRS</button>
-        <button class="chip" data-q="What is an undercut?">What is an undercut?</button>
-        <button class="chip" data-q="What can you do?">What can you do?</button>
-      </div>
       <div class="alx-foot">Simulated in the browser; not a real Alexa device. Voice uses your browser's speech features.</div>
+    </div>
+  </section>
+  <section class="col">
+    <div class="card" id="askcard">
+      <h2>Ask me <span>tap a question</span></h2>
+      <div class="asks" id="chips">
+        <div class="cat only-replay"><h5>Strategy</h5><div class="cc"><button class="chip" data-q="Can CAR_04 undercut CAR_03?">Can car 4 undercut car 3?</button><button class="chip" data-q="What is the pit lane speed limit?">Pit lane speed limit?</button></div></div>
+        <div class="cat only-sim"><h5>Race</h5><div class="cc"><button class="chip" data-q="Who is leading?">Who is leading?</button><button class="chip" data-q="How are we doing?">How are we doing?</button><button class="chip" data-q="What is the weather forecast?">Weather forecast?</button><button class="chip" data-q="Tell me about Hamilton">Tell me about Hamilton</button></div></div>
+        <div class="cat only-sim"><h5>Strategy</h5><div class="cc"><button class="chip" data-q="Should we box now?">Box now?</button><button class="chip" data-q="What if we pit early or late?">What if we pit early?</button><button class="chip" data-q="Why did we pit?">Why did we pit?</button></div></div>
+        <div class="cat only-sim"><h5>Explain this race</h5><div class="cc"><button class="chip" data-q="Explain the race so far">Explain the race</button><button class="chip" data-q="How did that overtake happen?">How did that pass happen?</button><button class="chip" data-q="Tell me about this circuit">Tell me about this circuit</button></div></div>
+        <div class="cat only-sim"><h5>Championship</h5><div class="cc"><button class="chip" data-q="Who leads the championship?">Who leads the championship?</button><button class="chip" data-q="Explain points">How do points work?</button></div></div>
+        <div class="cat"><h5>Learn</h5><div class="cc"><button class="chip" data-q="Explain DRS">Explain DRS</button><button class="chip" data-q="What is an undercut?">What is an undercut?</button><button class="chip" data-q="Explain tyres">Explain tyres</button><button class="chip" data-q="Explain dirty air">Dirty air</button><button class="chip" data-q="Explain safety car">Safety car</button><button class="chip" data-q="What can you do?">What can you do?</button></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main class="pg se" data-pg="season">
+  <section class="col">
+    <div class="card only-sim" id="seasoncard">
+      <h2>Championship <span id="season-sub">simulated season</span></h2>
+      <div class="rounds" id="rounds"></div>
+      <div class="stabs"><span id="season-note"></span></div>
+      <div id="stand"></div>
+      <div class="sbtns"><button class="btn primary" id="se-next" type="button">Simulate next round</button><button class="btn" id="se-all" type="button">Simulate season</button><button class="btn" id="se-reset" type="button">Reset</button></div>
+      <div class="alx-foot">Real 25-18-15 points scale. Results are simulated from invented team pace, not real standings. A race you watch to the flag replaces that circuit's round. Saved in this browser only.</div>
     </div>
   </section>
 </main>
@@ -924,14 +983,14 @@ function renderTelem(s){
 }
 let chartKey="";
 function lineChart(pts,{ymin,ymax,thr,thrLabel,fmtY,color}){
-  const W=300,H=96,pl=30,pr=10,pt=8,pb=16, X=i=>pl+(W-pl-pr)*(pts.length>1?i/(Math.max(NF,pts.length)-1):0), Y=v=>pt+(H-pt-pb)*(1-(v-ymin)/(ymax-ymin));
+  const W=640,H=170,pl=34,pr=12,pt=10,pb=18, X=i=>pl+(W-pl-pr)*(pts.length>1?i/(Math.max(NF,pts.length)-1):0), Y=v=>pt+(H-pt-pb)*(1-(v-ymin)/(ymax-ymin));
   const NF=Math.max(S.frames.length,5);
   const X2=i=>pl+(W-pl-pr)*i/(NF-1);
   let g=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/><text x="${pl-4}" y="${Y(ymax)+4}" text-anchor="end" font-size="9" fill="var(--ink3)">${fmtY(ymax)}</text><text x="${pl-4}" y="${Y(ymin)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">${fmtY(ymin)}</text>`;
   if(thr!=null) g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(thr)}" y2="${Y(thr)}" stroke="var(--good)" stroke-dasharray="4 4"/><text x="${pl+3}" y="${Y(thr)-4}" text-anchor="start" font-size="9" fill="var(--good)">${thrLabel}</text>`;
   if(pts.length){ g+=`<polyline fill="none" stroke="${color}" stroke-width="2.5" points="${pts.map((v,i)=>X2(i)+","+Y(v)).join(" ")}"/>`+pts.map((v,i)=>`<circle cx="${X2(i)}" cy="${Y(v)}" r="${i===pts.length-1?4.5:3}" fill="${i===pts.length-1?color:"var(--panel)"}" stroke="${color}" stroke-width="2"/>`).join(""); }
   for(let i=0;i<NF;i++){ const f=S.frames[i]; g+=`<text x="${X2(i)}" y="${H-3}" text-anchor="middle" font-size="9" fill="var(--ink3)">${f?("L"+f.state.lap):""}</text>`; }
-  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${g}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}">${g}</svg>`;
 }
 function renderCharts(s){
   const upto=Math.min(Math.floor(S.cursor+1e-6),S.frames.length-1), key=upto+":"+S.frames.length+":"+document.documentElement.dataset.theme;
@@ -1005,6 +1064,7 @@ async function stream(el,text){
 }
 async function cpReply(o){
   const L=$("alx-log"), em=$("alx-empty"); if(em) em.remove();
+  if(o.radio&&document.body.dataset.page!=="copilot") $("nav-copilot").classList.add("dot");
   const w=document.createElement("div"); w.className="bub "+(o.cls||"al"); w.innerHTML=`<span class="${o.radio?"radio-tag":"tag"}">${esc(o.tag)}</span>`;
   L.appendChild(w); const sc=()=>{L.scrollTop=L.scrollHeight};
   setOrb("listening","Working…");
@@ -1135,7 +1195,7 @@ async function livePoll(){
 }
 function setMode(m){
   S.mode=m; ["replay","sim","live"].forEach(k=>$("src-"+k).setAttribute("aria-pressed",k===m));
-  document.body.dataset.view=m==="sim"?"sim":"replay";
+  document.body.dataset.view=m==="sim"?"sim":"replay"; if(m!=="sim"&&document.body.dataset.page==="season") setPage("race");
   $("brand-sub").textContent=m==="sim"?"Simulated race. Unofficial fan project, not affiliated with F1, the FIA or any team.":"Synthetic demo. All data fictional.";
   clearTower(); $("tower").classList.remove("dense");
   $("tower-note").textContent=m==="sim"?"Gaps are to the car ahead; the small time is each car's last lap; purple is the fastest lap. Team pace and driver form are invented. Names identify the simulated entries only.":"Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.";
@@ -1783,20 +1843,18 @@ function seasonRender(){
   if(!$("stand")) return; const tb=seasonTable(), st=seasonStatus(tb);
   $("season-sub").textContent=tb.done+" / "+CAL.length+" rounds";
   $("rounds").innerHTML=CAL.map((tr,i)=>{ const r=SEASON.rounds[tr]; return `<span class="rd${r?" ok":""}" title="${esc(TRACKS[tr].full)}${r?" · "+esc(drv(r.order[0]).name)+" won ("+r.src+")":" · not run yet"}"><b>${i+1}</b>${esc(TRACKS[tr].name.split("-")[0])}${r?`<em>${r.order[0]}</em>`:""}</span>`; }).join("");
-  const D=SEASON.tab==="d", rows=D?tb.drivers:tb.cons, max=Math.max(1,rows[0].pts);
-  $("stand").innerHTML=(st.champ?`<div class="champ">Champion: ${esc(drv(st.champ.id).name)} · ${esc(TEAMS[st.champ.team].name)}</div>`:"")+`<table class="stand"><tr><th></th><th>${D?"Driver":"Team"}</th><th>W</th><th>Pod</th><th style="text-align:right">Pts</th></tr>`+rows.map((r,i)=>{
+  const tbl=D=>{ const rows=D?tb.drivers:tb.cons, max=Math.max(1,rows[0].pts);
+    return `<div class="stblk"><h3>${D?"Drivers' championship":"Constructors' championship"}</h3><table class="stand"><tr><th></th><th>${D?"Driver":"Team"}</th><th>W</th><th>Pod</th><th style="text-align:right">Pts</th></tr>`+rows.map((r,i)=>{
     const col=TEAMS[D?r.team:r.id].color, nm=D?`<b>${r.id}</b><small>${esc(drv(r.id).name.split(" ").slice(-1)[0])} · ${esc(TEAMS[r.team].name)}</small>`:`<b>${esc(TEAMS[r.id].name)}</b><small>${DRIVERS.filter(d=>d.team===r.id).map(d=>d.id).join(" · ")}</small>`;
-    return `<tr class="${D&&r.id===SIM.mine?"me":""}"><td class="p">${i+1}</td><td class="n"><span class="tb" style="background:${col}"></span>${nm}<span class="bar"><i style="width:${Math.round(100*r.pts/max)}%;background:${col}"></i></span></td><td>${r.w}</td><td>${r.p}</td><td class="pt">${r.pts}</td></tr>`; }).join("")+"</table>";
+    return `<tr class="${D&&r.id===SIM.mine?"me":""}"><td class="p">${i+1}</td><td class="n"><span class="tb" style="background:${col}"></span>${nm}<span class="bar"><i style="width:${Math.round(100*r.pts/max)}%;background:${col}"></i></span></td><td>${r.w}</td><td>${r.p}</td><td class="pt">${r.pts}</td></tr>`; }).join("")+"</table></div>"; };
+  $("stand").innerHTML=(st.champ?`<div class="champ" style="grid-column:1/-1">Champion: ${esc(drv(st.champ.id).name)} · ${esc(TEAMS[st.champ.team].name)}</div>`:"")+tbl(true)+tbl(false);
   $("season-note").textContent=st.txt;
-  $("st-d").setAttribute("aria-pressed",D); $("st-c").setAttribute("aria-pressed",!D);
 }
 function champHtml(){
   const tb=seasonTable(); if(!tb.done) return "";
   const row=(r,i,D)=>`<tr class="${D&&r.id===SIM.mine?"me":""}"><td class="p">${i+1}</td><td class="n"><b>${D?r.id:esc(TEAMS[r.id].name)}</b>${D?`<small>${esc(TEAMS[r.team].name)}</small>`:""}</td><td>${r.w}</td><td class="pt">${r.pts}</td></tr>`;
   return `<h4>Drivers</h4><table class="ctab"><tr><th></th><th>Driver</th><th>W</th><th style="text-align:right">Pts</th></tr>${tb.drivers.slice(0,6).map((r,i)=>row(r,i,true)).join("")}</table><h4>Constructors</h4><table class="ctab"><tr><th></th><th>Team</th><th>W</th><th style="text-align:right">Pts</th></tr>${tb.cons.map((r,i)=>row(r,i,false)).join("")}</table>`;
 }
-$("st-d").onclick=()=>{ SEASON.tab="d"; seasonRender(); };
-$("st-c").onclick=()=>{ SEASON.tab="c"; seasonRender(); };
 $("se-next").onclick=()=>{ const tr=CAL.find(x=>!SEASON.rounds[x]); if(!tr){ $("season-note").textContent="Season complete. Press Reset to start a new one."; return; } const r=seasonSimTrack(tr); logBubble("al","Championship · round "+(CAL.indexOf(tr)+1),esc(`${TRACKS[tr].name}: ${drv(r.final[0].id).name} wins (simulated). ${seasonStatus(seasonTable()).txt}`)); };
 $("se-all").onclick=()=>{ CAL.filter(x=>!SEASON.rounds[x]).forEach(seasonSimTrack); logBubble("al","Championship",esc("Season simulated. "+seasonStatus(seasonTable()).txt)); };
 $("se-reset").onclick=()=>{ SEASON.rounds={}; seasonSave(); seasonRender(); };
@@ -1916,6 +1974,22 @@ function deepAnswer(q){
   return null;
 }
 
+
+/* ================= pages ================= */
+const PAGES=["race","analysis","copilot","season"];
+function setPage(pg,fromHash){
+  if(!PAGES.includes(pg)) pg="race"; if(pg==="season"&&S.mode!=="sim") pg="race";
+  document.body.dataset.page=pg; PAGES.forEach(k=>$("nav-"+k).setAttribute("aria-pressed",k===pg));
+  if(pg==="copilot"){ $("nav-copilot").classList.remove("dot"); const L=$("alx-log"); setTimeout(()=>{ L.scrollTop=L.scrollHeight; },0); }
+  if(!fromHash){ try{ history.replaceState(null,"","#"+pg); }catch(e){} }
+  window.scrollTo(0,0); try{ render(true); }catch(e){}
+}
+$("pages").onclick=e=>{ const b=e.target.closest("button[data-pg]"); if(b) setPage(b.dataset.pg); };
+window.addEventListener("hashchange",()=>setPage((location.hash||"").slice(1),true));
+document.addEventListener("keydown",e=>{ if(e.target.closest("input,select,textarea")||e.metaKey||e.ctrlKey||e.altKey) return; const i="1234".indexOf(e.key); if(i>=0) setPage(PAGES[i]); });
+function fitNav(){ const h=document.querySelector("header.top"); if(h) document.body.style.setProperty("--hh",h.offsetHeight+"px"); }
+window.addEventListener("resize",fitNav); fitNav();
+
 /* selectors */
 $("s-track").innerHTML=Object.values(TRACKS).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
 $("s-wx").innerHTML=Object.values(WX).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
@@ -1926,7 +2000,7 @@ $("s-track").value="monza"; $("s-wx").value="dry"; $("s-mine").value="LEC";
 
 
 /* ================= boot ================= */
-seasonLoad(); seasonRender(); loadReplay(); drawTrack(); setTheme(document.documentElement.dataset.theme||"broadcast"); render(true);
+seasonLoad(); seasonRender(); loadReplay(); drawTrack(); if(location.hash) setPage(location.hash.slice(1),true); setTheme(document.documentElement.dataset.theme||"broadcast"); render(true);
 requestAnimationFrame(tick);
 </script>
 </body>
