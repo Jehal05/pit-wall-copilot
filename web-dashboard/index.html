@@ -222,6 +222,20 @@ button.chip:hover{border-color:var(--accent);color:var(--ink)}
 .ghost-label{font-family:var(--font-display);font-weight:700;font-size:14px;fill:#15151e;paint-order:stroke;stroke:#fff;stroke-width:4px}
 @media (max-width:1180px){.pair{grid-template-columns:1fr}}
 
+
+body[data-view="sim"] .only-replay{display:none!important}
+body:not([data-view="sim"]) .only-sim{display:none!important}
+.controls label.seedbox{font-size:12px;color:var(--ink3);display:flex;gap:6px;align-items:center}
+.controls input[type=number],.controls select{background:var(--panel);border:1px solid var(--line2);color:var(--ink);border-radius:var(--radius-sm);padding:7px 8px;font:inherit;font-size:13px}
+.controls input[type=number]{width:74px}
+.tyrow{display:grid;grid-template-columns:38px 14px 1fr 84px;gap:8px;align-items:center;padding:6px 16px;font-size:12px}
+.tyrow b{font-family:var(--font-display);font-size:16px}
+.tbar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}.tbar i{display:block;height:100%;transition:width .3s}
+.tdot{width:12px;height:12px;border-radius:50%;border:1px solid var(--line2)}
+.tyrow .tn{color:var(--ink3);text-align:right}
+#simcharts{grid-template-columns:1fr 1fr}
+@media (max-width:760px){#simcharts{grid-template-columns:1fr}}
+
 /* ---------- toast + dialog ---------- */
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
@@ -255,7 +269,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
-<body>
+<body data-view="replay">
 <header class="top">
   <div class="stripe"></div>
   <div class="brand"><h1>Pit Wall Copilot</h1><small>Synthetic demo. All data fictional.</small></div>
@@ -264,6 +278,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
   <div class="spacer"></div>
   <div class="seg" role="group" aria-label="Data source">
     <button id="src-replay" aria-pressed="true">Replay</button>
+    <button id="src-sim" aria-pressed="false">Simulator</button>
     <button id="src-live" aria-pressed="false">Live backend</button>
   </div>
   <div class="seg" role="group" aria-label="Theme">
@@ -284,7 +299,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
     <div class="card">
       <h2>Timing <span id="tower-lap"></span></h2>
       <ol class="tower" id="tower"></ol>
-      <div class="tower-note">Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.</div>
+      <div class="tower-note" id="tower-note">Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.</div>
     </div>
     <div class="card">
       <h2>Race control <span id="alert-count"></span></h2>
@@ -297,7 +312,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <h2>Circuit <span>Fictional layout, car spacing from real timing gaps</span></h2>
       <div class="telem" id="telem"></div>
       <div class="trackwrap"><svg class="track" id="track" viewBox="0 0 800 470" role="img" aria-label="Circuit map with live car positions"></svg></div>
-      <div class="controls">
+      <div class="controls only-replay">
         <button class="btn primary" id="b-start">Start</button>
         <button class="btn" id="b-pause">Pause</button>
         <button class="btn" id="b-reset">Reset</button>
@@ -309,7 +324,18 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
         <button class="btn call" id="b-call" disabled title="Available when the undercut window is open">Show the call</button>
       </div>
     </div>
-    <div class="pair">
+    <div class="controls only-sim" id="sim-controls" style="border:1px solid var(--line);border-top:0;border-radius:0 0 var(--radius) var(--radius);margin-top:-16px">
+      <button class="btn primary" id="s-start">Start</button>
+      <button class="btn" id="s-pause">Pause</button>
+      <button class="btn" id="s-reset">Reset</button>
+      <label class="seedbox">Seed <input id="s-seed" type="number" value="7" min="1" max="9999"></label>
+      <button class="btn" id="s-newseed">New seed</button>
+      <select id="s-strat" aria-label="CAR_04 strategy"><option value="29">OKA: undercut, pit lap 29 (engine plan)</option><option value="36">OKA: stay out, pit lap 36</option></select>
+      <div class="seg" role="group" aria-label="Speed" id="sspeed"><button data-s="1" aria-pressed="false">1x</button><button data-s="2" aria-pressed="true">2x</button><button data-s="4" aria-pressed="false">4x</button><button data-s="8" aria-pressed="false">8x</button></div>
+      <button class="btn call" id="s-sc">Safety car</button>
+    </div>
+    <div class="card only-sim"><h2>Race charts <span>from the simulated laps</span></h2><div class="charts" id="simcharts"></div></div>
+    <div class="pair only-replay">
     <div class="card">
       <h2>Pit wall board <span id="board-sub"></span></h2>
       <div class="board closed" id="board">
@@ -330,7 +356,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
   </section>
 
   <section class="col">
-    <div class="card">
+    <div class="card only-replay">
       <h2>Strategy battle <span id="sb-sub">CAR_04 vs CAR_03</span></h2>
       <div class="gauge-wrap">
         <svg class="gauge" viewBox="0 0 150 92" aria-hidden="true">
@@ -349,6 +375,12 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="range" id="range" aria-label="Margin range"></div>
       <div class="assump" id="assump"></div>
       <div class="simrow" id="simrow"></div>
+    </div>
+    <div class="card only-sim">
+      <h2>Tyres and race model <span>browser model</span></h2>
+      <div id="tyres" style="padding:8px 0 4px"></div>
+      <div class="assump"><span class="chip">pit stop costs about 21s</span><span class="chip">safety car stop about 11.5s</span><span class="chip">tyre wear and cliff</span><span class="chip">fuel burn</span><span class="chip">dirty air</span><span class="chip">overtaking odds</span></div>
+      <div class="alx-foot">Seeded from the scenario's real car data and the engine's pit plan. Separate from the backend strategy engine, which only runs on the replay.</div>
     </div>
     <div class="card alexa">
       <h2>Pit Wall Copilot <span id="ask-src">Alexa+ simulated</span></h2>
@@ -461,6 +493,7 @@ function sample(){
 /* ================= render ================= */
 const towerEls={};
 function render(force){
+  if(S.mode==="sim"){ simRender(); return; }
   const s=sample(); if(!s) return;
   const st=s.A.state;
   $("lap").textContent=Math.min(st.lap+(s.t>0.5?1:0),S.frames[S.frames.length-1].state.lap);
@@ -737,6 +770,7 @@ function fromReg(r,q){
     evidence:[{field:"source",value:e.source_path}]};
 }
 async function resolveQuestion(q){
+  if(S.mode==="sim"){ const a=simAnswer(q); if(a) return a; return fromAgent({...REPLAY.agentRefusal,query:q}); }
   if(S.mode==="live"){
     if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)) return fromReg(await liveFetch("/v1/regulations?query="+encodeURIComponent(q)),q);
     return fromAgent(await liveFetch("/v1/agent/query","POST",{race_id:"demo-race-001",query:q}));
@@ -772,7 +806,8 @@ $("chips").onclick=e=>{const q=e.target.dataset&&e.target.dataset.q; if(q) ask(q
 /* ================= playback ================= */
 let last=performance.now();
 function tick(now){
-  const dt=(now-last)/1000; last=now;
+  const dt=Math.min((now-last)/1000,0.25); last=now;
+  if(S.mode==="sim"){ simTick(dt); requestAnimationFrame(tick); return; }
   if(S.mode==="replay"&&S.running){
     S.cursor=Math.min(S.cursor+dt*S.speed/S.lapSec,S.frames.length-1);
     if(S.cursor>=S.frames.length-1){S.running=false;}
@@ -824,14 +859,312 @@ async function livePoll(){
   }catch(e){ $("cfg-note").textContent="Not connected: "+e.message+". Is the backend running with CORS allowed for this page?"; }
 }
 function setMode(m){
-  S.mode=m; $("src-replay").setAttribute("aria-pressed",m==="replay"); $("src-live").setAttribute("aria-pressed",m==="live");
+  S.mode=m; ["replay","sim","live"].forEach(k=>$("src-"+k).setAttribute("aria-pressed",k===m));
+  document.body.dataset.view=m==="sim"?"sim":"replay";
+  $("tower-note").textContent=m==="sim"?"Gaps are to the car ahead; the small time is each car's last lap. Purple is the fastest lap. Four cars, as in the scenario.":"Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.";
+  const sg=$("simcars"); if(sg) sg.remove(); const cg=$("cars"); if(cg) cg.style.display=m==="sim"?"none":"";
+  try{ speechSynthesis.cancel(); }catch(e){}
   $("cfg").classList.toggle("on",m==="live"); clearInterval(S.live.timer);
   $("ask-src").textContent=m==="live"?"live backend":"Alexa+ simulated";
   if(m==="replay"){ loadReplay(); resetReplay(); }
+  else if(m==="sim"){ S.frames=[]; S.running=false; S.proj=null; simEnter(); }
   else { S.frames=[]; S.cursor=0; S.running=false; S.alerts=[]; S.live.seenVersions.clear(); S.feed=[];S.feedIdx=-1;S.proj=null;renderFeed(); }
 }
-$("src-replay").onclick=()=>setMode("replay"); $("src-live").onclick=()=>setMode("live");
+$("src-replay").onclick=()=>setMode("replay"); $("src-sim").onclick=()=>setMode("sim"); $("src-live").onclick=()=>setMode("live");
 $("cfg-connect").onclick=()=>{ S.live.url=$("cfg-url").value.replace(/\/$/,""); S.live.token=$("cfg-token").value; S.live.seenVersions.clear(); S.frames=[]; clearInterval(S.live.timer); livePoll(); S.live.timer=setInterval(livePoll,600); };
+
+/* ================= RACE SIMULATOR (browser model) =================
+   A lap-by-lap model seeded from the scenario's real car data (positions, gaps, tyres,
+   base pace) and the engine's own pit plan for CAR_04 and CAR_03. It is an independent,
+   illustrative model: tyre wear, fuel burn, dirty air, pit loss, safety car and overtaking odds.
+   It is NOT the backend strategy engine and not AWS-validated. */
+const SIMCFG={pitLoss:21000,pitLossSC:11500,scLaps:3,noise:190,
+  deg:{SOFT:105,MEDIUM:62,HARD:40}, off:{SOFT:-650,MEDIUM:0,HARD:420}, life:{SOFT:24,MEDIUM:30,HARD:42},
+  cliff:190,fuel:32,dirty:300,drs:1000};
+function hash32(str){let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rngFor(seed,L,id,tag){let a=hash32(seed+"|"+L+"|"+id+"|"+tag);return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gauss(r){let u=0,v=0;while(!u)u=r();while(!v)v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function tyreDeg(c,age){const over=Math.max(0,age-SIMCFG.life[c]);return SIMCFG.off[c]+SIMCFG.deg[c]*age+over*SIMCFG.cliff*(1+over*0.08)}
+function pickCompound(rem){return rem<=16?"SOFT":(rem<=28?"MEDIUM":"HARD")}
+
+let SIMBASE=null;
+function simBase(){
+  if(SIMBASE) return SIMBASE;
+  const st=REPLAY.frames[0].state, sched=(REPLAY.frames[REPLAY.frames.length-1].undercut.pit_schedules)||[];
+  const cars=st.drivers.map(d=>{
+    const s=sched.find(x=>x.driver_id===d.driver_id);
+    const mid=Math.round((d.pit_window[0]+d.pit_window[1])/2);
+    const plan=s?{lap:s.pit_lap,comp:s.compound_after_pit}:{lap:mid,comp:d.compound==="HARD"?"MEDIUM":"HARD"};
+    return {id:d.driver_id,code:CODE(d.driver_id),name:d.display_name,team:d.team_name,
+      T0:d.gap_to_leader_ms,comp0:d.compound,age0:d.tire_age_laps,stops0:d.pit_stops,basePace:d.base_pace_ms,
+      k:d.current_lap_pace_ms-(d.base_pace_ms+tyreDeg(d.compound,d.tire_age_laps)),plan};
+  });
+  const minT=Math.min(...cars.map(c=>c.T0));
+  SIMBASE={L0:st.lap,total:st.total_laps,cars,tau0:minT,race0:st.race_time_ms};
+  return SIMBASE;
+}
+
+/* Run one complete race. okaPit: pit lap for CAR_04 (default the engine's plan). ic: [{lap,type:"sc"}] */
+function runSim(seed,okaPit,ic){
+  const B=simBase(), total=B.total; ic=ic||[];
+  const cars=B.cars.map(c=>{const rj=rngFor(seed,0,c.id,"cfg"); const form=gauss(rj)*110, lifeAdj=Math.round(gauss(rj)*1.6), jit=Math.floor(rj()*3)-1;
+    return {id:c.id,code:c.code,T:c.T0,comp:c.comp0,age:c.age0,stops:c.stops0,basePace:c.basePace,k:c.k,form,lifeAdj,
+    pitNext:(c.id==="CAR_04"&&okaPit)?okaPit:(c.id==="CAR_03"?c.plan.lap+Math.max(0,jit+1):c.plan.lap+jit),
+    compNext:(c.id==="CAR_04"&&okaPit&&okaPit!==c.plan.lap)?pickCompound(total-okaPit):c.plan.comp};});
+  const tl={}; cars.forEach(c=>tl[c.id]=[]);
+  const events=[]; let sc=0, fastest={lt:1e12,id:null,L:0};
+  for(let L=B.L0+1;L<=total;L++){
+    const order=[...cars].sort((a,b)=>a.T-b.T);
+    const startRank={}; order.forEach((c,i)=>startRank[c.id]=i);
+    if(sc===0&&ic.some(x=>x.type==="sc"&&x.lap===L)){sc=SIMCFG.scLaps; events.push({t:order[0].T,L,kind:"sc",radio:true,title:"Safety car deployed",detail:`Incident on track. Field bunches up for ${SIMCFG.scLaps} laps. Pitting costs far less now.`});}
+    const scOn=sc>0, rem=total-L;
+    for(const c of order){
+      let pit=false;
+      if(L===c.pitNext) pit=true;
+      if(!pit&&c.age>=SIMCFG.life[c.comp]+1+c.lifeAdj&&rem>5) pit=true;
+      if(!pit&&scOn&&c.age>=10&&rem>8&&c.stops<3&&!c.freeStop) pit=true;
+      if(L>=total) pit=false;
+      c.pitNow=pit;
+      const r=rngFor(seed,L,c.id,"n"); const noise=gauss(r)*SIMCFG.noise;
+      let lt=c.basePace+c.k+tyreDeg(c.comp,c.age+1)-SIMCFG.fuel*(L-B.L0)+c.form+noise;
+      const i=startRank[c.id];
+      if(i>0&&!scOn){const gap=c.T-order[i-1].T; if(gap<SIMCFG.drs) lt+=SIMCFG.dirty*(1-gap/SIMCFG.drs);}
+      if(scOn) lt=c.basePace*1.34+noise*0.4;
+      c.lt0=lt;
+    }
+    const fin=new Map(), ends={};
+    for(let i=0;i<order.length;i++){
+      const c=order[i]; let end;
+      const r=rngFor(seed,L,c.id,"p");
+      if(scOn){
+        if(i===0) end=c.T+c.lt0;
+        else{const A=order[i-1]; const gs=c.T-A.T; end=fin.get(A.id)+Math.max(750,gs*0.45);}
+        if(c.pitNow) end+=SIMCFG.pitLossSC;
+      }else{
+        end=c.T+c.lt0+(c.pitNow?SIMCFG.pitLoss:0);
+        if(i>0){const A=order[i-1], Aend=fin.get(A.id);
+          if(end<Aend&&!A.pitNow&&!c.pitNow){
+            const gs=c.T-A.T, adv=A.lt0-c.lt0;
+            const pass=gs>SIMCFG.drs*1.5?true:(r()<Math.min(0.92,Math.max(0.03,0.18+adv/700)));
+            if(!pass) end=Aend+350+r()*200;
+          }
+        }
+      }
+      fin.set(c.id,end);
+    }
+    const after=[...cars].sort((a,b)=>fin.get(a.id)-fin.get(b.id));
+    // overtakes (only count a swap once, attributed to the car that moved up)
+    for(let i=0;i<after.length;i++){
+      const c=after[i];
+      for(const o of order){
+        if(o.id===c.id) continue;
+        if(startRank[o.id]<startRank[c.id]&&fin.get(c.id)<fin.get(o.id)){
+          const viaPit=o.pitNow||c.pitNow;
+          events.push({t:fin.get(c.id),L,kind:"pass",a:c.id,b:o.id,viaPit,radio:(c.id==="CAR_04"||c.id==="CAR_03")&&(o.id==="CAR_04"||o.id==="CAR_03"),
+            title:`${c.code} passes ${o.code}`,detail:`${viaPit?"Through the pit cycle":"On track"} on lap ${L}, now P${i+1}.`});
+        }
+      }
+    }
+    for(const c of cars){
+      const end=fin.get(c.id), lt=end-c.T;
+      tl[c.id].push({L,start:c.T,end,lt,comp:c.comp,age:c.age+1,pit:c.pitNow,sc:scOn});
+      if(!scOn&&!c.pitNow&&c.lt0<fastest.lt){fastest={lt:c.lt0,id:c.id,L}; events.push({t:end,L,kind:"fast",title:`Fastest lap: ${c.code}`,detail:`${lapFmt(c.lt0)} on lap ${L}.`});}
+      if(c.pitNow){
+        const nc=c.compNext||pickCompound(total-L);
+        events.push({t:end,L,kind:"pit",radio:(c.id==="CAR_04"||c.id==="CAR_03"),title:`${c.code} pits`,detail:`Lap ${L}: ${c.comp.toLowerCase()} to ${nc.toLowerCase()}${scOn?" under the safety car":""}.`});
+        c.comp=nc; c.age=0; c.stops++; c.compNext=null; c.pitNext=1e9; if(scOn) c.freeStop=true;
+      }else c.age++;
+      c.T=end;
+    }
+    if(scOn){sc--; if(sc===0) events.push({t:after[0].T,L:L+1,kind:"sc",title:"Green flag",detail:"Safety car in. Racing resumes."});}
+  }
+  const finalOrder=[...cars].sort((a,b)=>a.T-b.T);
+  events.push({t:finalOrder[0].T,L:total,kind:"fin",radio:true,title:`Chequered flag: ${finalOrder[0].code} wins`,detail:finalOrder.map((c,i)=>`P${i+1} ${c.code}`).join(", ")+"."});
+  events.sort((x,y)=>x.t-y.t);
+  return {seed,tl,events,final:finalOrder.map(c=>({id:c.id,code:c.code,T:c.T,stops:c.stops})),fastest,endT:Math.max(...cars.map(c=>c.T))};
+}
+
+/* ================= SIMULATOR UI ================= */
+const SIM={res:null,seed:7,okaPit:29,ic:[],tau:0,running:false,speed:2,lapSec:3.2,evIdx:0,seen:new Set(),chain:Promise.resolve(),finishShown:false,fastest:null,chartKey:"",lastLead:0};
+function simCompute(){ SIM.res=runSim(SIM.seed,SIM.okaPit,SIM.ic); }
+function simResetState(keepLog){
+  const B=simBase(); SIM.tau=B.tau0; SIM.running=false; SIM.evIdx=0; SIM.seen=new Set(); SIM.finishShown=false; SIM.fastest=null; SIM.chartKey="";
+  S.feed=[]; S.feedIdx=-1; renderFeed(); $("toast").classList.remove("show");
+  simRender(true);
+}
+function simEnter(){
+  SIM.seed=+$("s-seed").value||7; SIM.okaPit=+$("s-strat").value; SIM.ic=[]; simCompute(); simResetState();
+  const em=$("alx-empty"); if(em) em.remove();
+  logBubble("al","Race simulator · browser model",esc(`Ready. Seed ${SIM.seed}. Press Start to run laps ${simBase().L0+1} to ${simBase().total}. Try the safety car button mid-race, or ask me who is leading.`));
+}
+function simDist(id,tau){
+  const B=simBase(), tl=SIM.res.tl[id], T0=B.cars.find(c=>c.id===id).T0;
+  if(tau<=T0) return {D:B.L0-(T0-tau)/tl[0].lt,i:-1,f:0,done:false};
+  for(let i=0;i<tl.length;i++){ if(tau<tl[i].end){ const f=(tau-tl[i].start)/(tl[i].end-tl[i].start); return {D:tl[i].L-1+f,i,f,done:false}; } }
+  return {D:B.total,i:tl.length-1,f:1,done:true};
+}
+function simSnap(tau){
+  const B=simBase();
+  const L=B.cars.map(c=>{
+    const p=simDist(c.id,tau), tl=SIM.res.tl[c.id], cur=p.i>=0?tl[p.i]:null, prev=p.i>0?tl[p.i-1]:null;
+    return {id:c.id,code:c.code,name:c.name,team:c.team,...p,comp:cur?cur.comp:c.comp0,age:cur?cur.age:c.age0,inPit:false,
+      lastLt:prev?prev.lt:null,end:p.done?tl[tl.length-1].end:Infinity,pitNow:cur?cur.pit:false,scLap:cur?cur.sc:false};
+  });
+  L.sort((a,b)=>(a.done&&b.done)?a.end-b.end:(a.done?-1:(b.done?1:b.D-a.D)));
+  L.forEach((c,i)=>{c.pos=i+1; const ahead=L[i-1]; if(ahead){ c.gapAhead=(ahead.done&&c.done)?c.end-ahead.end:Math.max(0,(ahead.D-c.D)*(c.lastLt||92000)); } else c.gapAhead=0;});
+  return L;
+}
+function simXY(c){
+  const tlc=SIM.res.tl[c.id], k=c.i, f=c.f;
+  if(k>=0 && !c.done){
+    let u=null;
+    if(tlc[k].pit&&f>=0.915) u=(f-0.915)/0.17; else if(k>0&&tlc[k-1].pit&&f<=0.085) u=(f+0.085)/0.17;
+    if(u!=null&&PIT.length){ const x=Math.min(Math.max(u,0),1)*24, a=Math.floor(x), b=Math.min(a+1,24), t=x-a; return {x:lerp(PIT[a].x,PIT[b].x,t),y:lerp(PIT[a].y,PIT[b].y,t),pit:true}; }
+  }
+  const q=ptAt(c.done?0:c.D); return {x:q.x,y:q.y,pit:false};
+}
+function simRender(){
+  if(!pathEl||!SIM.res) return;
+  const B=simBase(), snap=simSnap(SIM.tau), lead=snap[0];
+  const lapNow=Math.min(Math.floor(lead.D)+1,B.total), done=lead.done;
+  $("lap").textContent=lapNow; $("total").textContent=B.total; $("tower-lap").textContent="Lap "+lapNow;
+  const scNow=!done&&lead.scLap;
+  const fl=$("flag"); fl.className="flag"+(done&&snap.every(c=>c.done)?" done":(SIM.running?"":" idle")); $("flagtxt").textContent=snap.every(c=>c.done)?"Chequered flag":(scNow?"Safety car":(SIM.running?"Green flag":(SIM.tau>B.tau0?"Paused":"Ready")));
+  // tower
+  const ul=$("tower"); ul.style.height=(snap.length*58)+"px";
+  const fastest=SIM.fastest;
+  snap.forEach((c,idx)=>{
+    let li=towerEls[c.id];
+    if(!li){ li=document.createElement("li"); li.className="row"; li.innerHTML=`<span class="pos num"></span><span class="bar"></span><span class="who"><span class="code"></span><span class="team"></span></span><span class="gap num"></span><span class="tyre"><span class="tl"></span><em></em></span>`; ul.appendChild(li); towerEls[c.id]=li; }
+    li.style.transform=`translateY(${idx*58}px)`; li.classList.toggle("hl",c.id==="CAR_04"); li.classList.toggle("tgt",c.id==="CAR_03");
+    li.querySelector(".pos").textContent=c.pos;
+    li.querySelector(".bar").style.background=TEAM[c.team]||"#888";
+    li.querySelector(".code").textContent=c.code;
+    const stops=SIM.res.tl[c.id].filter((x,ii)=>x.pit&&(c.i<0?false:ii<c.i)).length+simBase().cars.find(x=>x.id===c.id).stops0;
+    li.querySelector(".team").textContent=c.name+" · "+stops+" stop"+(stops===1?"":"s");
+    const isF=fastest&&fastest.id===c.id&&c.lastLt&&Math.abs(c.lastLt-fastest.lt)<1;
+    li.querySelector(".gap").innerHTML=(c.pos===1?"Leader":fmt(c.gapAhead))+`<small style="${isF?"color:var(--purple,#9b2fd8);font-weight:700":""}">${c.lastLt?lapFmt(c.lastLt):"--"}</small>`;
+    const ty=li.querySelector(".tyre"); ty.style.setProperty("--c",TYRE[c.comp]||"#999"); ty.querySelector(".tl").textContent=c.pitNow&&c.f>=0.915?"P":c.comp[0]; ty.querySelector("em").textContent=c.age+"L";
+  });
+  // cars on circuit
+  let g=$("simcars"); if(!g){ g=document.createElementNS("http://www.w3.org/2000/svg","g"); g.id="simcars"; $("track").appendChild(g); }
+  snap.forEach(c=>{
+    let el=g.querySelector(`[data-id="${c.id}"]`);
+    if(!el){ el=document.createElementNS("http://www.w3.org/2000/svg","g"); el.dataset.id=c.id; el.innerHTML=`<circle class="car-dot" r="12"/><text class="pn" text-anchor="middle" y="5" fill="#fff" font-weight="800" font-size="13" font-family="${css("--font-display")}"></text><text class="carlabel" y="-17" text-anchor="middle"></text>`; g.appendChild(el); }
+    const p=simXY(c); el.setAttribute("transform",`translate(${p.x} ${p.y})`);
+    const dot=el.querySelector("circle"); dot.setAttribute("fill",TEAM[c.team]||"#888"); dot.setAttribute("stroke",c.id==="CAR_04"?css("--ink"):"#fff");
+    el.querySelector(".pn").textContent=c.pos; const lb=el.querySelector(".carlabel"); lb.textContent=c.code; lb.setAttribute("y",c.id==="CAR_04"?"30":"-17");
+  });
+  let scEl=g.querySelector('[data-sc]');
+  if(scNow){ if(!scEl){ scEl=document.createElementNS("http://www.w3.org/2000/svg","g"); scEl.dataset.sc="1"; scEl.innerHTML=`<circle r="11" fill="#ffd200" stroke="#15151e" stroke-width="2.5"/><text text-anchor="middle" y="4" font-size="10" font-weight="800" fill="#15151e">SC</text>`; g.appendChild(scEl); } const q=ptAt(lead.D+0.035); scEl.setAttribute("transform",`translate(${q.x} ${q.y})`); }
+  else if(scEl) scEl.remove();
+  // telemetry strip
+  const raceClock=B.race0+(SIM.tau-B.tau0), best=SIM.fastest;
+  $("telem").innerHTML=`<div>Track<b><i class="fl" style="background:${scNow?"var(--warn)":"var(--good)"}"></i>${scNow?"SAFETY CAR":"GREEN"}</b></div>
+    <div>Race time<b>${clock(raceClock)}</b></div><div>Leader<b>${lead.code}</b></div>
+    <div>Lead over P2<b>${snap[1]?(lead.done&&snap[1].done?fmt(snap[1].end-lead.end).replace("+",""):((lead.D-snap[1].D)*(lead.lastLt||92000)/1000).toFixed(1)+"s"):"--"}</b></div>
+    <div>Fastest lap<b style="color:var(--purple,#9b2fd8)">${best?best.code+" "+lapFmt(best.lt):"--"}</b></div>
+    <div>Model<b>Browser sim</b></div>`;
+  $("alx-watch").textContent=`Race simulator · seed ${SIM.seed}`;
+  // events -> feed + copilot
+  const evs=SIM.res.events;
+  while(SIM.evIdx<evs.length&&evs[SIM.evIdx].t<=SIM.tau){
+    const e=evs[SIM.evIdx++], key=e.kind+"|"+e.L+"|"+e.title;
+    if(e.kind==="fast"){ SIM.fastest={id:e.title.split(": ")[1],lt:parseLapStr(e.detail),code:e.title.split(": ")[1]}; const car=simBase().cars.find(c=>c.code===SIM.fastest.code); SIM.fastest.id=car?car.id:null; }
+    if(SIM.seen.has(key)) continue; SIM.seen.add(key);
+    const kind=e.kind==="pass"?"alert":(e.kind==="pit"?"lap":(e.kind==="fast"?"lap":"start"));
+    S.feed.unshift({kind,lap:e.L,title:e.title,detail:e.detail}); renderFeed();
+    if(e.radio) simRadio(e);
+  }
+  simCharts(snap); simTyres(snap);
+  const allDone=snap.every(c=>c.done);
+  if(allDone&&!SIM.finishShown){ SIM.finishShown=true; SIM.running=false; setTimeout(simFinishDialog,700); }
+  $("s-sc").disabled=!(SIM.tau>B.tau0&&!allDone&&lapNow<B.total-4&&!scNow&&!SIM.ic.some(x=>x.lap>lapNow));
+}
+function parseLapStr(d){ const m=/(\d+):(\d+\.\d+)/.exec(d); return m?(+m[1])*60000+parseFloat(m[2])*1000:0; }
+function simRadio(e){
+  const B=simBase(), text=e.title+". "+e.detail;
+  SIM.chain=SIM.chain.then(()=>cpReply({radio:true,cls:"pro",tag:"TEAM RADIO · simulated race",trace:[{call:`RaceSimulator.lap(${e.L})`,result:`${e.kind==="sc"?"safety car state changed":e.kind==="pass"?"order change detected":e.kind==="pit"?"pit stop logged":"result recorded"}`}],plain:text,say:text}));
+}
+function simCharts(snap){
+  const B=simBase(), lead=snap[0];
+  const n=SIM.res.tl.CAR_03.filter(x=>x.end<=SIM.tau&&true).length;
+  // completed laps = laps whose leader end has passed
+  const doneLaps=SIM.res.tl.CAR_03.filter((x,i)=>Math.min(...B.cars.map(c=>SIM.res.tl[c.id][i].end))<=SIM.tau).length;
+  const key=doneLaps+":"+document.documentElement.dataset.theme+":"+SIM.res.seed+":"+SIM.res.events.length; if(key===SIM.chartKey) return; SIM.chartKey=key;
+  const NL=B.total-B.L0, W=300,H=110,pl=24,pr=8,pt=8,pb=16, X=i=>pl+(W-pl-pr)*i/(NL-1), Yp=r=>pt+(H-pt-pb)*(r-1)/3;
+  let svg=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/>`;
+  for(let r=1;r<=4;r++) svg+=`<text x="${pl-5}" y="${Yp(r)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">P${r}</text><line x1="${pl}" x2="${W-pr}" y1="${Yp(r)}" y2="${Yp(r)}" stroke="var(--line)" stroke-dasharray="2 4"/>`;
+  const rank=(i)=>{const arr=B.cars.map(c=>({id:c.id,e:SIM.res.tl[c.id][i].end})).sort((a,b)=>a.e-b.e); const m={}; arr.forEach((a,k)=>m[a.id]=k+1); return m;};
+  B.cars.forEach(c=>{
+    const pts=[]; for(let i=0;i<doneLaps;i++) pts.push([X(i),Yp(rank(i)[c.id])]);
+    if(pts.length){ svg+=`<polyline fill="none" stroke="${TEAM[c.team]||"#888"}" stroke-width="${c.id==="CAR_04"?3.2:2}" stroke-linejoin="round" points="${pts.map(p=>p.join(",")).join(" ")}"/>`;
+      SIM.res.tl[c.id].forEach((l,i)=>{ if(i<doneLaps&&l.pit) svg+=`<circle cx="${X(i)}" cy="${Yp(rank(i)[c.id])}" r="3.4" fill="var(--panel)" stroke="${TEAM[c.team]||"#888"}" stroke-width="1.8"/>`; });
+      const last=pts[pts.length-1]; svg+=`<text x="${last[0]+4}" y="${last[1]+3}" font-size="9" font-weight="700" fill="${TEAM[c.team]||"#888"}">${c.code}</text>`; }
+  });
+  [0,Math.round(NL/2),NL-1].forEach(i=>svg+=`<text x="${X(i)}" y="${H-3}" text-anchor="middle" font-size="9" fill="var(--ink3)">L${B.L0+1+i}</text>`);
+  // lap-time chart
+  const Y2=(v)=>pt+(H-pt-pb)*(1-(v-89500)/(5500));
+  let s2=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/><text x="${pl-4}" y="${Y2(95000)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">1:35</text><text x="${pl-4}" y="${Y2(90000)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">1:30</text>`;
+  B.cars.forEach(c=>{
+    let seg=[]; const flush=()=>{ if(seg.length>1) s2+=`<polyline fill="none" stroke="${TEAM[c.team]||"#888"}" stroke-width="${c.id==="CAR_04"?2.6:1.6}" points="${seg.join(" ")}"/>`; seg=[]; };
+    SIM.res.tl[c.id].forEach((l,i)=>{ if(i>=doneLaps) return; if(l.pit||l.sc){flush();return;} seg.push(X(i)+","+Y2(Math.min(Math.max(l.lt,89500),95000))); }); flush();
+  });
+  if(SIM.sc) {}
+  $("simcharts").innerHTML=`<figure><figcaption>Lap chart<span>positions, rings = pit stops</span></figcaption><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${svg}</svg></figure>
+   <figure><figcaption>Lap times<span>pit and safety car laps hidden</span></figcaption><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${s2}</svg></figure>`;
+}
+function simTyres(snap){
+  const rows=[...snap].sort((a,b)=>a.id<b.id?-1:1).map(c=>{
+    const life=SIMCFG.life[c.comp], pct=Math.min(1,c.age/(life+1)), hot=pct>0.85;
+    return `<div class="tyrow"><b>${c.code}</b><span class="tdot" style="background:${TYRE[c.comp]}"></span><span class="tbar"><i style="width:${Math.round(pct*100)}%;background:${hot?"var(--bad)":(pct>0.6?"var(--warn)":"var(--good)")}"></i></span><span class="tn">${c.age}/${life} laps</span></div>`; }).join("");
+  $("tyres").innerHTML=rows;
+}
+function simFinishDialog(){
+  const r=SIM.res, W=r.final[0];
+  $("dlg-t").textContent="Chequered flag";
+  $("dlg-b").innerHTML=`<p style="margin-top:0">${W.code} wins the simulated race (seed ${r.seed}). Every run with the same seed gives the same race.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:14px">${r.final.map((f,i)=>`<tr style="border-top:1px solid var(--line)"><td style="padding:8px 4px;font-family:var(--font-display);font-size:20px;font-weight:700">P${i+1}</td><td><b>${f.code}</b></td><td>${i===0?"Winner":"+"+((f.T-W.T)/1000).toFixed(1)+"s"}</td><td>${f.stops} stops</td></tr>`).join("")}</table>
+  <p style="color:var(--ink3);font-size:12px">Browser model of tyre wear, fuel burn, dirty air, pit stops, overtaking odds and safety cars, seeded from the scenario's real car data. It is separate from the backend strategy engine.</p>
+  <p><button class="btn primary" id="again" type="button">Run another seed</button></p>`;
+  $("dlg").showModal(); $("again").onclick=()=>{ $("dlg").close(); $("s-newseed").click(); $("s-start").click(); };
+}
+/* controls */
+function simStart(){ if(SIM.tau>=SIM.res.endT-1||SIM.finishShown){ simResetState(); } SIM.running=true; }
+$("s-start").onclick=simStart;
+$("s-pause").onclick=()=>{ SIM.running=false; simRender(); };
+$("s-reset").onclick=()=>{ SIM.ic=[]; simCompute(); simResetState(); };
+$("s-seed").onchange=()=>{ SIM.seed=+$("s-seed").value||7; SIM.ic=[]; simCompute(); simResetState(); };
+$("s-newseed").onclick=()=>{ $("s-seed").value=1+Math.floor(Math.random()*9000); $("s-seed").onchange(); };
+$("s-strat").onchange=()=>{ SIM.okaPit=+$("s-strat").value; SIM.ic=[]; simCompute(); simResetState(); logBubble("al","Race simulator",esc(SIM.okaPit===29?"OKA follows the engine's plan: pit on lap 29.":"OKA stays out and pits on lap 36 instead.")); };
+$("sspeed").onclick=e=>{ const s=e.target.dataset&&e.target.dataset.s; if(!s) return; SIM.speed=+s; [...$("sspeed").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===s)); };
+$("s-sc").onclick=()=>{
+  const snap=simSnap(SIM.tau), lapNow=Math.floor(snap[0].D)+1, L=lapNow+1;
+  SIM.ic.push({lap:L,type:"sc"}); const keepTau=SIM.tau; simCompute(); SIM.evIdx=SIM.res.events.filter(e=>e.t<=keepTau).length; SIM.chartKey="";
+  logBubble("me","",esc("Deploy the safety car")); logBubble("al","Race simulator · what-if",esc(`Safety car requested for lap ${L}. The field bunches up and pitting costs about half as much. Watch who dives into the pits.`));
+};
+function simTick(dt){
+  if(!SIM.res) return;
+  if(SIM.running){ SIM.tau=Math.min(SIM.tau+dt*(92000/(SIM.lapSec/SIM.speed)),SIM.res.endT+500); }
+  simRender();
+}
+/* Q&A about the simulated race */
+function simAnswer(q){
+  const snap=simSnap(SIM.tau), lead=snap[0], lap=Math.min(Math.floor(lead.D)+1,simBase().total), codes=snap.map(c=>c.code);
+  const mentioned=codes.filter(c=>new RegExp("\\b"+c+"\\b","i").test(q)||new RegExp(c.replace("CAR_",""),"i").test(q)&&false);
+  const car=n=>snap.find(c=>c.code===n);
+  const tr=(res)=>[{call:`RaceSimulator.snapshot(lap=${lap}, seed=${SIM.seed})`,result:res}];
+  let m;
+  if(/lead|first|p1|winning|ahead of everyone/i.test(q)){ const p2=snap[1]; const txt=`${lead.code} leads on lap ${lap}, ${fmt(p2.gapAhead).replace("+","")} ahead of ${p2.code}.`; return {tag:"Race simulator · browser model",trace:tr(`P1=${lead.code}`),plain:txt,say:txt}; }
+  if(/gap/i.test(q)){ const txt=snap.map(c=>c.pos===1?`${c.code} leads`:`${c.code} is ${fmt(c.gapAhead)} behind ${snap[c.pos-2].code}`).join(". ")+"."; return {tag:"Race simulator · browser model",trace:tr("gaps to car ahead"),plain:txt,say:txt}; }
+  if(/tyre|tire|compound|wear/i.test(q)){ const txt=snap.map(c=>`${c.code} is on ${c.comp.toLowerCase()}s, ${c.age} laps old`).join(". ")+"."; return {tag:"Race simulator · browser model",trace:tr("tyre ages"),plain:txt,say:txt}; }
+  if(/fastest/i.test(q)){ const f=SIM.fastest; const txt=f?`${f.code} has the fastest lap so far, ${lapFmt(f.lt)}.`:"No fastest lap has been set yet."; return {tag:"Race simulator · browser model",trace:tr(f?`fastest=${f.code}`:"none yet"),plain:txt,say:txt}; }
+  if(/safety car/i.test(q)){ const on=lead.scLap&&!lead.done; const txt=on?"The safety car is out right now.":"Green flag racing. Use the Safety car button to see what changes."; return {tag:"Race simulator · browser model",trace:tr(on?"SC active":"green"),plain:txt,say:txt}; }
+  if(/pit|box|stop|strateg/i.test(q)){
+    const txt=snap.map(c=>{ const tl=SIM.res.tl[c.id], next=tl.find((l,i)=>l.pit&&(c.i<0||i>=c.i)); return `${c.code}: ${next?"next stop lap "+next.L:"no more stops planned"}`; }).join(". ")+".";
+    return {tag:"Race simulator · browser model",trace:tr("pit plans from the model"),plain:txt+" These come from the browser model, not the backend engine.",say:txt}; }
+  return null;
+}
 
 /* ================= boot ================= */
 loadReplay(); drawTrack(); setTheme(document.documentElement.dataset.theme||"broadcast"); render(true);
