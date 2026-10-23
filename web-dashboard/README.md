@@ -73,3 +73,9 @@ Two new Simulator-only pages, **Telemetry** and **Strategy** (keys 2 and 3; Anal
 | Real-time ingestion, Kafka/Redis, FastF1, speech-to-text | See `docs/TELEMETRY_ROADMAP.md` | **Roadmap only, not built** |
 
 Screenshots: `screenshots/page-telemetry.png`, `screenshots/page-strategy.png`.
+
+## Track rendering (v9)
+
+The circuit map zooms to fit each outline, so every layout fills the card. Surfaces follow a simple real-circuit look: mown-grass stripes, a gravel run-off band, white edge lines on straights, red and white kerbs only through corners, a darker rubbered line, DRS zones in green, numbered corners and sector marks. The onboard strip (speed, gear, throttle, brake, DRS) now sits under the map instead of covering the track. Outlines are simplified from open map data and are illustrative.
+
+![Circuits](screenshots/circuits-eight-styles.png)

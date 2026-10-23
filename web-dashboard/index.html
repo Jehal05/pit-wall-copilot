@@ -342,24 +342,24 @@ html:not([data-theme="heritage"]) .row .code{font-style:italic;font-size:23px;le
 .lt3 .tc{width:6px;background:var(--tc,#e10600)}
 @keyframes ltin{from{transform:translateX(105%)}to{transform:none}}
 @keyframes ltout{to{transform:translateX(105%)}}
-.cam{position:absolute;left:10px;bottom:10px;z-index:3;width:196px;background:rgba(21,21,30,.9);color:#fff;font-family:var(--font-display);clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%)}
+.cam{display:grid;grid-template-columns:auto auto minmax(120px,1fr) auto;align-items:center;column-gap:22px;background:#15151e;color:#fff;font-family:var(--font-display);padding:6px 16px;border-top:3px solid var(--tc,#e10600)}
 .cam:empty{display:none}
-.cam .h{display:flex;align-items:center;gap:8px;padding:5px 10px;border-bottom:1px solid rgba(255,255,255,.14);font-size:12px;letter-spacing:.1em}
+.cam .h{display:flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.1em}
 .cam .h i{width:5px;height:16px;background:var(--tc);transform:skewX(-16deg)}
 .cam .h b{font:italic 800 18px var(--font-display);letter-spacing:.04em}
-.cam .h span{margin-left:auto;font-size:10px;color:#9ea3b3;letter-spacing:.08em}
-.cam .m{display:flex;align-items:flex-end;gap:14px;padding:4px 12px 2px}
+.cam .h span{margin-left:6px;font-size:10px;color:#9ea3b3;letter-spacing:.08em}
+.cam .m{display:flex;align-items:flex-end;gap:16px}
 .cam .m div{line-height:1}
-.cam .m b{font:italic 800 38px var(--font-display);font-variant-numeric:tabular-nums}
+.cam .m b{font:italic 800 32px var(--font-display);font-variant-numeric:tabular-nums}
 .cam .m small{display:block;font-size:10px;letter-spacing:.14em;color:#9ea3b3;margin-top:1px}
-.cam .m .g b{font-size:30px;color:#ffd200}
-.cam .tb{display:grid;grid-template-columns:30px 1fr;gap:3px 8px;padding:2px 12px 4px;font-size:10px;letter-spacing:.14em;color:#9ea3b3;align-items:center}
+.cam .m .g b{font-size:26px;color:#ffd200}
+.cam .tb{display:grid;grid-template-columns:30px 1fr;gap:3px 8px;font-size:10px;letter-spacing:.14em;color:#9ea3b3;align-items:center}
 .cam .tb s{display:block;height:6px;background:rgba(255,255,255,.14);text-decoration:none}
 .cam .tb s i{display:block;height:100%}
-.cam .dr{padding:3px 12px 6px;font:italic 800 12px var(--font-display);letter-spacing:.16em;color:#6b7080}
+.cam .dr{white-space:nowrap;font:italic 800 12px var(--font-display);letter-spacing:.16em;color:#6b7080}
 .cam .dr.on{color:#19e08a}
 .cam .dr em{float:right;font-style:normal;color:#9ea3b3;font-weight:600;font-size:10px}
-@media (max-width:760px){.cam{width:150px}.cam .m b{font-size:28px}}
+@media (max-width:760px){.cam{grid-template-columns:1fr 1fr;row-gap:6px}.cam .m b{font-size:26px}}
 /* start lights */
 .lights{position:absolute;inset:0;z-index:6;display:grid;place-content:center;justify-items:center;gap:14px;background:rgba(21,21,30,.45);transition:opacity .6s}
 .lights.out{opacity:0}
@@ -584,9 +584,9 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="trackwrap"><svg class="track" id="track" viewBox="0 0 800 470" role="img" aria-label="Circuit map with live car positions"></svg>
         <div class="banner" id="banner" hidden></div>
         <div class="lt3" id="lt3" hidden></div>
-        <div class="cam only-sim" id="cam"></div>
         <div class="lights" id="lights" hidden><div class="gantry"><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div></div><div class="lmsg" id="lmsg"></div></div>
       </div>
+      <div class="cam only-sim" id="cam"></div>
       <div class="controls only-replay">
         <button class="btn primary" id="b-start">Start</button>
         <button class="btn" id="b-pause">Pause</button>
@@ -803,22 +803,30 @@ let PATH = PATH_MERIDIAN, PITSPAN = 0.085, TW = 29;
 const REPLAY_TRACK = {path:PATH_MERIDIAN,pitSpan:0.085,tw:29};
 let pathEl=null, plen=0, PIT=[];
 function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function fitView(svg){ const tmp=document.createElementNS("http://www.w3.org/2000/svg","path"); tmp.setAttribute("d",PATH); svg.appendChild(tmp); const b=tmp.getBBox(); tmp.remove();
+  const m=TW*1.35+16, A=800/470; let w=b.width+2*m, h=b.height+2*m; if(w/h>A) h=w/A; else w=h*A;
+  const cx=b.x+b.width/2, cy=b.y+b.height/2; VB={x:cx-w/2,y:cy-h/2,w,h}; svg.setAttribute("viewBox",`${VB.x.toFixed(1)} ${VB.y.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)}`); }
+let VB={x:0,y:0,w:800,h:470};
 function drawTrack(){
-  const svg=$("track");
-  let rl=""; for(let i=0;i<150;i++){ const x=(i*97)%830-15, y=(i*61)%470; rl+=`<line class="rl" x1="${x}" y1="${y}" x2="${x-4}" y2="${y+15}" style="animation-delay:-${((i*0.137)%0.6).toFixed(2)}s"/>`; }
+  const svg=$("track"); fitView(svg);
+  let rl=""; for(let i=0;i<150;i++){ const x=VB.x+((i*97)%830-15)*VB.w/800, y=VB.y+((i*61)%470)*VB.h/470; rl+=`<line class="rl" x1="${x}" y1="${y}" x2="${x-4*VB.w/800}" y2="${y+15*VB.w/800}" style="animation-delay:-${((i*0.137)%0.6).toFixed(2)}s"/>`; }
   svg.dataset.fx="";
   svg.innerHTML=`
     <defs><pattern id="chk" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#fff"/><rect x="4" y="4" width="4" height="4" fill="#fff"/><rect x="4" width="4" height="4" fill="#15151e"/><rect y="4" width="4" height="4" fill="#15151e"/></pattern></defs>
-    <path d="${PATH}" fill="none" stroke="#cdbf97" stroke-width="${TW+30}" stroke-linejoin="round" opacity=".38"/>
-    <path d="${PATH}" fill="none" stroke="#b9ab84" stroke-width="${TW+17}" stroke-linejoin="round" opacity=".32"/>
-    <path d="${PATH}" fill="none" stroke="${css("--kerb-a")}" stroke-width="${TW+7}" stroke-linejoin="round"/>
-    <path d="${PATH}" fill="none" stroke="${css("--kerb-b")}" stroke-width="${TW+7}" stroke-linejoin="round" stroke-dasharray="${Math.round(TW*0.48)} ${Math.round(TW*0.48)}"/>
-    <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="${TW}" stroke-linejoin="round"/>
+    <pattern id="mow" width="38" height="38" patternUnits="userSpaceOnUse" patternTransform="rotate(32)"><rect width="19" height="38" fill="rgba(0,0,0,.035)"/></pattern>
+    <rect x="${VB.x-50}" y="${VB.y-50}" width="${VB.w+100}" height="${VB.h+100}" fill="url(#mow)"/>
+    <path d="${PATH}" fill="none" stroke="#9ea18f" stroke-width="${TW+46}" stroke-linejoin="round" opacity=".22"/>
+    <path d="${PATH}" fill="none" stroke="#d2c29a" stroke-width="${TW+34}" stroke-linejoin="round" opacity=".62"/>
+    <path d="${PATH}" fill="none" stroke="#e7dcc0" stroke-width="${TW+20}" stroke-linejoin="round" opacity=".5"/>
+    <path d="${PATH}" fill="none" stroke="#1b1e27" stroke-width="${TW+5}" stroke-linejoin="round" opacity=".55"/>
+    <path d="${PATH}" fill="none" stroke="#ffffff" stroke-width="${TW+3}" stroke-linejoin="round"/>
+    <g id="kerbs"></g>
+    <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="${TW-1.5}" stroke-linejoin="round"/>
     <path id="wetlay" d="${PATH}" fill="none" stroke="#7fa3d4" stroke-width="${TW}" stroke-linejoin="round" opacity="0"/>
     <path id="sheen" d="${PATH}" fill="none" stroke="#ffffff" stroke-width="${Math.max(2,TW/10)}" stroke-dasharray="2 18" stroke-linecap="round" opacity="0"/>
-    <path id="centre" d="${PATH}" fill="none" stroke="${css("--lane")}" stroke-width="1.6" stroke-dasharray="9 12" opacity=".55"/>
+    <path id="centre" d="${PATH}" fill="none" stroke="#000" stroke-width="${(TW*0.34).toFixed(1)}" stroke-linejoin="round" opacity=".13"/>
     <g id="trkfx"></g><g id="sf"></g><g id="cars"></g>
-    <g id="wxfx" pointer-events="none"><rect id="skytint" width="800" height="470" fill="#3d5069" opacity="0"/><g id="rainlines" opacity="0">${rl}</g></g>`;
+    <g id="wxfx" pointer-events="none"><rect id="skytint" x="${VB.x}" y="${VB.y}" width="${VB.w}" height="${VB.h}" fill="#3d5069" opacity="0"/><g id="rainlines" opacity="0">${rl}</g></g>`;
   pathEl=$("centre"); plen=pathEl.getTotalLength();
   const p0=pathEl.getPointAtLength(1), p1=pathEl.getPointAtLength(6);
   const a=Math.atan2(p1.y-p0.y,p1.x-p0.x)*180/Math.PI;
@@ -877,6 +885,13 @@ function analyzeTrack(){
     let nx=-ty*(-c.s), ny=tx*(-c.s); const o=TW*0.5+9; const x=a[0]+nx*o, y=a[1]+ny*o;
     svg+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7.4" fill="#fff" stroke="#15151e" stroke-width="1.2"/><text class="cornr" x="${x.toFixed(1)}" y="${(y+3.4).toFixed(1)}" text-anchor="middle">${c.n}</text>`; });
   $("trkfx").innerHTML=svg;
+  // kerbs: only through corners (curvature above a threshold), alternating red/white blocks on both edges
+  let kb=""; let i0=ks.findIndex(x=>x<0.07); if(i0<0) i0=0; let cur=null; const segs=[];
+  for(let q=0;q<=N;q++){ const i=(i0+q)%N, hi=ks[i]>0.27; if(hi){ if(!cur) cur={s:i,len:0}; cur.len++; } else if(cur){ segs.push(cur); cur=null; } } if(cur) segs.push(cur);
+  segs.filter(g=>g.len>=5).forEach(g=>{ const a=Math.max(0,g.s-2), n=g.len+4, pp=[]; for(let q=0;q<=n;q++) pp.push(pts[(a+q)%N].map(v=>v.toFixed(1)).join(","));
+    const pl=pp.join(" "), w=TW+6, dsh=Math.max(5,Math.round(TW*0.3));
+    kb+=`<polyline points="${pl}" fill="none" stroke="${css("--kerb-a")}" stroke-width="${w}" stroke-linejoin="round"/><polyline points="${pl}" fill="none" stroke="${css("--kerb-b")}" stroke-width="${w}" stroke-linejoin="round" stroke-dasharray="${dsh} ${dsh}"/>`; });
+  const kg=$("kerbs"); if(kg) kg.innerHTML=kb;
 }
 function trkAt(f){ const N=TRK.n; if(!N) return {v:200,thr:.6,brk:0,drs:false}; const x=((f%1)+1)%1*N, i=Math.floor(x)%N, j=(i+1)%N, u=x-Math.floor(x);
   const dz=TRK.drs.some(z=>{ const a=z.s/N, b=(z.s+z.len)/N; const ff=((f%1)+1)%1; return b>a?(ff>=a&&ff<=b):(ff>=a||ff<=b%1); });
