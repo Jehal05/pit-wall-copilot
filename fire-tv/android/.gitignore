@@ -1,0 +1,18 @@
+# Android/Gradle build outputs and local machine config — never committed.
+*.iml
+.gradle
+local.properties
+*.hprof
+.cxx/
+build/
+app/build/
+
+# Never commit a real release-signing keystore or its credentials (spec
+# v1.1 repair 11: "no production credential may be stored in ... Gradle
+# files"). debug.keystore is the standard RN placeholder debug-only key
+# and is intentionally NOT ignored — see app/build.gradle's signingConfigs
+# and README.md's "Building a release APK" section for how a real release
+# keystore is supplied out-of-band instead.
+*.jks
+!debug.keystore
+release.keystore.properties

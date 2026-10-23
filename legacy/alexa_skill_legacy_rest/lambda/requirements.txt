@@ -1,0 +1,6 @@
+ask-sdk-core==1.19.0
+# Spec v1.1 pass 4, mandatory correction 11 (security scan action item):
+# requests==2.32.3 was flagged by pip-audit (PYSEC-2026-1872/2275, fixed
+# in 2.32.4/2.33.0) — bumped to 2.33.0. Legacy Alexa skill test suite (19
+# tests) re-run and confirmed passing unchanged.
+requests==2.33.0

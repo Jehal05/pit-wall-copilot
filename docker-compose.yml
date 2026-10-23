@@ -1,0 +1,117 @@
+# Local-dev convenience compose file (Gate 5) — NOT used by the automated
+# test suite (which runs the backend directly via pytest/uvicorn, no
+# Docker involved) and NOT build-tested in this environment: a Docker
+# daemon IS available here, but the base image pull it depends on
+# (backend/Dockerfile's `FROM python:3.11-slim`) is blocked by this
+# environment's outbound proxy allowlist — see backend/Dockerfile's module
+# docstring for the exact error.
+# Reviewed against the Dockerfile and app/config.py's env vars, but
+# building/running this for the first time is real work for whoever picks
+# up Gate 5 with an unrestricted Docker daemon available.
+#
+# Two ways to use it:
+#   docker compose up backend                    # STATE_REPOSITORY=memory, no AWS
+#
+#   STATE_REPOSITORY=dynamodb DYNAMODB_ENDPOINT_URL=http://dynamodb-local:8000 \
+#     docker compose --profile dynamodb-local up
+#                                                  # backend + a local DynamoDB
+#                                                  # (dynamodb-local), talking to
+#                                                  # it over the compose network
+#                                                  # (note: dynamodb-local, the
+#                                                  # container hostname, not
+#                                                  # localhost — that only
+#                                                  # resolves from the host).
+#
+# dynamodb-local does NOT auto-create the table — run the AWS CLI example
+# in infrastructure/README.md against http://localhost:8001 (from the
+# host) first, or let the backend fail fast with a clear boto3
+# ResourceNotFoundException, which is more informative than the app
+# silently falling back to memory.
+#
+# Credentials (spec v1.1 repair 11): this file sets NO default/fallback
+# value for DEMO_ACCESS_TOKEN — that would be exactly the kind of bundled
+# working secret repair 11 requires removing. Local convenience instead
+# comes from LOCAL_DEMO_AUTH_MODE=true (also the default below), which
+# makes the backend generate and print its own ephemeral token at
+# container startup (`docker compose logs backend`) — never a fixed
+# string checked into this repo.
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    # Spec v1.1 pass 3, correction 6: redeclared explicitly (compose does
+    # not require this — the image's own Dockerfile HEALTHCHECK would
+    # already apply — but stating it here makes `docker compose config`
+    # show it directly, and lets mcp_server's `condition:
+    # service_healthy` dependency below reference it unambiguously).
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys,urllib.request\ntry:\n    with urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2) as r:\n        sys.exit(0 if r.status == 200 else 1)\nexcept Exception:\n    sys.exit(1)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    environment:
+      STATE_REPOSITORY: ${STATE_REPOSITORY:-memory}
+      DYNAMODB_TABLE_NAME: ${DYNAMODB_TABLE_NAME:-pit-wall-race-state}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      DYNAMODB_ENDPOINT_URL: ${DYNAMODB_ENDPOINT_URL:-}
+      LLM_PROVIDER: ${LLM_PROVIDER:-template}
+      # Spec v1.1 repair 11: no hardcoded/default token here. Leave
+      # DEMO_ACCESS_TOKEN unset for local dev and instead set
+      # LOCAL_DEMO_AUTH_MODE=true (below) — the backend then generates a
+      # fresh random token itself at startup and prints it once to its own
+      # container logs (see app/main.py / app/config.py). To point this
+      # compose file at a real deployed secret instead, set
+      # DEMO_ACCESS_TOKEN in your shell/.env before `docker compose up`
+      # (never edit a default value into this file).
+      DEMO_ACCESS_TOKEN: ${DEMO_ACCESS_TOKEN:-}
+      LOCAL_DEMO_AUTH_MODE: ${LOCAL_DEMO_AUTH_MODE:-true}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:8081,http://10.0.2.2:8081,http://localhost:19006}
+      EXPLAIN_RATE_LIMIT_PER_MINUTE: ${EXPLAIN_RATE_LIMIT_PER_MINUTE:-30}
+      # Real AWS credentials, if STATE_REPOSITORY=dynamodb points at a real
+      # (non-local) table, come from your usual mechanism (mounted
+      # ~/.aws, IAM role, etc.) — never hardcoded here or in .env.example.
+
+  # Spec v1.1 pass 3, correction 6: the mcp_server image, wired to depend
+  # on a HEALTHY backend (not merely a started one) — `docker compose up
+  # mcp_server` will wait for the backend's own healthcheck above to pass
+  # before starting this service. Optional — `docker compose up backend`
+  # alone still works exactly as before for anyone who only needs the
+  # backend.
+  mcp_server:
+    build:
+      context: .
+      dockerfile: mcp_server/Dockerfile
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys,urllib.request\ntry:\n    with urllib.request.urlopen('http://127.0.0.1:9000/ready', timeout=2) as r:\n        sys.exit(0 if r.status == 200 else 1)\nexcept Exception:\n    sys.exit(1)"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      PIT_WALL_API_BASE_URL: http://backend:8000
+      # Spec v1.1 repair 11 / pass 3 correction 5: no default/fallback
+      # token here either — set these in your shell/.env before `docker
+      # compose up mcp_server`, exactly like backend's own DEMO_ACCESS_TOKEN.
+      PIT_WALL_DEMO_ACCESS_TOKEN: ${PIT_WALL_DEMO_ACCESS_TOKEN:-}
+      PIT_WALL_MCP_ACCESS_TOKEN: ${PIT_WALL_MCP_ACCESS_TOKEN:-}
+
+  # Only started with `--profile dynamodb-local` — a real DynamoDB running
+  # locally in a container, for exercising STATE_REPOSITORY=dynamodb without
+  # a real AWS account (distinct from moto, which mocks DynamoDB inside the
+  # test process rather than running an actual local server).
+  dynamodb-local:
+    image: amazon/dynamodb-local:2.5.2
+    profiles: ["dynamodb-local"]
+    ports:
+      - "8001:8000"
+    command: ["-jar", "DynamoDBLocal.jar", "-inMemory", "-sharedDb"]

@@ -1,0 +1,126 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "pit wall copilot",
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "CheckUndercutIntent",
+          "slots": [
+            {
+              "name": "CandidateDriver",
+              "type": "DRIVER_ID"
+            },
+            {
+              "name": "TargetDriver",
+              "type": "DRIVER_ID"
+            }
+          ],
+          "samples": [
+            "can {CandidateDriver} undercut {TargetDriver}",
+            "check the undercut for {CandidateDriver} against {TargetDriver}",
+            "should {CandidateDriver} pit now to undercut {TargetDriver}",
+            "what's the undercut window for {CandidateDriver} on {TargetDriver}",
+            "is the undercut window open for {CandidateDriver} versus {TargetDriver}"
+          ]
+        },
+        {
+          "name": "CreateWatchIntent",
+          "slots": [
+            {
+              "name": "CandidateDriver",
+              "type": "DRIVER_ID"
+            },
+            {
+              "name": "TargetDriver",
+              "type": "DRIVER_ID"
+            }
+          ],
+          "samples": [
+            "watch the undercut for {CandidateDriver} against {TargetDriver}",
+            "set up a watch on {CandidateDriver} versus {TargetDriver}",
+            "let me know if {CandidateDriver} can undercut {TargetDriver}",
+            "start watching {CandidateDriver} against {TargetDriver}",
+            "alert me when {CandidateDriver} can undercut {TargetDriver}"
+          ]
+        },
+        {
+          "name": "ExplainLatestAlertIntent",
+          "slots": [
+            {
+              "name": "WatchDriver",
+              "type": "DRIVER_ID"
+            }
+          ],
+          "samples": [
+            "why did that alert just happen",
+            "explain the latest alert",
+            "what just changed",
+            "why now",
+            "explain that",
+            "what happened with the last alert",
+            "explain the alert for the {WatchDriver} watch",
+            "explain the {WatchDriver} watch",
+            "why did the {WatchDriver} watch change",
+            "what happened with {WatchDriver}",
+            "why now for {WatchDriver}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "DRIVER_ID",
+          "values": [
+            {
+              "id": "CAR_03",
+              "name": {
+                "value": "car three",
+                "synonyms": ["number three", "the three car", "car 3"]
+              }
+            },
+            {
+              "id": "CAR_04",
+              "name": {
+                "value": "car four",
+                "synonyms": ["number four", "the four car", "car 4"]
+              }
+            },
+            {
+              "id": "CAR_07",
+              "name": {
+                "value": "car seven",
+                "synonyms": ["number seven", "the seven car", "car 7"]
+              }
+            },
+            {
+              "id": "CAR_11",
+              "name": {
+                "value": "car eleven",
+                "synonyms": ["number eleven", "the eleven car", "car 11"]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

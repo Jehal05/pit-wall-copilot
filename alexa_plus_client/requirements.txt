@@ -1,0 +1,7 @@
+# Spec v1.1 pass 4, mandatory correction 11 (security scan action item):
+# kept in lockstep with mcp_server/requirements.txt's own mcp pin (see
+# this project's module docstring — the two packages' mcp/httpx versions
+# must match exactly for the cross-package import to stay safe). Bumped
+# to 1.28.1 for the same PYSEC-2026-3481/3482/3483 fixes.
+mcp==1.28.1
+httpx==0.27.2

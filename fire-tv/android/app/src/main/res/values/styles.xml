@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Base application theme. NoActionBar since the ten-foot dashboard
+         (App.tsx) draws its own header — an OS action bar would eat into
+         the TV safe area and duplicate the in-app "PIT WALL COPILOT"
+         title. windowBackground matches App.tsx's safeArea background
+         (#0b0d11) so there is no white flash between the launcher banner
+         and the first JS-rendered frame. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <item name="android:windowBackground">@color/launch_background</item>
+    </style>
+
+</resources>

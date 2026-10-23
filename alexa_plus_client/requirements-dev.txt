@@ -1,0 +1,8 @@
+-r requirements.txt
+# Repair pass (pip-audit remediation): pytest==8.3.3 carried PYSEC-2026-1845.
+# Upgraded to the same pytest 9.0.3 / pytest-asyncio 1.4.0 pair
+# backend/requirements.txt already pins and this repository's own full
+# suite has already been verified against.
+pytest==9.0.3
+pytest-asyncio==1.4.0
+uvicorn==0.53.0

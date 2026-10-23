@@ -1,0 +1,10 @@
+-r requirements.txt
+moto[dynamodb]==5.0.14
+# Spec v1.1 pass 3, correction 6: used only by
+# tests/test_docker_health_checks.py to parse docker-compose.yml.
+PyYAML==6.0.2
+# AWS hackathon-final pass, P0-3: in-process fake Redis server used by
+# tests/test_event_broker.py's two-instance fan-out test, so the
+# RedisEventBroker cross-instance-delivery contract is exercised in CI
+# without a real ElastiCache/Redis instance available.
+fakeredis==2.38.0

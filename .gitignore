@@ -1,0 +1,59 @@
+# --- Secrets / environment ---
+.env
+.env.*
+!.env.example
+
+# --- Python / backend ---
+backend/.venv/
+**/__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+.coverage
+htmlcov/
+
+# --- Python / mcp_server + Alexa+ integrations (Gate 4 / spec v1.1 repair 10) ---
+mcp_server/.venv/
+alexa_plus_client/.venv/
+legacy/alexa_skill_legacy_rest/.venv/
+scripts/.venv/
+
+# --- AWS infrastructure (spec v1.1 repair 12) ---
+infrastructure/.aws-sam/
+
+# --- Node / fire-tv ---
+fire-tv/node_modules/
+fire-tv/npm-debug.log
+fire-tv/yarn-error.log
+
+# React Native / Android / iOS build output
+fire-tv/android/app/build/
+fire-tv/android/.gradle/
+fire-tv/android/local.properties
+
+# --- Android release signing (spec v1.1 pass 3, correction 1) ---
+# Never commit real release keystores or their credentials. The
+# standard *debug* keystore (fire-tv/android/app/debug.keystore) is
+# intentionally NOT excluded here — it is a well-known, non-secret key
+# used only for local debug builds.
+*.jks
+*.keystore
+!fire-tv/android/app/debug.keystore
+fire-tv/android/app/release.keystore.properties
+release.keystore.properties
+fire-tv/ios/build/
+fire-tv/ios/Pods/
+fire-tv/*.xcworkspace
+fire-tv/ios/**/*.pbxuser
+fire-tv/.expo/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Misc ---
+*.log
+.cache/
+.judge_demo_backend.pid

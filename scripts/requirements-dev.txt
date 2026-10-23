@@ -1,0 +1,10 @@
+# Repair pass: scripts/tests/ imports pytest (see e.g.
+# `import pytest` in that directory) but no requirements file in this
+# project previously declared it, so a genuinely clean environment built
+# only from this project's own committed requirements files could not run
+# its test suite at all -- a real gap this pass found while building fresh
+# environments from scratch for every sub-project (not from an unknown
+# pre-existing environment that happened to already have pytest installed).
+# Pinned to the same version backend/requirements.txt uses.
+-r requirements.txt
+pytest==9.0.3

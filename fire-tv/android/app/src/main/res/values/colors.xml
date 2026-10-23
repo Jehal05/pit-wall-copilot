@@ -1,0 +1,6 @@
+<resources>
+    <!-- Matches App.tsx's SafeAreaView background (#0b0d11) — avoids a
+         white flash between the TV banner/launcher and the first
+         JS-rendered frame. -->
+    <color name="launch_background">#0b0d11</color>
+</resources>

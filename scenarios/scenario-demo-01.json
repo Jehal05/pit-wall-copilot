@@ -1,0 +1,140 @@
+{
+  "scenario_id": "scenario-demo-01",
+  "race_id": "demo-race-001",
+  "model_seed": 48127,
+  "start_lap": 24,
+  "end_lap": 28,
+  "total_laps": 58,
+  "update_interval_seconds": 2,
+  "track_state": "GREEN",
+  "synthetic": true,
+  "description": "Fixed narrative: Car 4 closes an undercut-relevant gap on Car 3 between laps 24 and 28. All values are fictional and authored for demonstration only.",
+  "cars": {
+    "CAR_03": {
+      "display_name": "M. Renaud",
+      "team_name": "Northstar Racing",
+      "compound": "MEDIUM",
+      "base_pace_ms": 91800,
+      "starting_tire_age_laps": 22,
+      "pit_window": [26, 31],
+      "pit_stops": 1
+    },
+    "CAR_04": {
+      "display_name": "J. Okafor",
+      "team_name": "Velocity GP",
+      "compound": "MEDIUM",
+      "base_pace_ms": 91650,
+      "starting_tire_age_laps": 18,
+      "pit_window": [25, 30],
+      "pit_stops": 1
+    },
+    "CAR_07": {
+      "display_name": "T. Lindqvist",
+      "team_name": "Aurora Motorsport",
+      "compound": "HARD",
+      "base_pace_ms": 92300,
+      "starting_tire_age_laps": 9,
+      "pit_window": [29, 34],
+      "pit_stops": 1
+    },
+    "CAR_11": {
+      "display_name": "R. Vasquez",
+      "team_name": "Northstar Racing",
+      "compound": "SOFT",
+      "base_pace_ms": 91950,
+      "starting_tire_age_laps": 5,
+      "pit_window": [30, 35],
+      "pit_stops": 2
+    }
+  },
+  "laps": [
+    {
+      "lap": 24,
+      "race_time_ms": 4820000,
+      "gap_car04_to_car03_ms": 3400,
+      "drivers": {
+        "CAR_03": { "position": 3, "gap_to_leader_ms": 14200, "tire_age_laps": 22, "current_lap_pace_ms": 92050, "traffic_factor": 0.05 },
+        "CAR_04": { "position": 4, "gap_to_leader_ms": 17600, "tire_age_laps": 18, "current_lap_pace_ms": 91700, "traffic_factor": 0.10 },
+        "CAR_07": { "position": 7, "gap_to_leader_ms": 29400, "tire_age_laps": 9, "current_lap_pace_ms": 92310, "traffic_factor": 0.05 },
+        "CAR_11": { "position": 11, "gap_to_leader_ms": 41200, "tire_age_laps": 5, "current_lap_pace_ms": 91900, "traffic_factor": 0.00 }
+      }
+    },
+    {
+      "lap": 25,
+      "race_time_ms": 4912000,
+      "gap_car04_to_car03_ms": 2900,
+      "drivers": {
+        "CAR_03": { "position": 3, "gap_to_leader_ms": 14500, "tire_age_laps": 23, "current_lap_pace_ms": 92180, "traffic_factor": 0.05 },
+        "CAR_04": { "position": 4, "gap_to_leader_ms": 17400, "tire_age_laps": 19, "current_lap_pace_ms": 91680, "traffic_factor": 0.10 },
+        "CAR_07": { "position": 7, "gap_to_leader_ms": 29900, "tire_age_laps": 10, "current_lap_pace_ms": 92340, "traffic_factor": 0.05 },
+        "CAR_11": { "position": 11, "gap_to_leader_ms": 41800, "tire_age_laps": 6, "current_lap_pace_ms": 91920, "traffic_factor": 0.00 }
+      }
+    },
+    {
+      "lap": 26,
+      "race_time_ms": 5004000,
+      "gap_car04_to_car03_ms": 2400,
+      "drivers": {
+        "CAR_03": { "position": 3, "gap_to_leader_ms": 14750, "tire_age_laps": 24, "current_lap_pace_ms": 92310, "traffic_factor": 0.10 },
+        "CAR_04": { "position": 4, "gap_to_leader_ms": 17150, "tire_age_laps": 20, "current_lap_pace_ms": 91660, "traffic_factor": 0.10 },
+        "CAR_07": { "position": 7, "gap_to_leader_ms": 30500, "tire_age_laps": 11, "current_lap_pace_ms": 92370, "traffic_factor": 0.05 },
+        "CAR_11": { "position": 11, "gap_to_leader_ms": 42450, "tire_age_laps": 7, "current_lap_pace_ms": 91940, "traffic_factor": 0.00 }
+      }
+    },
+    {
+      "lap": 27,
+      "race_time_ms": 5096000,
+      "gap_car04_to_car03_ms": 2000,
+      "drivers": {
+        "CAR_03": { "position": 3, "gap_to_leader_ms": 15000, "tire_age_laps": 25, "current_lap_pace_ms": 92450, "traffic_factor": 0.10 },
+        "CAR_04": { "position": 4, "gap_to_leader_ms": 17000, "tire_age_laps": 21, "current_lap_pace_ms": 91650, "traffic_factor": 0.10 },
+        "CAR_07": { "position": 7, "gap_to_leader_ms": 31100, "tire_age_laps": 12, "current_lap_pace_ms": 92400, "traffic_factor": 0.10 },
+        "CAR_11": { "position": 11, "gap_to_leader_ms": 43100, "tire_age_laps": 8, "current_lap_pace_ms": 91960, "traffic_factor": 0.00 }
+      }
+    },
+    {
+      "lap": 28,
+      "race_time_ms": 5188000,
+      "gap_car04_to_car03_ms": 1800,
+      "drivers": {
+        "CAR_03": { "position": 3, "gap_to_leader_ms": 15300, "tire_age_laps": 26, "current_lap_pace_ms": 92520, "traffic_factor": 0.15 },
+        "CAR_04": { "position": 4, "gap_to_leader_ms": 17100, "tire_age_laps": 22, "current_lap_pace_ms": 91640, "traffic_factor": 0.10 },
+        "CAR_07": { "position": 7, "gap_to_leader_ms": 31700, "tire_age_laps": 13, "current_lap_pace_ms": 92430, "traffic_factor": 0.10 },
+        "CAR_11": { "position": 11, "gap_to_leader_ms": 43700, "tire_age_laps": 9, "current_lap_pace_ms": 91980, "traffic_factor": 0.00 }
+      }
+    }
+  ],
+  "strategy_model": {
+    "model_version": "strategy-engine-v1",
+    "tire_curves": {
+      "SOFT": { "base_delta_ms": -700, "degradation_ms_per_lap": 120 },
+      "MEDIUM": { "base_delta_ms": 0, "degradation_ms_per_lap": 75 },
+      "HARD": { "base_delta_ms": 550, "degradation_ms_per_lap": 40 }
+    },
+    "pit_loss": {
+      "pit_entry_ms": 900,
+      "lane_transit_ms": 6800,
+      "stationary_time_ms": 2400,
+      "pit_exit_ms": 900
+    },
+    "warmup_loss_ms": 600,
+    "traffic_penalty_ms_per_unit": 400,
+    "environmental_adjustment_ms": {
+      "GREEN": 0,
+      "YELLOW": 3000,
+      "SAFETY_CAR": 8000,
+      "RED": 0
+    },
+    "monte_carlo": {
+      "trials": 200,
+      "lap_pace_noise_std_ms": 80,
+      "pit_duration_noise_std_ms": 300,
+      "degradation_noise_std_ms": 30,
+      "traffic_loss_noise_std_ms": 150
+    },
+    "watch_thresholds": {
+      "open_probability": 0.72,
+      "close_probability": 0.50
+    }
+  }
+}

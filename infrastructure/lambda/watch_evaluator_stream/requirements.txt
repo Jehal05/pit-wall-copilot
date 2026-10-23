@@ -1,0 +1,13 @@
+# Dependencies for backend/app/lambda_handlers/watch_evaluator_stream.py
+# beyond what the Lambda python3.11 managed runtime already provides
+# (boto3/botocore ship in the runtime image, so they are deliberately not
+# repeated here — pinning our own copy would only add package size, not
+# behavior, since the handler only uses stable, long-established boto3
+# APIs: boto3.resource("dynamodb")/.Table(...), TypeDeserializer).
+#
+# Pinned to the exact same version backend/requirements.txt uses, so the
+# domain models (app/domain/models.py, RaceState, etc.) this handler
+# imports and validates JSON against behave identically to the
+# long-running backend process — a version drift here is exactly the kind
+# of thing that could silently break RaceState.model_validate_json.
+pydantic==2.9.2

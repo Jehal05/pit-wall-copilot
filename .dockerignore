@@ -1,0 +1,22 @@
+# Keeps the Docker build context small and avoids ever baking local
+# secrets/venvs/node_modules into an image layer.
+**/.venv/
+**/__pycache__/
+*.pyc
+**/.pytest_cache/
+**/*.egg-info/
+**/.coverage
+**/htmlcov/
+fire-tv/node_modules/
+fire-tv/android/app/build/
+fire-tv/android/.gradle/
+fire-tv/ios/build/
+fire-tv/ios/Pods/
+.git/
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+.DS_Store
+*.log
