@@ -36,3 +36,8 @@ The Grand Prix theme now follows a TV-broadcast look: dark title strips, a slant
 All of it is illustrative. Onboard numbers come from a speed profile computed from the outline's curvature and the circuit's lap time, not from real telemetry. Unofficial fan project, not affiliated with Formula 1, the FIA or any team; no official logos or fonts are used.
 
 Screenshots: `screenshots/broadcast-*.png`.
+
+## Copilot and championship (v6)
+
+- **Championship card (Simulator mode):** drivers' and constructors' standings over the eight circuits, with the real 25-18-15 points scale, wins, podiums and a title-maths line. "Simulate next round" / "Simulate season" run races instantly; a race you watch to the flag replaces that circuit's round. Stored in this browser only. Results come from invented team pace, not real standings.
+- **Alexa+ (simulated) now explains in detail:** race recap, "why did we pit?" (tyre age, safety car, weather, positions before and after), how a specific overtake happened, a strategy what-if that re-runs the race over 8 seeds per strategy, a circuit guide, driver cards, the championship (with tables), and explainers for DRS, undercut/overcut, dirty air, tyres, safety car, wet-weather crossover, points and how the copilot itself works. Every answer still shows the tool calls behind it, and unsupported questions are declined.

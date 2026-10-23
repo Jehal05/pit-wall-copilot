@@ -164,7 +164,7 @@ button.chip:hover{border-color:var(--accent);color:var(--ink)}
 .mic{width:46px;height:46px;border-radius:50%;border:0;background:var(--alexa);color:#fff;display:grid;place-items:center;flex:none;box-shadow:0 4px 12px color-mix(in srgb,var(--alexa) 45%,transparent)}
 .mic[disabled]{background:var(--line2);box-shadow:none;cursor:not-allowed}
 .mic.on{background:var(--accent)}
-.alx-log{padding:8px 16px;display:grid;gap:10px;max-height:420px;overflow:auto}
+.alx-log{padding:8px 16px;display:grid;gap:10px;max-height:620px;min-height:200px;overflow:auto;align-content:start}
 .bub{max-width:92%;padding:10px 12px;border-radius:14px;font-size:14px}
 .bub.me{justify-self:end;background:var(--accent);color:var(--accent-ink);border-bottom-right-radius:3px}
 .bub.al{justify-self:start;background:var(--bg2);border:1px solid var(--line2);border-bottom-left-radius:3px}
@@ -388,6 +388,32 @@ html:not([data-theme="heritage"]) .row .code{font-style:italic;font-size:23px;le
 .cf{position:absolute;top:-10px;width:7px;height:12px;opacity:0;animation:fall 2.8s ease-in forwards}
 @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(240px) rotate(540deg)}}
 
+
+/* ---------- v6: championship + copilot ---------- */
+.rounds{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px 4px}
+.rd{display:inline-flex;align-items:center;gap:5px;font:italic 700 12px var(--font-display);letter-spacing:.04em;padding:2px 9px 2px 6px;background:var(--panel2);color:var(--ink3);clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);text-transform:uppercase}
+.rd b{background:var(--ink3);color:#fff;font-size:11px;padding:0 5px}
+.rd.ok{background:#15151e;color:#fff}.rd.ok b{background:var(--accent)}.rd em{font-style:normal;color:#ffd200}
+.stabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;padding:8px 12px 2px}.stabs .seg{flex:none}#season-note{flex:1 1 100%}
+#season-note{font-size:12px;color:var(--ink2);line-height:1.25}
+.stand,.ctab{width:100%;border-collapse:collapse;font-size:13px}
+.stand td,.stand th,.ctab td,.ctab th{padding:5px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.stand th,.ctab th{font:600 10px var(--font-body);color:var(--ink3);letter-spacing:.08em;text-transform:uppercase}
+.stand td.p,.ctab td.p{font:italic 800 17px var(--font-display);width:26px}
+.stand td.n b,.ctab td.n b{font:italic 700 16px var(--font-display);letter-spacing:.03em}
+.stand td.n small,.ctab td.n small{color:var(--ink3);font-size:11px;margin-left:5px}
+.stand td.pt,.ctab td.pt{font:italic 800 18px var(--font-display);text-align:right}
+.stand tr.me,.ctab tr.me{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.stand .tb{display:inline-block;width:4px;height:14px;margin-right:6px;vertical-align:-2px;transform:skewX(-14deg)}
+.stand .bar{display:block;height:3px;background:var(--line);margin-top:2px}.stand .bar i{display:block;height:100%;background:var(--accent)}
+#stand{padding:2px 8px 4px}
+.sbtns{display:flex;flex-wrap:wrap;gap:8px;padding:8px 12px 6px}
+.sbtns .btn{padding:7px 16px;font-size:14px}
+.champ{margin:8px 0 2px;padding:6px 10px;background:#15151e;color:#ffd200;font:italic 800 15px var(--font-display);letter-spacing:.08em;text-transform:uppercase}
+.ctab{margin:6px 0 2px;font-size:12px}.ctab td,.ctab th{padding:3px 5px}
+.bub ul{margin:4px 0 2px;padding-left:18px}.bub li{margin:2px 0}
+.bub h4{margin:8px 0 2px;font:italic 700 14px var(--font-display);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
 /* ---------- toast + dialog ---------- */
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
@@ -546,6 +572,14 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="assump" id="trk-chips"></div>
       <div class="alx-foot">Team pace and driver form are invented for the simulation, circuit traits are rough, and the weather is simulated. Separate from the backend strategy engine, which only runs on the replay. Circuit outlines are simplified from the open f1-circuits data (OpenStreetMap contributors).</div>
     </div>
+    <div class="card only-sim" id="seasoncard">
+      <h2>Championship <span id="season-sub">simulated season</span></h2>
+      <div class="rounds" id="rounds"></div>
+      <div class="stabs"><div class="seg" role="group" aria-label="Standings"><button id="st-d" aria-pressed="true">Drivers</button><button id="st-c" aria-pressed="false">Constructors</button></div><span id="season-note"></span></div>
+      <div id="stand"></div>
+      <div class="sbtns"><button class="btn primary" id="se-next" type="button">Simulate next round</button><button class="btn" id="se-all" type="button">Simulate season</button><button class="btn" id="se-reset" type="button">Reset</button></div>
+      <div class="alx-foot">Real 25-18-15 points scale. Results are simulated from invented team pace, not real standings. A race you watch to the flag replaces that circuit's round. Saved in this browser only.</div>
+    </div>
     <div class="card alexa">
       <h2>Pit Wall Copilot <span id="ask-src">Alexa+ simulated</span></h2>
       <div class="alx-top">
@@ -564,6 +598,13 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
         <button class="chip only-sim" data-q="Who is leading?">Who is leading?</button>
         <button class="chip only-sim" data-q="How are we doing?">How are we doing?</button>
         <button class="chip only-sim" data-q="Should we box now?">Box now?</button>
+        <button class="chip only-sim" data-q="Who leads the championship?">Championship</button>
+        <button class="chip only-sim" data-q="Explain the race so far">Explain the race</button>
+        <button class="chip only-sim" data-q="What if we pit early or late?">What if we pit early?</button>
+        <button class="chip only-sim" data-q="Why did we pit?">Why did we pit?</button>
+        <button class="chip" data-q="Explain DRS">Explain DRS</button>
+        <button class="chip" data-q="What is an undercut?">What is an undercut?</button>
+        <button class="chip" data-q="What can you do?">What can you do?</button>
       </div>
       <div class="alx-foot">Simulated in the browser; not a real Alexa device. Voice uses your browser's speech features.</div>
     </div>
@@ -959,7 +1000,7 @@ function logBubble(cls,tag,html){
 function evHtml(ev){ ev=(ev||[]).filter(e=>!/^pit_schedule/.test(e.field)); return ev.length?`<div class="ev">${ev.map(e=>`<b>${e.field.replace(/_/g," ")}</b><span>${esc(String(e.value))}</span>`).join("")}</div>`:""; }
 async function stream(el,text){
   if(REDUCED){ el.textContent=text; return; }
-  el.classList.add("cur"); let i=0; while(i<text.length){ i+=3; el.textContent=text.slice(0,i); await sleep(14); }
+  el.classList.add("cur"); let i=0; const stp=Math.max(3,Math.ceil(text.length/130)); while(i<text.length){ i+=stp; el.textContent=text.slice(0,i); await sleep(14); }
   el.textContent=text; el.classList.remove("cur");
 }
 async function cpReply(o){
@@ -1003,6 +1044,7 @@ function fromReg(r,q){
     evidence:[{field:"source",value:e.source_path}]};
 }
 async function resolveQuestion(q){
+  if(S.mode!=="live"){ const g=glossAnswer(q); if(g&&S.mode==="replay") return g; if(/what can you|capabilit|what do you do/i.test(q)&&S.mode==="replay"){ return {tag:"Pit Wall Copilot · what I can do",trace:[{call:"Skill.capabilities()",result:"replay scope"}],plain:"In Replay I answer undercut questions from the strategy engine's recorded response, quote the pit lane rule on file (it states no number, so I give none), explain terms like DRS and undercuts, and decline anything else. Switch to Simulator for race questions, what-ifs and the championship.",say:"In Replay I answer undercut questions from the strategy engine, quote the rule on file, and explain racing terms. Switch to Simulator for the championship and what-ifs."}; } }
   if(S.mode==="sim"){ if(/speed limit|pit lane|pit-lane|regulation/i.test(q)) return fromReg({...REPLAY.regulation},q); const a=simAnswer(q); if(a) return a; return fromAgent({...REPLAY.agentRefusal,query:q}); }
   if(S.mode==="live"){
     if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)) return fromReg(await liveFetch("/v1/regulations?query="+encodeURIComponent(q)),q);
@@ -1643,14 +1685,17 @@ function simTyres(snap){
 function simFinishDialog(){
   const r=SIM.res, W=r.final[0], T=TRACKS[r.track], X=WX[r.wx], fl=r.fastest, flc=fl.id?drv(fl.id):null;
   const myPos=r.final.findIndex(f=>f.id===r.mine)+1, myG=r.start[r.mine].grid+1;
+  seasonRecord(r,"watched"); const stb=seasonTable(), sst=seasonStatus(stb);
   $("dlg-t").textContent="Chequered flag";
   const podHtml=`<div class="podium">${[1,0,2].map(i=>{const f=r.final[i]; return `<div class="st" style="--tc:${TEAMS[f.team].color}"><div class="nm">${esc(surname(f.id))}</div><div class="tm">${TEAMS[f.team].name}</div><div class="blk">${i+1}<small>${i===0?"WINNER":"+"+((f.T-W.T)/1000).toFixed(1)+"s"}</small></div></div>`}).join("")}${Array.from({length:46},(_,k)=>`<span class="cf" style="left:${(k*53)%100}%;background:${["#e10600","#15151e","#f5b700","#2b7be4","#ffffff"][k%5]};animation-delay:${((k*37)%100)/60}s;border:1px solid rgba(0,0,0,.15)"></span>`).join("")}</div>`;
   $("dlg-b").innerHTML=podHtml+`<p style="margin-top:0">${drv(W.id).name} wins the simulated ${T.name} race (seed ${r.seed}). ${surname(r.mine)} finished P${myPos} from P${myG}. The same seed always gives the same race.</p>
   <table style="width:100%;border-collapse:collapse;font-size:13px">${r.final.map((f,i)=>`<tr style="border-top:1px solid var(--line);${f.id===r.mine?"background:color-mix(in srgb,var(--accent) 12%,transparent)":""}"><td style="padding:5px 4px;font-family:var(--font-display);font-size:17px;font-weight:700">P${i+1}</td><td><span style="display:inline-block;width:4px;height:14px;background:${TEAMS[f.team].color};vertical-align:-2px;margin-right:6px"></span><b>${f.code}</b> ${esc(f.name)}</td><td>${TEAMS[f.team].name}</td><td>${i===0?"Winner":"+"+((f.T-W.T)/1000).toFixed(1)+"s"}</td><td>${f.stops} stop${f.stops===1?"":"s"}</td><td>${POINTS[i]||0} pts</td></tr>`).join("")}</table>
   <p style="margin:10px 0 0;font-size:13px">${T.full}, ${X.name.toLowerCase()}. Fastest lap: ${flc?flc.name+" "+lapFmt(fl.lt):"--"}. ${r.tries?`Pass attempts: ${r.tries}, completed: ${r.tries-r.fails} (${Math.round(100*(r.tries-r.fails)/r.tries)}%).`:"No close battles."}</p>
   <p style="color:var(--ink3);font-size:12px">Simulated result, not a prediction. Team pace and driver form are invented numbers, circuit traits are rough, and the weather is simulated. Unofficial fan project, not affiliated with Formula 1, the FIA or any team. Separate from the backend strategy engine and not AWS-validated.</p>
-  <p><button class="btn primary" id="again" type="button">Run another seed</button></p>`;
+  <p style="margin:10px 0 0;font-size:13px"><b>Championship after ${stb.done} of ${CAL.length} rounds:</b> ${esc(drv(stb.drivers[0].id).name)} ${stb.drivers[0].pts} pts, ${esc(TEAMS[stb.cons[0].id].name)} lead the constructors with ${stb.cons[0].pts}. ${esc(sst.txt)}</p>
+  <p><button class="btn primary" id="again" type="button">Run another seed</button> <button class="btn" id="seeStand" type="button">Show standings</button></p>`;
   $("dlg").showModal(); $("again").onclick=()=>{ $("dlg").close(); $("s-newseed").click(); $("s-start").click(); };
+  $("seeStand").onclick=()=>{ $("dlg").close(); $("seasoncard").scrollIntoView({behavior:"smooth",block:"center"}); };
 }
 /* controls */
 function simStart(){ if(SIM.lights||SIM.running) return; if(SIM.tau>=SIM.res.endT-1||SIM.finishShown){ simResetState(); } if(SIM.tau<=0) runLights(()=>{ SIM.running=true; }); else SIM.running=true; }
@@ -1672,6 +1717,7 @@ function simTick(dt){
 }
 /* Q&A about the simulated race */
 function simAnswer(q){
+  { const g=glossAnswer(q); if(g) return g; const dp=deepAnswer(q); if(dp) return dp; }
   const R=SIM.res, T=TRACKS[SIM.track], X=WX[SIM.wx], snap=simSnap(SIM.tau), lead=snap[0], lap=Math.min(Math.max(1,Math.floor(Math.max(0,lead.D))+1),R.laps);
   const car=id=>snap.find(c=>c.id===id), me=car(SIM.mine), stw=simWxAt(Math.max(0,lead.D)), W=R.W;
   const tr=res=>[{call:`RaceSimulator.snapshot(lap=${lap}, circuit="${T.id}", seed=${SIM.seed})`,result:res}];
@@ -1711,6 +1757,165 @@ function simAnswer(q){
   }
   return null;
 }
+
+/* ================= championship (simulated season) ================= */
+const CAL=Object.keys(TRACKS);
+const SEASON={rounds:{},tab:"d"};
+function seasonLoad(){ try{ const j=JSON.parse(localStorage.getItem("pwc_season_v1")||"null"); if(j&&j.rounds) SEASON.rounds=j.rounds; }catch(e){} }
+function seasonSave(){ try{ localStorage.setItem("pwc_season_v1",JSON.stringify({rounds:SEASON.rounds})); }catch(e){} }
+function seasonRecord(res,src){ SEASON.rounds[res.track]={track:res.track,seed:res.seed,wx:res.wx,order:res.final.map(f=>f.id),fl:res.fastest&&res.fastest.id||null,src:src||"watched"}; seasonSave(); seasonRender(); }
+function seasonSimTrack(tr){ const wl=["dry","dry","over","dry","arrive","light","dryout"], wx=wl[hash32("w"+tr)%wl.length], seed=1+hash32("s"+tr)%9000;
+  const r=runSim(seed,{mine:SIM.mine,strat:"auto"},[],tr,wx); seasonRecord(r,"simulated"); return r; }
+function seasonTable(){
+  const D={},C={}; DRIVERS.forEach(d=>D[d.id]={id:d.id,team:d.team,pts:0,w:0,p:0,best:99,pos:[]}); Object.keys(TEAMS).forEach(k=>C[k]={id:k,pts:0,w:0,p:0,best:99});
+  let done=0; CAL.forEach(tr=>{ const r=SEASON.rounds[tr]; if(!r){ return; } done++; r.order.forEach((id,i)=>{ const pt=POINTS[i]||0, d=D[id]; if(!d) return; d.pts+=pt; d.pos.push(i+1); d.best=Math.min(d.best,i+1); const c=C[d.team]; c.pts+=pt; c.best=Math.min(c.best,i+1); if(i===0){ d.w++; c.w++; } if(i<3){ d.p++; c.p++; } }); });
+  const cmp=(a,b)=>b.pts-a.pts||b.w-a.w||a.best-b.best;
+  return {done,drivers:Object.values(D).sort(cmp),cons:Object.values(C).sort(cmp)};
+}
+function seasonStatus(tb){
+  const n=tb.done, left=CAL.length-n, dl=tb.drivers, lead=dl[0];
+  if(!n) return {txt:"No races counted yet.",champ:null,live:[]};
+  const live=dl.filter(d=>lead.pts-d.pts<=left*25+(d===lead?1e9:0));
+  if(!left) return {txt:"Season complete.",champ:lead,live:[lead]};
+  return {txt:`${lead.id} leads by ${lead.pts-dl[1].pts} pts. ${live.length} driver${live.length===1?"":"s"} can still win the title (${left} round${left===1?"":"s"} left, 25 pts each).`,champ:null,live};
+}
+function seasonRender(){
+  if(!$("stand")) return; const tb=seasonTable(), st=seasonStatus(tb);
+  $("season-sub").textContent=tb.done+" / "+CAL.length+" rounds";
+  $("rounds").innerHTML=CAL.map((tr,i)=>{ const r=SEASON.rounds[tr]; return `<span class="rd${r?" ok":""}" title="${esc(TRACKS[tr].full)}${r?" · "+esc(drv(r.order[0]).name)+" won ("+r.src+")":" · not run yet"}"><b>${i+1}</b>${esc(TRACKS[tr].name.split("-")[0])}${r?`<em>${r.order[0]}</em>`:""}</span>`; }).join("");
+  const D=SEASON.tab==="d", rows=D?tb.drivers:tb.cons, max=Math.max(1,rows[0].pts);
+  $("stand").innerHTML=(st.champ?`<div class="champ">Champion: ${esc(drv(st.champ.id).name)} · ${esc(TEAMS[st.champ.team].name)}</div>`:"")+`<table class="stand"><tr><th></th><th>${D?"Driver":"Team"}</th><th>W</th><th>Pod</th><th style="text-align:right">Pts</th></tr>`+rows.map((r,i)=>{
+    const col=TEAMS[D?r.team:r.id].color, nm=D?`<b>${r.id}</b><small>${esc(drv(r.id).name.split(" ").slice(-1)[0])} · ${esc(TEAMS[r.team].name)}</small>`:`<b>${esc(TEAMS[r.id].name)}</b><small>${DRIVERS.filter(d=>d.team===r.id).map(d=>d.id).join(" · ")}</small>`;
+    return `<tr class="${D&&r.id===SIM.mine?"me":""}"><td class="p">${i+1}</td><td class="n"><span class="tb" style="background:${col}"></span>${nm}<span class="bar"><i style="width:${Math.round(100*r.pts/max)}%;background:${col}"></i></span></td><td>${r.w}</td><td>${r.p}</td><td class="pt">${r.pts}</td></tr>`; }).join("")+"</table>";
+  $("season-note").textContent=st.txt;
+  $("st-d").setAttribute("aria-pressed",D); $("st-c").setAttribute("aria-pressed",!D);
+}
+function champHtml(){
+  const tb=seasonTable(); if(!tb.done) return "";
+  const row=(r,i,D)=>`<tr class="${D&&r.id===SIM.mine?"me":""}"><td class="p">${i+1}</td><td class="n"><b>${D?r.id:esc(TEAMS[r.id].name)}</b>${D?`<small>${esc(TEAMS[r.team].name)}</small>`:""}</td><td>${r.w}</td><td class="pt">${r.pts}</td></tr>`;
+  return `<h4>Drivers</h4><table class="ctab"><tr><th></th><th>Driver</th><th>W</th><th style="text-align:right">Pts</th></tr>${tb.drivers.slice(0,6).map((r,i)=>row(r,i,true)).join("")}</table><h4>Constructors</h4><table class="ctab"><tr><th></th><th>Team</th><th>W</th><th style="text-align:right">Pts</th></tr>${tb.cons.map((r,i)=>row(r,i,false)).join("")}</table>`;
+}
+$("st-d").onclick=()=>{ SEASON.tab="d"; seasonRender(); };
+$("st-c").onclick=()=>{ SEASON.tab="c"; seasonRender(); };
+$("se-next").onclick=()=>{ const tr=CAL.find(x=>!SEASON.rounds[x]); if(!tr){ $("season-note").textContent="Season complete. Press Reset to start a new one."; return; } const r=seasonSimTrack(tr); logBubble("al","Championship · round "+(CAL.indexOf(tr)+1),esc(`${TRACKS[tr].name}: ${drv(r.final[0].id).name} wins (simulated). ${seasonStatus(seasonTable()).txt}`)); };
+$("se-all").onclick=()=>{ CAL.filter(x=>!SEASON.rounds[x]).forEach(seasonSimTrack); logBubble("al","Championship",esc("Season simulated. "+seasonStatus(seasonTable()).txt)); };
+$("se-reset").onclick=()=>{ SEASON.rounds={}; seasonSave(); seasonRender(); };
+
+/* ================= Alexa+ : deeper explanations ================= */
+const passTxt=T=>T.passBase>=0.25?"easy, with long straights and good slipstreams":(T.passBase>=0.1?"possible but needs a good run out of a corner":"very hard, so track position and the pit stop matter most");
+const GLOSS=[
+ {re:/\bdrs\b|drag reduction|slipstream|\btow\b/i,title:"DRS and slipstream",f:T=>`DRS, the Drag Reduction System, is a flap on the rear wing that opens to cut drag and add speed on a straight. In the rules a car may use it only inside a marked zone, when it was within about one second of the car ahead at the detection point, on a dry track, after the opening laps and never under the safety car. The slipstream is the separate effect of the leading car punching a hole in the air, so the car behind needs less power to keep up. In this simulator the passing model at ${T.name} uses a window of ${(T.drs/1000).toFixed(1)}s, and the map marks green DRS zones found from the circuit outline. The onboard panel shows DRS OPEN when your car qualifies.`},
+ {re:/undercut|overcut|pit window|pit early|pit late/i,title:"Undercut and overcut",f:T=>`An undercut means pitting before the car ahead. You lose about ${Math.round(T.pitLoss/1000)}s in the pit lane at ${T.name}, but fresh tyres are quicker. In the model a medium tyre loses about ${(SIMCFG.deg.MEDIUM*T.degM/1000).toFixed(2)}s per lap as it ages, so tyres 15 laps old are about ${(SIMCFG.deg.MEDIUM*T.degM*15/1000).toFixed(1)}s a lap slower than new ones. Stop first, push on the new tyres while the rival stays out, and you can come out ahead once they stop. It works best when the gap is under the pit loss, the rival is stuck in traffic, and tyres wear fast. The overcut is the reverse: stay out on good tyres while the rival loses time on a cold out-lap or in dirty air. Passing here is ${passTxt(T)}, which decides how much track position is worth.`},
+ {re:/dirty air|turbulence|following (a )?car/i,title:"Dirty air",f:T=>`Following closely disturbs the air over the front wing and floor, so the car behind loses downforce and its tyres overheat. In the model a car within ${(T.drs/1000).toFixed(1)}s of the one ahead loses up to ${(T.dirty/1000).toFixed(2)}s per lap at ${T.name}, which is why a faster car can get stuck behind a slower one and why the race feed sometimes says someone is "stuck behind" another driver.`},
+ {re:/tyre|tire|compound|degradation|cliff|soft|medium|hard\b/i,title:"Tyres",f:T=>`There are three dry compounds. Softs are the fastest and wear out first (about ${lifeOf("SOFT",T)} laps here), mediums are the middle option (about ${lifeOf("MEDIUM",T)}), hards last longest (about ${lifeOf("HARD",T)}). Intermediates handle a damp track and full wets a very wet one. As a tyre ages the lap time rises a little every lap, and past its life it falls off a cliff, losing many tenths a lap. Teams plan stops around that cliff. Fuel burn works the other way: the car gets about ${SIMCFG.fuel/1000}s per lap lighter. Tyre life scales with the circuit: ${T.name} is ${T.degM>1.05?"hard":T.degM<0.9?"gentle":"average"} on tyres.`},
+ {re:/safety car|\bsc\b|neutrali[sz]/i,title:"Safety car",f:T=>`The safety car slows the field after an incident so marshals can work. Cars bunch up behind it, gaps shrink to almost nothing, and overtaking is banned. It matters for strategy because the pace is slow, so a pit stop costs about ${Math.round(T.pitLossSC/1000)}s instead of ${Math.round(T.pitLoss/1000)}s at ${T.name}. Teams that are due a stop dive in for a cheap one, while those who already stopped lose their advantage. In the simulator it runs ${SIMCFG.scLaps} laps, and you can trigger one with the Safety car button to watch the order shuffle.`},
+ {re:/pit loss|pit stop cost|how long.*pit|pit lane time/i,title:"Pit stop cost",f:T=>`A pit stop costs the time spent driving the pit lane at the limiter plus the stationary stop of a couple of seconds, minus what the car would have covered on track. The model uses about ${Math.round(T.pitLoss/1000)}s at ${T.name} (about ${Math.round(T.pitLossSC/1000)}s under the safety car). That number is the price of fresh tyres, so a stop only pays if the new tyres win back more than that over the remaining laps.`},
+ {re:/crossover|inter(mediate)?s?\b|wet tyre|full wet|rain/i,title:"Wet weather and crossover",f:T=>`In the rain the question is which tyre is quickest for the amount of water. Slicks are best on a dry or nearly dry track. Intermediates take over when the surface is roughly a quarter wet, and full wets when it is about two thirds wet. The point where two tyres give the same lap time is the crossover, and good teams stop just before it. Boxing too early or late costs seconds a lap, which is why the weather radar and "Should we box now?" matter. The weather here is simulated, not a forecast.`},
+ {re:/points|scoring|championship system|how many points/i,title:"Points",f:()=>`Points go to the top ten: ${POINTS.join(", ")}. A driver's points add up in the drivers' championship and both drivers' points count for the constructors' title. Ties are broken by wins, then best finish. The Championship card tracks this across the simulated season.`},
+ {re:/\bgaps?\b|interval|time gap|delta/i,title:"Gaps and intervals",f:T=>`The tower shows the gap to the car ahead, which is the interval. Gap to the leader is the sum of the intervals. Under about ${(T.drs/1000).toFixed(1)}s the car behind is in dirty air and, on dry track, inside the DRS window. The small time under each gap is that car's last lap, and purple marks the fastest lap of the race.`},
+ {re:/qualif|grid|standing start|lights out|formation/i,title:"Grid and start",f:()=>`Qualifying sets the grid. The cars line up behind the gantry, five red lights come on one by one and go out together, and the race starts from a standstill. Starts are messy: the model adds a lap-one time penalty that grows with grid slot, so places are won and lost before the first corner.`},
+ {re:/fuel/i,title:"Fuel load",f:()=>`Cars start heavy with fuel. Every lap burns some, so the car gets lighter and quicker, about ${SIMCFG.fuel/1000}s per lap in this model. That partly hides tyre wear and is why a late-race stint on old tyres can still be fast.`},
+ {re:/how do you work|how does (this|the) (copilot|assistant)|are you (real|alexa)|architecture|under the hood|what are you/i,title:"How this copilot works",f:()=>`I am a simulated Alexa+ skill, not a real Alexa device. My answers are routed by a deterministic router to tools: the strategy engine (a Monte Carlo undercut calculation, run in the replay), a regulation service that quotes rules on file and refuses to invent numbers, and this browser race simulator. Every answer shows the calls behind it. If no tool has the data, I say so instead of guessing. Nothing here is AWS-validated.`}
+];
+function glossAnswer(q){
+  if(!/explain|what is|what's|what are|what does|how does|how do|define|meaning|tell me about|why is|why does|how do you work|are you/i.test(q)) return null;
+  const T=TRACKS[SIM.track]||TRACKS.monza, g=GLOSS.find(x=>x.re.test(q)); if(!g) return null;
+  const txt=g.f(T);
+  return {tag:"Pit Wall Copilot · explainer",trace:[{call:`Glossary.explain("${g.title}")`,result:"explained with this circuit's numbers"}],plain:txt,say:txt.split(". ").slice(0,3).join(". ")+".",
+    actions:GLOSS.filter(x=>x!==g).sort(()=>0).slice(0,3).map(x=>({label:x.title,fn:()=>ask("Explain "+x.title)}))};
+}
+function seasonAnswer(q){
+  const tb=seasonTable(), st=seasonStatus(tb), me=tb.drivers.findIndex(d=>d.id===SIM.mine);
+  const call=[{call:`Championship.standings(rounds=${tb.done}/${CAL.length})`,result:tb.done?`leader=${tb.drivers[0].id} ${tb.drivers[0].pts}pts`:"no rounds yet"}];
+  if(!tb.done) return {tag:"Championship · simulated season",trace:call,plain:"No races are counted yet. Finish a race, or simulate rounds, and I will build the drivers' and constructors' tables.",say:"No races are counted yet.",actions:[{label:"Simulate next round",fn:()=>{ $("se-next").click(); setTimeout(()=>ask("Who leads the championship?"),200); }},{label:"Simulate season",fn:()=>{ $("se-all").click(); setTimeout(()=>ask("Who leads the championship?"),200); }}]};
+  const d=tb.drivers, c=tb.cons, m=d[me], left=CAL.length-tb.done;
+  const need=left&&me>0?`${surname(SIM.mine)} is P${me+1} on ${m.pts} points, ${d[0].pts-m.pts} behind the leader.${(d[0].pts-m.pts)<=left*25?" The title is still mathematically possible.":" The title is out of reach on points."}`:(me===0?`${surname(SIM.mine)} leads the championship on ${m.pts} points.`:"");
+  const txt=`After ${tb.done} of ${CAL.length} rounds, ${drv(d[0].id).name} leads the drivers' championship with ${d[0].pts} points, ${d[0].pts-d[1].pts} ahead of ${drv(d[1].id).name}. ${TEAMS[c[0].id].name} lead the constructors' with ${c[0].pts}, ${c[0].pts-c[1].pts} ahead of ${TEAMS[c[1].id].name}. ${need} ${st.txt}`.replace(/\s+/g," ");
+  return {tag:"Championship · simulated season",trace:call,plain:txt+" (Simulated season, invented pace.)",say:txt,html:`<div>${esc(txt)} <i>(Simulated season, invented pace.)</i></div>`+champHtml(),actions:[{label:"Simulate next round",fn:()=>{ $("se-next").click(); setTimeout(()=>ask("Who leads the championship?"),200); }},{label:"Explain points",fn:()=>ask("Explain points")}]};
+}
+function recapAnswer(q){
+  const R=SIM.res, T=TRACKS[SIM.track], snap=simSnap(SIM.tau), lead=snap[0], lap=Math.min(Math.max(1,Math.floor(Math.max(0,lead.D))+1),R.laps);
+  const ev=R.events.filter(e=>e.t<=SIM.tau); if(SIM.tau<=0) return {tag:"Race simulator · recap",trace:[{call:"RaceSimulator.recap()",result:"race not started",ok:false}],plain:"The race has not started yet. Press Start and ask again.",say:"The race has not started yet."};
+  const pass=ev.filter(e=>e.kind==="pass"), tpass=pass.filter(e=>!e.viaPit), pits=ev.filter(e=>e.kind==="pit"), sc=ev.filter(e=>e.kind==="sc"&&/deployed/i.test(e.title)), wx=ev.filter(e=>e.kind==="wx"||e.kind==="inc");
+  let fast=null; for(const h of R.fastHist){ if(h.t<=SIM.tau) fast=h; else break; }
+  const mv=snap.map(c=>({c,d:R.start[c.id].grid+1-c.pos})).sort((a,b)=>b.d-a.d), up=mv[0], dn=mv[mv.length-1], me=snap.find(c=>c.id===SIM.mine);
+  const items=[`<b>Order:</b> ${snap.slice(0,3).map(c=>"P"+c.pos+" "+c.code).join(", ")}. ${esc(drv(lead.id).name)} leads on lap ${lap} of ${R.laps}.`,
+   `<b>Action:</b> ${pass.length} position changes so far, ${tpass.length} on track and ${pass.length-tpass.length} through the pits.`,
+   `<b>Strategy:</b> ${pits.length} pit stop${pits.length===1?"":"s"} so far${sc.length?`, with ${sc.length} safety car period${sc.length>1?"s":""} shaking up the order`:""}.`,
+   up&&up.d>0?`<b>Biggest climber:</b> ${esc(drv(up.c.id).name)}, up ${up.d} from the grid, now P${up.c.pos}.`:"",
+   dn&&dn.d<0?`<b>Biggest faller:</b> ${esc(drv(dn.c.id).name)}, down ${-dn.d}, now P${dn.c.pos}.`:"",
+   fast?`<b>Fastest lap:</b> ${esc(drv(fast.id).name)}, ${lapFmt(fast.lt)}.`:"",
+   wx.length?`<b>Conditions:</b> ${wx.length} weather or incident events, latest: ${esc(wx[wx.length-1].title)}.`:"",
+   `<b>Your driver:</b> ${esc(drv(me.id).name)} is P${me.pos}, started P${R.start[me.id].grid+1}, on ${me.comp.toLowerCase()}s that are ${me.age} laps old.`].filter(Boolean);
+  const plain=items.map(s=>s.replace(/<[^>]+>/g,"")).join(" ");
+  return {tag:"Race simulator · race recap",trace:[{call:`RaceSimulator.recap(lap=${lap}, circuit="${T.id}")`,result:`${pass.length} passes, ${pits.length} stops`}],plain:plain+" (Simulated race.)",say:items.slice(0,3).map(s=>s.replace(/<[^>]+>/g,"")).join(" "),html:"<ul>"+items.map(s=>"<li>"+s+"</li>").join("")+"</ul>",actions:[{label:"Why did we pit?",fn:()=>ask("Why did we pit?")},{label:"What if we pit early or late?",fn:()=>ask("What if we pit early or late?")}]};
+}
+function whyPitAnswer(q,mentioned){
+  const R=SIM.res, T=TRACKS[SIM.track], snap=simSnap(SIM.tau), id=mentioned[0]||SIM.mine, c=snap.find(x=>x.id===id), tl=R.tl[id], lap=Math.min(Math.max(1,Math.floor(Math.max(0,snap[0].D))+1),R.laps);
+  const done=tl.map((l,i)=>({l,i})).filter(x=>x.l.pit&&c.i>=0&&x.i<c.i), nxt=tl.map((l,i)=>({l,i})).find(x=>x.l.pit&&x.i>=Math.max(0,c.i));
+  const call=[{call:`RaceSimulator.explain_stop(driver="${id}", lap=${lap})`,result:done.length?`${done.length} stop(s) done`:(nxt?`next stop lap ${nxt.l.L}`:"no stops")}];
+  const nm=surname(id);
+  if(done.length){
+    const x=done[done.length-1], l=x.l, nc=tl[x.i+1]?tl[x.i+1].comp:l.comp, life=lifeOf(l.comp,T), r0=SIM.rank[Math.max(0,x.i-1)][id], r1=SIM.rank[Math.min(R.laps-1,x.i+2)][id];
+    const why=[]; if(l.sc) why.push(`it came under the safety car, when a stop costs about ${Math.round(T.pitLossSC/1000)}s instead of ${Math.round(T.pitLoss/1000)}s`); if(tyreType(l.comp)!==tyreType(nc)) why.push(`the track changed and ${l.comp.toLowerCase()}s were no longer the right tyre, so ${nm} switched to ${nc.toLowerCase()}s`);
+    if(l.age>=life*0.8) why.push(`the ${l.comp.toLowerCase()}s were ${l.age} laps old against a life of about ${life} here, close to the cliff`); if(!why.length) why.push(`it followed the planned strategy, with ${l.age}-lap-old ${l.comp.toLowerCase()}s swapped for ${nc.toLowerCase()}s`);
+    const res=r1<r0?`Positions: P${r0} before, P${r1} two laps after, a gain of ${r0-r1}, so the stop worked.`:(r1>r0?`Positions: P${r0} before, P${r1} two laps after; the stop cost ${r1-r0} place${r1-r0>1?"s":""}, which is the price of ${Math.round(T.pitLoss/1000)}s in the pits.`:`Positions: P${r0} before and after, so the stop cost nothing in track position.`);
+    const txt=`${drv(id).name} stopped on lap ${l.L} (stop ${done.length}) because ${why.join(", and ")}. ${res}`;
+    return {tag:"Race simulator · why that stop",trace:call,plain:txt+" (Simulated race.)",say:txt,actions:[{label:"Explain the undercut",fn:()=>ask("What is an undercut?")},{label:"Explain tyres",fn:()=>ask("Explain tyres")}]};
+  }
+  if(nxt){ const l=nxt.l, nc=tl[nxt.i+1]?tl[nxt.i+1].comp:"hard", life=lifeOf(c.comp,T);
+    const txt=`${drv(id).name} has not stopped yet. The model plans the stop for lap ${l.L}, switching ${c.comp.toLowerCase()}s that will be about ${l.age} laps old (life here is about ${life}) to ${nc.toLowerCase()}s. The stop costs about ${Math.round(T.pitLoss/1000)}s, and the timing balances new-tyre pace against that loss and track position.`;
+    return {tag:"Race simulator · planned stop",trace:call,plain:txt+" (Simulated race.)",say:txt,actions:[{label:"What if we pit early or late?",fn:()=>ask("What if we pit early or late?")}]}; }
+  const txt=`${drv(id).name} has no more stops planned: the ${c.comp.toLowerCase()}s, ${c.age} laps old, can last to the flag.`;
+  return {tag:"Race simulator · stops",trace:call,plain:txt+" (Simulated race.)",say:txt};
+}
+function overtakeAnswer(q,mentioned){
+  const R=SIM.res, T=TRACKS[SIM.track], id=mentioned[0]||SIM.mine;
+  const ev=R.events.filter(e=>e.kind==="pass"&&e.t<=SIM.tau&&(e.a===id||e.b===id)).slice(-1)[0];
+  const call=[{call:`RaceSimulator.explain_pass(driver="${id}")`,result:ev?`lap ${ev.L}, ${ev.a} over ${ev.b}`:"no passes yet",ok:!!ev}];
+  if(!ev) return {tag:"Race simulator · passes",trace:call,plain:`${drv(id).name} has not been involved in a position change yet.`,say:`${surname(id)} has not been involved in a position change yet.`};
+  const A=R.tl[ev.a][ev.L-1], B=R.tl[ev.b][ev.L-1], fresh=B.age-A.age;
+  const why=ev.viaPit?`The move came through the pit cycle: one car was in the pits while the other stayed out, so this is the undercut or overcut in action.`:`It was made on track. ${surname(ev.a)} was on ${A.comp.toLowerCase()}s ${A.age} laps old against ${surname(ev.b)} on ${B.comp.toLowerCase()}s ${B.age} laps old${fresh>1?`, ${fresh} laps fresher, which is worth about ${(fresh*SIMCFG.deg.MEDIUM*T.degM/1000).toFixed(1)}s a lap`:""}. Passing at ${T.name} is ${passTxt(T)}.`;
+  const txt=`${drv(ev.a).name} passed ${drv(ev.b).name} on lap ${ev.L}. ${why}`;
+  return {tag:"Race simulator · how that pass happened",trace:call,plain:txt+" (Simulated race.)",say:txt,actions:[{label:"Explain DRS",fn:()=>ask("Explain DRS")},{label:"Explain dirty air",fn:()=>ask("Explain dirty air")}]};
+}
+function whatIfAnswer(){
+  const T=TRACKS[SIM.track], opts=[["auto","Team plan"],["early","Pit early (undercut)"],["late","Pit late (overcut)"],["onestop","One stop"],["twostop","Two stops"]], NS=8;
+  const rows=opts.map(([k,n])=>{ let sum=0,stp=0,thisPos=0,wins=0; for(let s=0;s<NS;s++){ const r=runSim(SIM.seed+s,{mine:SIM.mine,strat:k},s===0?SIM.ic:[],SIM.track,SIM.wx), pos=r.final.findIndex(f=>f.id===SIM.mine)+1; sum+=pos; stp+=r.final[pos-1].stops; if(pos===1) wins++; if(s===0) thisPos=pos; } return {k,n,avg:sum/NS,stops:stp/NS,thisPos,wins,cur:k===SIM.strat}; });
+  const best=rows.slice().sort((a,b)=>a.avg-b.avg||a.stops-b.stops)[0], cur=rows.find(r=>r.cur), same=rows.every(r=>Math.abs(r.avg-rows[0].avg)<0.26);
+  const txt=`I re-ran this race ${NS} times for ${drv(SIM.mine).name} (seeds ${SIM.seed} to ${SIM.seed+NS-1}, same circuit and weather) with every strategy, and averaged the finishing position. ${rows.map(r=>`${r.n}: P${r.avg.toFixed(1)}`).join(", ")}. ${same?`The strategies are within a quarter of a place, so at ${T.name} the choice matters less than clean laps and track position.`:(best.k===SIM.strat?`The current choice, ${cur.n}, is the best of these.`:`${best.n} looks best (average P${best.avg.toFixed(1)} against P${cur.avg.toFixed(1)} for ${cur.n}).`)} Other cars react in the model too, so this is a forecast, not a promise.`;
+  const html=`<div>${esc(txt)}</div><table class="ctab"><tr><th>Strategy</th><th>Stops</th><th>This seed</th><th style="text-align:right">Avg finish</th></tr>${rows.map(r=>`<tr class="${r.k===best.k&&!same?"me":""}"><td class="n"><b>${esc(r.n)}</b>${r.cur?"<small>selected</small>":""}</td><td>${r.stops.toFixed(1)}</td><td>P${r.thisPos}</td><td class="pt">P${r.avg.toFixed(1)}</td></tr>`).join("")}</table>`;
+  return {tag:"Race simulator · strategy what-if",trace:[{call:`RaceSimulator.compare_strategies(driver="${SIM.mine}", seeds=${SIM.seed}..${SIM.seed+NS-1}, circuit="${T.id}")`,result:`${rows.length*NS} runs · best=${best.n} avg P${best.avg.toFixed(1)}`}],plain:txt,say:same?"The strategies are within a quarter of a place here, so clean laps matter more.":`${best.n} looks best here, averaging P${best.avg.toFixed(1)}.`,html,actions:[...(same||best.k===SIM.strat?[]:[{label:"Apply "+best.n,fn:()=>{ $("s-strat").value=best.k; $("s-strat").onchange(); }}]),{label:"Explain the undercut",fn:()=>ask("What is an undercut?")}]};
+}
+function circuitAnswer(){
+  const T=TRACKS[SIM.track], nd=(TRK.drs||[]).length;
+  const txt=`${T.full}: ${T.km} km, ${T.turns} corners, ${T.laps} laps, a ${mmss(T.lapTime)} lap. ${T.blurb} Overtaking is ${passTxt(T)}. The map shows ${nd} DRS zone${nd===1?"":"s"} and three sectors. A pit stop costs about ${Math.round(T.pitLoss/1000)}s, tyres are ${T.degM>1.05?"hard-worked":T.degM<0.9?"gently treated":"average"} here, and safety cars are ${T.inc>0.45?"likely":(T.inc<0.2?"rare":"possible")}. The outline is simplified from open map data; the numbers are rough and illustrative.`;
+  return {tag:"Race simulator · circuit guide",trace:[{call:`Circuit.describe("${T.id}")`,result:`${T.km} km · ${T.turns} turns · ${nd} DRS zones`}],plain:txt,say:txt.split(". ").slice(0,3).join(". ")+".",actions:[{label:"Explain DRS",fn:()=>ask("Explain DRS")},{label:"Explain tyres",fn:()=>ask("Explain tyres")}]};
+}
+function driverAnswer(id){
+  const R=SIM.res, snap=simSnap(SIM.tau), c=snap.find(x=>x.id===id), d=drv(id), tb=seasonTable(), si=tb.drivers.findIndex(x=>x.id===id), s=tb.drivers[si];
+  const pace=d.skill<=-40?"one of the quickest drivers in the model":(d.skill<=0?"quick and consistent in the model":(d.skill<=60?"mid-field pace in the model":"a rookie-level pace rating in the model"));
+  const txt=`${d.name} drives for ${TEAMS[d.team].name}, ${pace} (the form rating is invented). In this race they started P${R.start[id].grid+1} and are P${c.pos} on lap ${Math.min(Math.max(1,Math.floor(Math.max(0,snap[0].D))+1),R.laps)}, on ${c.comp.toLowerCase()}s ${c.age} laps old.${tb.done?` In the simulated championship they are P${si+1} with ${s.pts} points, ${s.w} win${s.w===1?"":"s"} and ${s.p} podium${s.p===1?"":"s"}.`:""}`;
+  return {tag:"Race simulator · driver card",trace:[{call:`Driver.profile("${id}")`,result:`P${c.pos} · ${tb.done?"P"+(si+1)+" in the championship":"no season yet"}`}],plain:txt+" Names identify the entries; this is not a statement about the real driver.",say:txt};
+}
+function helpAnswer(){
+  const items=["<b>Race:</b> who leads, gaps, tyres, fastest lap, my driver, weather","<b>Strategy:</b> “Should we box now?”, “What if we pit early or late?”, “Why did we pit?”","<b>Explain:</b> “Explain the race so far”, “How did that overtake happen?”, “Tell me about this circuit”","<b>Championship:</b> “Who leads the championship?”, constructors, points needed","<b>Learn:</b> DRS, undercut, dirty air, tyres, safety car, crossover, points, how this copilot works","<b>Rules:</b> pit lane speed limit (it refuses to invent a number)"];
+  return {tag:"Pit Wall Copilot · what I can do",trace:[{call:"Skill.capabilities()",result:"6 areas"}],plain:items.map(s=>s.replace(/<[^>]+>/g,"")).join(". ")+". Every answer shows the calls behind it, and I decline instead of guessing.",say:"I can answer race questions, explain strategy and the sport in detail, show the championship, and run what-if strategies. I decline instead of guessing.",html:"<ul>"+items.map(s=>"<li>"+s+"</li>").join("")+"</ul>Every answer shows the calls behind it, and I decline instead of guessing."};
+}
+function deepAnswer(q){
+  if(!SIM.res) return null;
+  const mentioned=DRIVERS.filter(d=>new RegExp("\\b"+d.id+"\\b|"+surname(d.id),"i").test(q)).map(d=>d.id);
+  if(/what can you|capabilit|\bhelp\b|what do you do|features/i.test(q)) return helpAnswer();
+  if(/champion|constructor|season|title|points|wdc|wcc/i.test(q)&&!/explain|what is|how many points|scoring/i.test(q)) return seasonAnswer(q);
+  if(/why.*(pit|box|stop)|(pit|box|stop).*why|explain.*(stop|pit)/i.test(q)) return whyPitAnswer(q,mentioned);
+  if(/overtake|how did .*pass|why did .*pass|who passed|pass(ed)? (me|him|her)/i.test(q)) return overtakeAnswer(q,mentioned);
+  if(/what.?if|alternative|compare.*strateg|how (can|could|do) (we|i) (win|improve|gain|beat)|best strategy|recommend|should we (pit|stop) (early|late)|pit early|pit late/i.test(q)) return whatIfAnswer();
+  if(/recap|summar|what happened|so far|race story|explain (the )?race|catch me up/i.test(q)) return recapAnswer(q);
+  if(/(circuit|track|layout|corner)s?\b.*(guide|about|tell|explain|describe|like|characteristics)|about (this|the) (circuit|track)|tell me about (this|the) (circuit|track)|explain (this|the) (circuit|track)|drs zones/i.test(q)&&!/weather|temperature|wet|rain|grip/i.test(q)) return circuitAnswer();
+  if(mentioned.length&&/who is|tell me about|profile|stats|about /i.test(q)) return driverAnswer(mentioned[0]);
+  return null;
+}
+
 /* selectors */
 $("s-track").innerHTML=Object.values(TRACKS).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
 $("s-wx").innerHTML=Object.values(WX).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
@@ -1721,7 +1926,7 @@ $("s-track").value="monza"; $("s-wx").value="dry"; $("s-mine").value="LEC";
 
 
 /* ================= boot ================= */
-loadReplay(); drawTrack(); setTheme(document.documentElement.dataset.theme||"broadcast"); render(true);
+seasonLoad(); seasonRender(); loadReplay(); drawTrack(); setTheme(document.documentElement.dataset.theme||"broadcast"); render(true);
 requestAnimationFrame(tick);
 </script>
 </body>
