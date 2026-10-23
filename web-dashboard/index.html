@@ -176,6 +176,52 @@ button.chip:hover{border-color:var(--accent);color:var(--ink)}
 .bub .ev b{color:var(--ink2);font-weight:600}
 .alx-foot{padding:0 16px 14px;font-size:11px;color:var(--ink3)}
 
+
+/* ---------- v2: copilot realism ---------- */
+.telem{display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid var(--line);background:var(--bg2)}
+.telem div{padding:8px 16px;border-right:1px solid var(--line);font-size:11px;color:var(--ink3);line-height:1.15}
+.telem b{display:block;font-family:var(--font-display);font-size:19px;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+.telem .fl{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--good);margin-right:6px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pair .board{margin:12px}
+.pair .board .big{font-size:46px}
+.charts{padding:10px 12px 12px;display:grid;gap:10px}
+.charts figure{margin:0}
+.charts figcaption{font-size:12px;color:var(--ink2);font-weight:600;margin-bottom:2px;display:flex;justify-content:space-between}
+.charts figcaption span{color:var(--ink3);font-weight:500}
+.charts svg{width:100%;height:96px;display:block;overflow:visible}
+.btn.call{margin-left:auto}
+.feed{max-height:460px;overflow:auto}
+.ev-row{display:grid;grid-template-columns:44px 1fr;gap:10px;padding:10px 14px;border-bottom:1px solid var(--line);font-size:13px}
+.ev-row .lp{font-family:var(--font-display);font-weight:700;font-size:16px;color:var(--ink3)}
+.ev-row .tt{font-weight:600}
+.ev-row .dd{color:var(--ink3);font-size:12px}
+.ev-row.alert{background:color-mix(in srgb,var(--good) 10%,transparent)}
+.ev-row.alert .tt{color:var(--good)}
+.ev-row.start .tt{color:var(--accent)}
+.alx-watch{font-size:12px;color:var(--ink3)}
+.trace{margin:2px 0 8px;border:1px solid var(--line2);border-radius:var(--radius-sm);background:var(--panel);overflow:hidden}
+.trace .tr{display:grid;grid-template-columns:14px 1fr;gap:2px 8px;padding:6px 8px;border-bottom:1px solid var(--line);font-size:11px;align-items:center}
+.trace .tr:last-child{border-bottom:0}
+.trace code{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--ink2);font-size:11px;word-break:break-all}
+.trace .res{grid-column:2;color:var(--ink3);font-size:11px}
+.trace .dot{width:9px;height:9px;border-radius:50%;background:var(--warn);animation:blink 0.8s infinite}
+.trace .dot.ok{background:var(--good);animation:none}
+.trace .dot.no{background:var(--warn);animation:none}
+@keyframes blink{50%{opacity:.25}}
+.cur::after{content:"";display:inline-block;width:7px;height:14px;background:var(--alexa);margin-left:2px;vertical-align:-2px;animation:blink .8s infinite}
+.bub .acts{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.bub .acts button{padding:6px 12px;border-radius:999px;border:1px solid var(--accent);background:transparent;color:var(--accent);font-weight:600;font-size:12px}
+.bub .acts button:hover{background:var(--accent);color:var(--accent-ink)}
+.wave{display:flex;gap:3px;align-items:center;height:26px;margin:2px 0 8px}
+.wave i{width:3px;background:var(--good);border-radius:2px;height:6px;animation:wv 0.9s ease-in-out infinite}
+.wave.still i{animation:none}
+@keyframes wv{0%,100%{height:5px}50%{height:22px}}
+.radio-tag{display:inline-flex;gap:6px;align-items:center;font-size:11px;font-weight:700;color:var(--good);letter-spacing:.04em;margin-bottom:4px}
+.radio-tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--good)}
+.ghost-label{font-family:var(--font-display);font-weight:700;font-size:14px;fill:#15151e;paint-order:stroke;stroke:#fff;stroke-width:4px}
+@media (max-width:1180px){.pair{grid-template-columns:1fr}}
+
 /* ---------- toast + dialog ---------- */
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
@@ -241,14 +287,15 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="tower-note">Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.</div>
     </div>
     <div class="card">
-      <h2>Alerts <span id="alert-count"></span></h2>
-      <div id="alerts"><div class="empty">No alerts yet. The watch on CAR_04 against CAR_03 raises one when the window opens.</div></div>
+      <h2>Race control <span id="alert-count"></span></h2>
+      <div id="alerts" class="feed"><div class="empty">Press Start. Lap events and strategy alerts appear here as they happen.</div></div>
     </div>
   </section>
 
   <section class="col mid">
     <div class="card trackcard">
       <h2>Circuit <span>Fictional layout, car spacing from real timing gaps</span></h2>
+      <div class="telem" id="telem"></div>
       <div class="trackwrap"><svg class="track" id="track" viewBox="0 0 800 470" role="img" aria-label="Circuit map with live car positions"></svg></div>
       <div class="controls">
         <button class="btn primary" id="b-start">Start</button>
@@ -259,8 +306,10 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
           <button data-s="1" aria-pressed="true">1x</button><button data-s="2" aria-pressed="false">2x</button><button data-s="4" aria-pressed="false">4x</button>
         </div>
         <span class="pace" id="pacetxt"></span>
+        <button class="btn call" id="b-call" disabled title="Available when the undercut window is open">Show the call</button>
       </div>
     </div>
+    <div class="pair">
     <div class="card">
       <h2>Pit wall board <span id="board-sub"></span></h2>
       <div class="board closed" id="board">
@@ -272,6 +321,11 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
           <div>Chance ahead<b class="num" id="b-prob">--</b></div>
         </div>
       </div>
+    </div>
+    <div class="card">
+      <h2>Trends <span>from each lap's calculation</span></h2>
+      <div class="charts" id="charts"></div>
+    </div>
     </div>
   </section>
 
@@ -296,27 +350,23 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="assump" id="assump"></div>
       <div class="simrow" id="simrow"></div>
     </div>
-    <div class="card">
-      <h2>Why now? <span>grounded in real values</span></h2>
-      <div class="empty" id="why-empty">Open the window alert to see the explanation.</div>
-      <div style="padding:12px 16px;display:none" id="why-box"><button class="linkbtn" id="why-open">Read why the window opened</button></div>
-    </div>
     <div class="card alexa">
-      <h2>Alexa+ <span id="ask-src">simulated experience</span></h2>
+      <h2>Pit Wall Copilot <span id="ask-src">Alexa+ simulated</span></h2>
       <div class="alx-top">
         <div class="orb" id="orb" aria-hidden="true"></div>
-        <div class="alx-meta"><div id="alx-state" class="alx-state">Ready. Tap the mic or pick a phrase.</div>
+        <div class="alx-meta"><div id="alx-state" class="alx-state">Ready</div>
+          <div class="alx-watch" id="alx-watch">Watching CAR_04 vs CAR_03</div>
           <label class="alx-sp"><input type="checkbox" id="alx-speak" checked> Speak answers aloud</label></div>
         <button class="mic" id="mic" aria-label="Talk to Alexa+" title="Talk to Alexa+"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></svg></button>
       </div>
-      <div class="alx-log" id="alx-log" aria-live="polite"><div class="empty" id="alx-empty">Say "Alexa, ask Pit Wall Copilot..." or type below.</div></div>
+      <div class="alx-log" id="alx-log" aria-live="polite"><div class="empty" id="alx-empty">Ask in plain language, tap a phrase, or press the mic. Every answer shows the tool calls behind it.</div></div>
       <form class="ask" id="askform"><input id="askin" placeholder="Ask Pit Wall Copilot" aria-label="Question"><button class="btn primary" style="padding:8px 14px;font-size:15px">Send</button></form>
       <div class="chips" id="chips">
         <button class="chip" data-q="Can CAR_04 undercut CAR_03?">Can car 4 undercut car 3?</button>
         <button class="chip" data-q="What is the pit lane speed limit?">Pit lane speed limit?</button>
         <button class="chip" data-q="What is the weather forecast?">Weather forecast?</button>
       </div>
-      <div class="alx-foot">Simulated in the browser. Voice uses your browser's speech features; this is not a real Alexa device.</div>
+      <div class="alx-foot">Simulated in the browser; not a real Alexa device. Voice uses your browser's speech features.</div>
     </div>
   </section>
 </main>
@@ -341,6 +391,7 @@ const $ = id => document.getElementById(id);
 const fmt = ms => (ms>=0?"+":"-")+(Math.abs(ms)/1000).toFixed(1)+"s";
 
 const S = {
+  feed:[], feedIdx:-1, proj:null,
   mode:"replay", frames:[], cursor:0, running:false, speed:1, lapSec:6,
   alerts:[], lastWindow:null, shownAlert:null, explain:null,
   live:{url:"",token:"",timer:null,seenVersions:new Set(),status:"STOPPED"},
@@ -366,7 +417,7 @@ try{const t=localStorage.getItem("pwc-theme"); if(t) document.documentElement.da
 
 /* ================= circuit ================= */
 const PATH = "M130 300 C 88 210, 150 92, 290 104 S 470 196, 545 132 S 722 66, 728 190 S 648 330, 562 342 S 468 436, 330 420 S 160 398, 130 300 Z";
-let pathEl=null, plen=0;
+let pathEl=null, plen=0, PIT=[];
 function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
 function drawTrack(){
   const svg=$("track"), her=document.documentElement.dataset.theme==="heritage";
@@ -380,7 +431,15 @@ function drawTrack(){
   pathEl=$("centre"); plen=pathEl.getTotalLength();
   const p0=pathEl.getPointAtLength(1), p1=pathEl.getPointAtLength(6);
   const a=Math.atan2(p1.y-p0.y,p1.x-p0.x)*180/Math.PI;
-  $("sf").innerHTML=`<g transform="translate(${p0.x} ${p0.y}) rotate(${a})"><rect x="-3" y="-16" width="6" height="32" fill="url(#chk)"/></g>
+  // pit lane: a parallel lane on the inside of the circuit around start/finish
+  PIT=[]; const cxm=400, cym=235;
+  for(let k=0;k<=24;k++){
+    const f=-0.085+0.17*k/24, a=ptAt(f), b=ptAt(f+0.004), nx=-(b.y-a.y), ny=(b.x-a.x), L=Math.hypot(nx,ny)||1;
+    let ux=nx/L, uy=ny/L; if(((cxm-a.x)*ux+(cym-a.y)*uy)<0){ux=-ux;uy=-uy}
+    PIT.push({x:a.x+ux*34,y:a.y+uy*34});
+  }
+  const pitD="M"+PIT.map(q=>q.x.toFixed(1)+" "+q.y.toFixed(1)).join(" L");
+  $("sf").innerHTML=`<path d="${pitD}" fill="none" stroke="${css("--track")}" stroke-width="12" stroke-linecap="round" opacity=".85"/><path d="${pitD}" fill="none" stroke="${css("--lane")}" stroke-width="1.4" stroke-dasharray="4 6" opacity=".7"/><text x="${PIT[5].x+10}" y="${PIT[5].y+4}" fill="${css("--ink2")}" font-size="10" font-family="${css("--font-body")}">Pit lane</text><g transform="translate(${p0.x} ${p0.y}) rotate(${a})"><rect x="-3" y="-16" width="6" height="32" fill="url(#chk)"/></g>
     <text x="${p0.x-40}" y="${p0.y+36}" fill="${css("--ink2")}" font-size="11" font-family="${css("--font-body")}">Start / finish</text>`;
   $("cars").innerHTML="";
 }
@@ -482,6 +541,10 @@ function render(force){
   $("b-margin").textContent=fmt(uc.expected_margin_ms);
   $("b-prob").textContent=Math.round(pr*100)+"%";
 
+  // telemetry strip, trends, race control feed, call button
+  renderTelem(s); renderCharts(s); syncFeed(); renderProjection(s);
+  const oka=s.drivers.find(x=>x.driver_id==="CAR_04"), ren=s.drivers.find(x=>x.driver_id==="CAR_03");
+  $("b-call").disabled=!(open && S.frames.length>1);
   // window flip -> alert
   if(S.lastWindow!==null && uc.window!==S.lastWindow && s.frame===(s.t>0.5?s.B:s.A) && (S.running||S.mode==="live")) onWindowFlip(uc);
   S.lastWindow=uc.window;
@@ -489,48 +552,138 @@ function render(force){
   $("pacetxt").textContent=S.mode==="replay"?`${S.lapSec/S.speed}s per lap`:"live";
 }
 
-/* ================= alerts ================= */
-function addAlert(a){
-  if(S.alerts.find(x=>x.alert_id===a.alert_id)) return;
-  S.alerts.unshift(a);
-  const r=a.deterministic_result;
-  $("alert-count").textContent=S.alerts.length+" total";
-  $("alerts").innerHTML=S.alerts.map(x=>{
-    const d=x.deterministic_result;
-    return `<div class="alert"><div class="h"><span>Lap ${x.triggering_snapshot.lap}</span><span>${new Date(x.created_at).toLocaleTimeString()}</span></div>
-      <div class="t">Undercut window ${x.new_status.toLowerCase()}</div>
-      <div class="d">${d.candidate} vs ${d.target}. Expected margin ${fmt(d.expected_margin_ms)}, ${Math.round(d.confidence.probability_ahead*100)}% chance ahead.</div></div>`;}).join("");
-  $("why-box").style.display="block"; $("why-empty").style.display="none";
+/* ================= race control feed ================= */
+function renderFeed(){
+  $("alert-count").textContent=S.feed.length?S.feed.length+" events":"";
+  $("alerts").innerHTML=S.feed.length?S.feed.map(e=>`<div class="ev-row ${e.kind}"><span class="lp">L${e.lap}</span><div><div class="tt">${esc(e.title)}</div><div class="dd">${esc(e.detail)}</div></div></div>`).join(""):'<div class="empty">Press Start. Lap events and strategy alerts appear here as they happen.</div>';
 }
+function syncFeed(){
+  const n=S.frames.length; if(!n) return;
+  const idx=Math.min(Math.floor(S.cursor+1e-6),n-1);
+  if(idx<S.feedIdx){ S.feed=[]; S.feedIdx=-1; }
+  if(S.cursor===0 && !S.running){ if(S.feed.length){S.feed=[];S.feedIdx=-1;renderFeed();} return; }
+  let changed=false;
+  while(S.feedIdx<idx){
+    S.feedIdx++; const i=S.feedIdx, f=S.frames[i], lap=f.state.lap, uc=f.uc, p=Math.round(uc.confidence.probability_ahead*100);
+    const d4=f.state.drivers.find(x=>x.driver_id===uc.candidate);
+    if(i===0) S.feed.unshift({kind:"start",lap,title:"Green flag",detail:`Watch active: ${CODE(uc.candidate)} vs ${CODE(uc.target)}. Window ${uc.window.toLowerCase()}, ${p}% chance ahead.`});
+    else S.feed.unshift({kind:"lap",lap,title:`Lap ${lap} complete`,detail:`${CODE(uc.candidate)} is ${fmt(d4?d4.gap_to_ahead_ms:0)} behind ${CODE(uc.target)}. ${p}% chance ahead.`});
+    if(i>0 && uc.window!==S.frames[i-1].uc.window) S.feed.unshift({kind:"alert",lap,title:`Undercut window ${uc.window}`,detail:`Alert raised. Expected margin ${fmt(uc.expected_margin_ms)}, ${p}% of ${uc.confidence.trials} trials.`});
+    changed=true;
+  }
+  if(changed) renderFeed();
+}
+
+/* ================= alerts store + toast ================= */
+function addAlert(a){ if(!S.alerts.find(x=>x.alert_id===a.alert_id)) S.alerts.unshift(a); }
 function onWindowFlip(uc){
   if(uc.window!=="OPEN") return;
-  const a = S.mode==="replay"?REPLAY.alert:S.liveAlert;
-  if(S.mode==="replay"){ addAlert(a); S.explain=REPLAY.explain; }
-  const d=uc;
+  if(S.mode==="replay"){ addAlert(REPLAY.alert); S.explain=REPLAY.explain; }
+  const d=uc, num=id=>id.replace(/\D/g,"").replace(/^0/,"");
+  const pct=Math.round(d.confidence.probability_ahead*100), pl=(d.pit_schedules[0]||{}).pit_lap;
   $("toast-t").textContent="Undercut window open";
-  $("toast-d").textContent=`${d.candidate} can pit for lap ${(d.pit_schedules[0]||{}).pit_lap??"--"} and come out ${fmt(d.expected_margin_ms)} ahead of ${d.target}, ${Math.round(d.confidence.probability_ahead*100)}% of ${d.confidence.trials} trials.`;
-  alexaProactive(`Heads up. The undercut window just opened for car ${d.candidate.replace(/\D/g,"").replace(/^0/,"")} against car ${d.target.replace(/\D/g,"").replace(/^0/,"")}. Expected margin ${(d.expected_margin_ms/1000).toFixed(1)} seconds, ${Math.round(d.confidence.probability_ahead*100)} percent chance of coming out ahead.`);
+  $("toast-d").textContent=`${d.candidate} can pit for lap ${pl??"--"} and come out ${fmt(d.expected_margin_ms)} ahead of ${d.target}, ${pct}% of ${d.confidence.trials} trials.`;
   $("toast").classList.add("show");
-  clearTimeout(onWindowFlip.t); onWindowFlip.t=setTimeout(()=>$("toast").classList.remove("show"),9000);
+  clearTimeout(onWindowFlip.t); onWindowFlip.t=setTimeout(()=>$("toast").classList.remove("show"),7000);
+  const text=`Heads up. The undercut window just opened for car ${num(d.candidate)} against car ${num(d.target)}. Expected margin ${(d.expected_margin_ms/1000).toFixed(1)} seconds, ${pct} percent chance of coming out ahead. Box on lap ${pl}.`;
+  cpReply({radio:true,cls:"pro",tag:"TEAM RADIO · proactive Alexa+ alert",
+    trace:[{call:`WatchEvaluator.evaluate(state_version=${d.source_state_version})`,result:`CLOSED → OPEN · P(ahead)=${pct}% (opens at 72%)`},{call:"ExplanationEngine.explain_alert(alert)",result:"explanation grounded in the calculation"}],
+    plain:text,say:text,actions:[{label:"Why did it open?",fn:showWhy},{label:"Show the call",fn:callAction}]});
 }
 $("toast-x").onclick=()=>$("toast").classList.remove("show");
 function showWhy(){
-  const e=S.explain||REPLAY.explain;
+  const e=S.explain||(S.mode==="replay"?REPLAY.explain:null);
   $("dlg-t").textContent="Why did the window open?";
-  $("dlg-b").innerHTML=`<p style="margin-top:0">${esc(e.narrative)}</p><dl class="facts">${Object.entries(e.grounded_facts).map(([k,v])=>`<dt>${k.replace(/_/g," ")}</dt><dd>${esc(String(v))}</dd>`).join("")}</dl>`;
+  $("dlg-b").innerHTML=e?`<p style="margin-top:0">${esc(e.narrative)}</p><dl class="facts">${Object.entries(e.grounded_facts).map(([k,v])=>`<dt>${k.replace(/_/g," ")}</dt><dd>${esc(String(v))}</dd>`).join("")}</dl>`:'<p style="margin:0">No window alert has fired in this run yet.</p>';
   $("dlg").showModal(); $("toast").classList.remove("show");
 }
-$("toast-why").onclick=showWhy; $("why-open").onclick=showWhy; $("dlg-x").onclick=()=>$("dlg").close();
-function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+$("toast-why").onclick=showWhy; $("dlg-x").onclick=()=>$("dlg").close();
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 
-/* ================= Alexa+ ================= */
+/* ================= telemetry strip + charts ================= */
+function lapFmt(ms){const m=Math.floor(ms/60000), s=(ms%60000)/1000; return m+":"+s.toFixed(3).padStart(6,"0")}
+function clock(ms){const s=Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor(s%3600/60); return h+":"+String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function renderTelem(s){
+  const a=s.A.state, b=s.B.state, rt=lerp(a.race_time_ms,b.race_time_ms,s.t);
+  const d4=s.drivers.find(x=>x.driver_id==="CAR_04"), d3=s.drivers.find(x=>x.driver_id==="CAR_03"), uc=s.frame.uc;
+  const col=a.track_state==="GREEN"?"var(--good)":"var(--warn)";
+  $("telem").innerHTML=`<div>Track<b><i class="fl" style="background:${col}"></i>${a.track_state.replace("_"," ")}</b></div>
+    <div>Race time<b>${clock(rt)}</b></div>
+    <div>${CODE("CAR_04")} lap pace<b>${lapFmt(d4.current_lap_pace_ms)}</b></div>
+    <div>${CODE("CAR_03")} lap pace<b>${lapFmt(d3.current_lap_pace_ms)}</b></div>
+    <div>${CODE("CAR_04")} to ${CODE("CAR_03")}<b>${fmt(d4.gapA)}</b></div>
+    <div>Watch<b style="color:${uc.window==="OPEN"?"var(--good)":"var(--warn)"}">${uc.window}</b></div>`;
+  $("alx-watch").textContent=`Watching ${uc.candidate} vs ${uc.target} · window ${uc.window.toLowerCase()}`;
+}
+let chartKey="";
+function lineChart(pts,{ymin,ymax,thr,thrLabel,fmtY,color}){
+  const W=300,H=96,pl=30,pr=10,pt=8,pb=16, X=i=>pl+(W-pl-pr)*(pts.length>1?i/(Math.max(NF,pts.length)-1):0), Y=v=>pt+(H-pt-pb)*(1-(v-ymin)/(ymax-ymin));
+  const NF=Math.max(S.frames.length,5);
+  const X2=i=>pl+(W-pl-pr)*i/(NF-1);
+  let g=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/><text x="${pl-4}" y="${Y(ymax)+4}" text-anchor="end" font-size="9" fill="var(--ink3)">${fmtY(ymax)}</text><text x="${pl-4}" y="${Y(ymin)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">${fmtY(ymin)}</text>`;
+  if(thr!=null) g+=`<line x1="${pl}" x2="${W-pr}" y1="${Y(thr)}" y2="${Y(thr)}" stroke="var(--good)" stroke-dasharray="4 4"/><text x="${pl+3}" y="${Y(thr)-4}" text-anchor="start" font-size="9" fill="var(--good)">${thrLabel}</text>`;
+  if(pts.length){ g+=`<polyline fill="none" stroke="${color}" stroke-width="2.5" points="${pts.map((v,i)=>X2(i)+","+Y(v)).join(" ")}"/>`+pts.map((v,i)=>`<circle cx="${X2(i)}" cy="${Y(v)}" r="${i===pts.length-1?4.5:3}" fill="${i===pts.length-1?color:"var(--panel)"}" stroke="${color}" stroke-width="2"/>`).join(""); }
+  for(let i=0;i<NF;i++){ const f=S.frames[i]; g+=`<text x="${X2(i)}" y="${H-3}" text-anchor="middle" font-size="9" fill="var(--ink3)">${f?("L"+f.state.lap):""}</text>`; }
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${g}</svg>`;
+}
+function renderCharts(s){
+  const upto=Math.min(Math.floor(S.cursor+1e-6),S.frames.length-1), key=upto+":"+S.frames.length+":"+document.documentElement.dataset.theme;
+  if(key===chartKey) return; chartKey=key;
+  const fr=S.frames.slice(0,upto+1);
+  const probs=fr.map(f=>f.uc.confidence.probability_ahead);
+  const gaps=fr.map(f=>{const d=f.state.drivers.find(x=>x.driver_id==="CAR_04"); return (d?d.gap_to_ahead_ms:0)/1000;});
+  const gmax=Math.max(4,Math.ceil(Math.max(...gaps,0)+1));
+  $("charts").innerHTML=`<figure><figcaption>Chance of coming out ahead<span>${probs.length?Math.round(probs[probs.length-1]*100)+"%":"--"}</span></figcaption>${lineChart(probs,{ymin:0,ymax:1,thr:0.72,thrLabel:"opens at 72%",fmtY:v=>Math.round(v*100)+"%",color:"var(--accent)"})}</figure>
+  <figure><figcaption>Gap ${CODE("CAR_04")} to ${CODE("CAR_03")}<span>${gaps.length?gaps[gaps.length-1].toFixed(1)+"s":"--"}</span></figcaption>${lineChart(gaps,{ymin:0,ymax:gmax,thr:null,fmtY:v=>v.toFixed(0)+"s",color:"var(--alexa)"})}</figure>`;
+}
+
+/* ================= "Show the call" projection ================= */
+function startProjection(){
+  S.proj={t0:performance.now(),dur:5600,done:false};
+  (function loop(){ if(!S.proj||S.proj.done) { render(); return; } render(); requestAnimationFrame(loop); })();
+}
+function renderProjection(s){
+  const g=$("cars"); if(!g||!pathEl) return;
+  let gh=g.querySelector("[data-ghost]");
+  if(!S.proj){ if(gh) gh.remove(); return; }
+  const d4=s.drivers.find(x=>x.driver_id==="CAR_04"), d3=s.drivers.find(x=>x.driver_id==="CAR_03"), uc=s.frame.uc;
+  if(!d4||!d3||!PIT.length) return;
+  const f4=s.lapFloat-d4.gapL/d4.base_pace_ms, f3=s.lapFloat-d3.gapL/d3.base_pace_ms;
+  const A=ptAt(f4), R=ptAt(f3+uc.expected_margin_ms/d3.base_pace_ms);
+  const u=Math.min((performance.now()-S.proj.t0)/S.proj.dur,1), mix=(p,q,k)=>({x:lerp(p.x,q.x,k),y:lerp(p.y,q.y,k)});
+  const sched=(uc.pit_schedules||[]).find(x=>x.driver_id===uc.candidate)||{};
+  let P,label;
+  if(u<.2){P=mix(A,PIT[0],u/.2);label="Pit entry";}
+  else if(u<.45){P=mix(PIT[0],PIT[12],(u-.2)/.25);label="Pit lane";}
+  else if(u<.6){P=PIT[12];label=`Stop: fresh ${(sched.compound_after_pit||"tyres")}`;}
+  else if(u<.8){P=mix(PIT[12],PIT[24],(u-.6)/.2);label="Pit exit";}
+  else {P=mix(PIT[24],R,Math.min((u-.8)/.2,1));label="Rejoining";}
+  if(u>=1){P=R;label=`Projected: ${CODE(uc.candidate)} rejoins ${fmt(uc.expected_margin_ms)} ahead of ${CODE(uc.target)}`; S.proj.done=true;}
+  const car=g.querySelector('[data-id="CAR_04"]'); if(car) car.setAttribute("transform",`translate(${P.x} ${P.y})`);
+  if(!gh){ gh=document.createElementNS("http://www.w3.org/2000/svg","g"); gh.setAttribute("data-ghost","1"); gh.innerHTML=`<circle r="17" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="4 4"/><text class="ghost-label" text-anchor="middle" y="-26"></text>`; g.appendChild(gh); }
+  gh.setAttribute("transform",`translate(${(u>=1?R:P).x} ${(u>=1?R:P).y})`);
+  const tx=gh.querySelector("text"); tx.textContent=label; if(u>=1) tx.setAttribute("y","-26");
+}
+function callAction(){
+  const s=sample(); if(!s) return;
+  const uc=s.frame.uc;
+  if(uc.window!=="OPEN"){ cpReply({tag:"Pit Wall Copilot",plain:"The window is closed right now, so there is no pit call to show yet. I'll alert you when it opens.",say:"The window is closed right now, so there is no pit call to show yet.",trace:[{call:`StrategyEngine.calculate_undercut("${uc.candidate}", "${uc.target}")`,result:`window=${uc.window} · P(ahead)=${Math.round(uc.confidence.probability_ahead*100)}%`,ok:false}]}); return; }
+  const sched=(uc.pit_schedules||[]).find(x=>x.driver_id===uc.candidate)||{}, pct=Math.round(uc.confidence.probability_ahead*100);
+  startProjection();
+  const text=`If car ${uc.candidate.replace(/\D/g,"").replace(/^0/,"")} pits on lap ${sched.pit_lap} for ${(sched.compound_after_pit||"new").toLowerCase()} tyres, the engine expects it to rejoin ${(uc.expected_margin_ms/1000).toFixed(1)} seconds ahead of car ${uc.target.replace(/\D/g,"").replace(/^0/,"")}, in ${pct} percent of ${uc.confidence.trials} trials. Watch the circuit. This is the engine's projected outcome, not a lap-by-lap simulation.`;
+  cpReply({tag:"Pit Wall Copilot · projection",trace:[{call:`StrategyEngine.calculate_undercut("${uc.candidate}", "${uc.target}")`,result:`pit lap ${sched.pit_lap} · margin=${uc.expected_margin_ms}ms · P(ahead)=${pct}%`}],plain:text,say:text});
+}
+$("b-call").onclick=callAction;
+
+/* ================= Copilot (Alexa+ simulated) ================= */
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const REDUCED=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 const spokenText=s=>s.replace(/CAR_0?(\d+)/g,"car $1").replace(/(\d+)ms/g,"$1 milliseconds").replace(/(\d+(?:\.\d+)?)%/g,"$1 percent").replace(/\s+/g," ");
-let speaking=false;
 function setOrb(cls,txt){ $("orb").className="orb "+(cls||""); if(txt) $("alx-state").textContent=txt; }
 function speak(text){
-  if(!$("alx-speak").checked||!("speechSynthesis" in window)){ setOrb("","Ready."); return; }
+  if(!$("alx-speak").checked||!("speechSynthesis" in window)){ setOrb("","Ready"); return; }
   try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(spokenText(text)); u.rate=1.02;
-    u.onstart=()=>setOrb("speaking","Speaking…"); u.onend=u.onerror=()=>setOrb("","Ready."); speechSynthesis.speak(u);}catch(e){ setOrb("","Ready."); }
+    u.onstart=()=>setOrb("speaking","Speaking…"); u.onend=u.onerror=()=>setOrb("","Ready"); speechSynthesis.speak(u);}catch(e){ setOrb("","Ready"); }
 }
 function logBubble(cls,tag,html){
   const em=$("alx-empty"); if(em) em.remove();
@@ -538,32 +691,65 @@ function logBubble(cls,tag,html){
   const L=$("alx-log"); L.appendChild(d); L.scrollTop=L.scrollHeight;
 }
 function evHtml(ev){ ev=(ev||[]).filter(e=>!/^pit_schedule/.test(e.field)); return ev.length?`<div class="ev">${ev.map(e=>`<b>${e.field.replace(/_/g," ")}</b><span>${esc(String(e.value))}</span>`).join("")}</div>`:""; }
+async function stream(el,text){
+  if(REDUCED){ el.textContent=text; return; }
+  el.classList.add("cur"); let i=0; while(i<text.length){ i+=3; el.textContent=text.slice(0,i); await sleep(14); }
+  el.textContent=text; el.classList.remove("cur");
+}
+async function cpReply(o){
+  const L=$("alx-log"), em=$("alx-empty"); if(em) em.remove();
+  const w=document.createElement("div"); w.className="bub "+(o.cls||"al"); w.innerHTML=`<span class="${o.radio?"radio-tag":"tag"}">${esc(o.tag)}</span>`;
+  L.appendChild(w); const sc=()=>{L.scrollTop=L.scrollHeight};
+  setOrb("listening","Working…");
+  let wave=null;
+  if(o.radio){ wave=document.createElement("div"); wave.className="wave"; wave.innerHTML="<i></i>".repeat(20); [...wave.children].forEach((b,i)=>b.style.animationDelay=(i*50)+"ms"); w.appendChild(wave); }
+  if(o.trace&&o.trace.length){
+    const tr=document.createElement("div"); tr.className="trace"; w.appendChild(tr);
+    for(const st of o.trace){
+      const row=document.createElement("div"); row.className="tr"; row.innerHTML=`<span class="dot"></span><code>${esc(st.call)}</code><span class="res">running…</span>`;
+      tr.appendChild(row); sc(); await sleep(REDUCED?0:480);
+      row.querySelector(".dot").className="dot "+(st.ok===false?"no":"ok"); row.querySelector(".res").textContent=st.result;
+    }
+  }
+  const body=document.createElement("div"); w.appendChild(body); sc();
+  speak(o.say||o.plain);
+  await stream(body,o.plain);
+  if(o.html) body.innerHTML=o.html;
+  if(o.evidence&&o.evidence.length) body.insertAdjacentHTML("afterend",evHtml(o.evidence));
+  if(wave) wave.classList.add("still");
+  if(o.actions&&o.actions.length){ const ac=document.createElement("div"); ac.className="acts"; o.actions.forEach(a=>{const b=document.createElement("button"); b.type="button"; b.textContent=a.label; b.onclick=a.fn; ac.appendChild(b);}); w.appendChild(ac); }
+  sc();
+}
+function fromAgent(r){
+  const ev=Object.fromEntries((r.evidence||[]).map(e=>[e.field,e.value]));
+  if(r.status==="SUPPORTED") return {tag:"Pit Wall Copilot · from race data",
+    trace:[{call:`AgentQueryService.query("${r.query}")`,result:"routed to the strategy engine"},{call:`StrategyEngine.calculate_undercut("${ev.candidate}", "${ev.target}")`,result:`window=${ev.window} · margin=${ev.expected_margin_ms}ms · P(ahead)=${(+ev.probability_ahead*100).toFixed(1)}%`}],
+    plain:r.narrative,say:r.narrative,evidence:r.evidence,actions:[{label:"Why?",fn:showWhy},{label:"Show the call",fn:callAction}]};
+  return {tag:"Pit Wall Copilot · declined, no guessing",cls:"al ref",trace:[{call:`AgentQueryService.query("${r.query}")`,result:"UNSUPPORTED · no data source for this question",ok:false}],plain:r.narrative,say:r.narrative,evidence:[]};
+}
+function fromReg(r,q){
+  if(!r.found) return {tag:"Pit Wall Copilot · no matching rule",cls:"al ref",trace:[{call:`RegulationService.get_regulation("${q}")`,result:"no matching rule on file",ok:false}],plain:"No matching rule on file.",say:"I couldn't find a matching rule.",evidence:[]};
+  const e=r.evidence[0];
+  return {tag:"Pit Wall Copilot · from the rules on file",
+    trace:[{call:`RegulationService.get_regulation("${q}")`,result:`found ${e.document_id} v${e.version} · no numeric limit stated`}],
+    plain:e.title+". "+e.excerpt.replace(/\s+/g," ")+" The rules on file describe how pit lane speed is applied but state no number, so none is given.",
+    say:"The rules on file describe how pit lane speed is applied, but they don't state a number, so I won't guess one.",
+    evidence:[{field:"source",value:e.source_path}]};
+}
 async function resolveQuestion(q){
   if(S.mode==="live"){
-    if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)){ const reg=await liveFetch("/v1/regulations?query="+encodeURIComponent(q)); return fromReg(reg); }
-    const r=await liveFetch("/v1/agent/query","POST",{race_id:"demo-race-001",query:q}); return fromAgent(r);
+    if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)) return fromReg(await liveFetch("/v1/regulations?query="+encodeURIComponent(q)),q);
+    return fromAgent(await liveFetch("/v1/agent/query","POST",{race_id:"demo-race-001",query:q}));
   }
-  if(/undercut|chance.*ahead/i.test(q)) return fromAgent(REPLAY.agent);
-  if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)) return fromReg(REPLAY.regulation);
-  return fromAgent(REPLAY.agentRefusal);
-}
-function fromAgent(r){ const ok=r.status==="SUPPORTED"; return {ok,tag:ok?"Pit Wall Copilot · from race data":"Pit Wall Copilot · not answered, no guessing",text:r.narrative,say:r.narrative,evidence:r.evidence}; }
-function fromReg(r){
-  if(!r.found) return {ok:false,tag:"Pit Wall Copilot · no matching rule",text:"No matching rule on file.",say:"I couldn't find a matching rule.",evidence:[]};
-  const e=r.evidence[0];
-  return {ok:true,tag:"Pit Wall Copilot · from the rules on file",text:`<b>${esc(e.title)}</b> (${esc(e.document_id)} v${esc(e.version)}). ${esc(e.excerpt)}<br><span style="color:var(--ink3)">The rules on file describe how pit lane speed is applied but state no number, so none is given.</span>`,html:true,say:"The rules on file describe how pit lane speed is applied, but they don't state a number, so I won't guess one.",evidence:[{field:"source",value:e.source_path}]};
+  if(/undercut|chance.*ahead/i.test(q)) return fromAgent({...REPLAY.agent,query:q});
+  if(/speed limit|pit lane|pit-lane|regulation/i.test(q)) return fromReg({...REPLAY.regulation},q);
+  return fromAgent({...REPLAY.agentRefusal,query:q});
 }
 async function ask(q){
   q=q.trim().replace(/^alexa[,.]?\s*(ask )?(pit wall copilot)?[,:]?\s*/i,""); if(!q) return;
-  logBubble("me","",esc(q)); setOrb("listening","Thinking…");
-  try{
-    const r=await resolveQuestion(q);
-    logBubble("al"+(r.ok?"":" ref"),r.tag,(r.html?r.text:esc(r.text))+evHtml(r.evidence));
-    setOrb("","Ready."); speak(r.say);
-  }catch(e){ logBubble("al ref","Pit Wall Copilot · error",esc("Could not reach the backend: "+e.message)); setOrb("","Ready."); }
-}
-function alexaProactive(text){
-  logBubble("pro","Alexa+ · proactive notification",esc(text)); speak(text);
+  logBubble("me","",esc(q)); setOrb("listening","Working…");
+  try{ await cpReply(await resolveQuestion(q)); }
+  catch(e){ logBubble("al ref","Pit Wall Copilot · error",esc("Could not reach the backend: "+e.message)); setOrb("","Ready"); }
 }
 $("askform").onsubmit=e=>{e.preventDefault();const v=$("askin").value;$("askin").value="";ask(v)};
 $("chips").onclick=e=>{const q=e.target.dataset&&e.target.dataset.q; if(q) ask(q)};
@@ -576,9 +762,9 @@ $("chips").onclick=e=>{const q=e.target.dataset&&e.target.dataset.q; if(q) ask(q
     try{ speechSynthesis.cancel(); }catch(e){}
     rec=new SR(); rec.lang="en-US"; rec.interimResults=false;
     mic.classList.add("on"); setOrb("listening","Listening…");
-    rec.onresult=ev=>{ const tx=ev.results[0][0].transcript; ask(tx); };
+    rec.onresult=ev=>{ ask(ev.results[0][0].transcript); };
     rec.onerror=ev=>{ setOrb("","Voice input unavailable ("+ev.error+"). Type instead."); };
-    rec.onend=()=>{ mic.classList.remove("on"); rec=null; if($("orb").classList.contains("listening")&&$("alx-state").textContent==="Listening…") setOrb("","Ready."); };
+    rec.onend=()=>{ mic.classList.remove("on"); rec=null; if($("alx-state").textContent==="Listening…") setOrb("","Ready"); };
     rec.start();
   };
 })();
@@ -599,15 +785,15 @@ function tick(now){
   requestAnimationFrame(tick);
 }
 $("b-start").onclick=async()=>{
+  S.proj=null;
   if(S.mode==="replay"){ if(S.cursor>=S.frames.length-1){resetReplay()} S.running=true; $("toast").classList.remove("show"); }
   else liveCmd("start");
 };
 $("b-pause").onclick=()=>{ if(S.mode==="replay") S.running=false; else liveCmd("pause"); render(); };
 $("b-reset").onclick=()=>{ if(S.mode==="replay") resetReplay(); else liveCmd("reset"); };
 function resetReplay(){ S.running=false; S.cursor=0; S.alerts=[]; S.lastWindow=S.frames[0].uc.window;
-  $("alerts").innerHTML='<div class="empty">No alerts yet. The watch on CAR_04 against CAR_03 raises one when the window opens.</div>'; $("alert-count").textContent="";
-  $("why-box").style.display="none"; $("why-empty").style.display="block"; $("toast").classList.remove("show"); render(true); }
-$("scrub").oninput=e=>{ if(S.mode!=="replay") return; S.running=false; S.cursor=parseFloat(e.target.value); S.lastWindow=sample().frame.uc.window; render(); };
+  S.feed=[]; S.feedIdx=-1; S.proj=null; renderFeed(); $("toast").classList.remove("show"); render(true); }
+$("scrub").oninput=e=>{ if(S.mode!=="replay") return; S.running=false; S.proj=null; S.cursor=parseFloat(e.target.value); S.lastWindow=sample().frame.uc.window; render(); };
 $("speed").onclick=e=>{ const s=e.target.dataset&&e.target.dataset.s; if(!s) return; S.speed=+s; [...$("speed").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===s)); };
 
 /* ================= live backend ================= */
@@ -617,7 +803,7 @@ async function liveFetch(path,method="GET",body){
   if(!r.ok) throw new Error(r.status+" "+(await r.text()).slice(0,120));
   return r.json();
 }
-async function liveCmd(c){ try{ await liveFetch("/v1/demo/"+c,"POST"); if(c==="reset"){S.frames=[];S.cursor=0;S.live.seenVersions.clear();S.alerts=[];$("alerts").innerHTML='<div class="empty">No alerts yet.</div>';} }catch(e){ $("cfg-note").textContent="Command failed: "+e.message; } }
+async function liveCmd(c){ try{ await liveFetch("/v1/demo/"+c,"POST"); if(c==="reset"){S.frames=[];S.cursor=0;S.live.seenVersions.clear();S.alerts=[];S.feed=[];S.feedIdx=-1;S.proj=null;renderFeed();} }catch(e){ $("cfg-note").textContent="Command failed: "+e.message; } }
 async function livePoll(){
   const R="demo-race-001";
   try{
@@ -640,9 +826,9 @@ async function livePoll(){
 function setMode(m){
   S.mode=m; $("src-replay").setAttribute("aria-pressed",m==="replay"); $("src-live").setAttribute("aria-pressed",m==="live");
   $("cfg").classList.toggle("on",m==="live"); clearInterval(S.live.timer);
-  $("ask-src").textContent=m==="live"?"live backend":"simulated experience";
+  $("ask-src").textContent=m==="live"?"live backend":"Alexa+ simulated";
   if(m==="replay"){ loadReplay(); resetReplay(); }
-  else { S.frames=[]; S.cursor=0; S.running=false; S.alerts=[]; S.live.seenVersions.clear(); $("alerts").innerHTML='<div class="empty">Connect to a backend to see live alerts.</div>'; }
+  else { S.frames=[]; S.cursor=0; S.running=false; S.alerts=[]; S.live.seenVersions.clear(); S.feed=[];S.feedIdx=-1;S.proj=null;renderFeed(); }
 }
 $("src-replay").onclick=()=>setMode("replay"); $("src-live").onclick=()=>setMode("live");
 $("cfg-connect").onclick=()=>{ S.live.url=$("cfg-url").value.replace(/\/$/,""); S.live.token=$("cfg-token").value; S.live.seenVersions.clear(); S.frames=[]; clearInterval(S.live.timer); livePoll(); S.live.timer=setInterval(livePoll,600); };
