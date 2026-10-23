@@ -376,13 +376,29 @@ class TestRealPolicyFileAgainstTheCurrentRealAuditReport:
     the policy file (or the code) needs a real look, not a silent
     re-approval."""
 
-    def test_the_real_policy_file_parses_and_has_the_three_expected_entries(self):
+    def test_the_real_policy_file_parses_and_has_the_expected_entries(self):
+        """Local-demo-fixed repair pass: a real `npm install` + `npm audit`
+        run in this pass found ZERO current findings for the fire-tv
+        project (the three build-time-only Metro/fast-xml-parser
+        advisories this test previously pinned - GHSA-gh4j-gqv2-49f6,
+        GHSA-w3rx-r6r6-pgpr, GHSA-5p2g-fcmc-qvqq - are no longer present
+        in the installed lockfile's resolved versions). Per this test
+        class's own stated purpose ("if a future dependency bump changes
+        which advisories fire, this test's own failure is the signal...
+        not a silent re-approval"), the real policy file was updated to
+        drop those now-stale entries (npm_audit_gate.py's own
+        STALE-policy-entry check would otherwise flag them), and this
+        test now pins the real, current, honest state: no exceptions
+        needed. If npm audit ever reports a new finding for this project,
+        add a fresh entry to the real policy file (with a real owner,
+        exposure classification and justification) and update this
+        assertion to match - never re-approve blindly."""
         import json
 
         policy_path = Path(__file__).resolve().parent.parent.parent / "fire-tv" / "security" / "npm-audit-policy.json"
         raw = json.loads(policy_path.read_text())
         advisory_ids = {e["advisory_id"] for e in raw["exceptions"]}
-        assert advisory_ids == {"GHSA-gh4j-gqv2-49f6", "GHSA-w3rx-r6r6-pgpr", "GHSA-5p2g-fcmc-qvqq"}
+        assert advisory_ids == set()
         for entry in raw["exceptions"]:
             assert entry["exposure"] == "build_time"
             assert entry.get("owner")

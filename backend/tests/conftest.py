@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import os
 import secrets
+import socket
 
 import pytest
 import pytest_asyncio
@@ -62,6 +63,67 @@ from app.services.strategy_engine import StrategyEngine  # noqa: E402
 from app.services.watch_evaluator import WatchEvaluator  # noqa: E402
 
 SCENARIO_PATH = DEFAULT_SCENARIO_PATH
+
+
+# ---------------------------------------------------------------------------
+# Local-demo-fixed repair, issue 5: "The full local suite must pass without
+# contacting AWS" needs to be an ENFORCED property of the test run, not just
+# an outcome that happens to hold today because of an incidental sandbox
+# restriction — the whole reason the original `test_bedrock_client_explain_
+# raises_llm_client_error_without_real_aws_access` test in test_llm_client.py
+# was unsafe is that it relied on exactly that kind of ambient, un-enforced
+# assumption. This autouse fixture makes it structural: ANY test in this
+# suite that attempts a real outbound network connection (a DNS lookup for a
+# non-loopback host, or a socket connect to a non-loopback address) fails
+# immediately and loudly, while connections to localhost/127.0.0.1/::1 -
+# including a test's own explicitly-created local test server - are left
+# alone. This is deliberately socket-layer, not "block boto3 specifically":
+# it protects every current and future test (Bedrock, or anything else)
+# from accidentally reaching a real external service, not just the one
+# client class this repair pass happened to be fixing.
+# ---------------------------------------------------------------------------
+
+_ALLOWED_NETWORK_HOSTS = {"127.0.0.1", "::1", "localhost", "0.0.0.0", ""}  # noqa: S104 (test guard, not a bind)
+
+
+class ExternalNetworkAccessBlocked(RuntimeError):
+    """Raised by the autouse network guard below when a test attempts to
+    reach a non-loopback host. If you hit this in a new test, the fix is
+    almost always to mock/stub the external call (see
+    `tests/test_llm_client.py`'s Stubber-based Bedrock tests for the
+    pattern) — not to widen `_ALLOWED_NETWORK_HOSTS`."""
+
+
+def _guarded_getaddrinfo(host, *args, **kwargs):
+    if host is not None and host not in _ALLOWED_NETWORK_HOSTS:
+        raise ExternalNetworkAccessBlocked(
+            f"Test attempted a DNS lookup for external host {host!r}. "
+            "The local test suite must never reach real external services "
+            "(see conftest.py's network-guard fixture docstring)."
+        )
+    return _REAL_GETADDRINFO(host, *args, **kwargs)
+
+
+def _guarded_socket_connect(self, address):
+    host = address[0] if isinstance(address, tuple) else address
+    if host not in _ALLOWED_NETWORK_HOSTS:
+        raise ExternalNetworkAccessBlocked(
+            f"Test attempted a real outbound connection to {address!r}. "
+            "The local test suite must never reach real external services "
+            "(see conftest.py's network-guard fixture docstring)."
+        )
+    return _REAL_SOCKET_CONNECT(self, address)
+
+
+_REAL_GETADDRINFO = socket.getaddrinfo
+_REAL_SOCKET_CONNECT = socket.socket.connect
+
+
+@pytest.fixture(autouse=True)
+def _block_external_network_access(monkeypatch):
+    monkeypatch.setattr(socket, "getaddrinfo", _guarded_getaddrinfo)
+    monkeypatch.setattr(socket.socket, "connect", _guarded_socket_connect)
+    yield
 
 
 def race_state_at_lap(scenario: Scenario, lap_number: int, *, run_id: str | None = None, state_version: int = 0) -> RaceState:

@@ -188,3 +188,26 @@ async def test_local_demo_auth_mode_generates_a_different_token_each_process(mon
         await client_b.aclose()
         await lifespan_a.__aexit__(None, None, None)
         await lifespan_b.__aexit__(None, None, None)
+
+
+async def test_demo_access_token_value_never_appears_in_audit_logs_or_response_bodies(monkeypatch, caplog):
+    """The token value must appear in no response body and no log record on the
+    success, wrong-token and missing-token paths."""
+    import logging
+
+    real_token = "audit-log-leak-canary-9f3a7c21b8e4d605af9c"
+    client, lifespan_cm = await _make_client(monkeypatch, _settings(demo_access_token=real_token))
+    try:
+        with caplog.at_level(logging.INFO):
+            wrong = await client.post("/v1/demo/start", headers={"X-Demo-Access-Token": "not-the-real-token"})
+            missing = await client.post("/v1/demo/start")
+            ok = await client.post("/v1/demo/start", headers={"X-Demo-Access-Token": real_token})
+        assert (wrong.status_code, missing.status_code, ok.status_code) == (401, 401, 200)
+        for response in (wrong, missing, ok):
+            assert real_token not in response.text
+        for record in caplog.records:
+            assert real_token not in record.getMessage()
+            assert real_token not in str(record.__dict__)
+    finally:
+        await client.aclose()
+        await lifespan_cm.__aexit__(None, None, None)

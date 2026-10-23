@@ -247,11 +247,20 @@ async def test_running_simulator_advances_only_after_obtaining_lease(scenario, d
     # starved long enough that the tick loop never gets scheduled within
     # that window -- not a defect in the simulator itself (isolated runs
     # of this exact test pass reliably and quickly, well under 2.4s).
-    # Raised to a generous 400 iterations (12s ceiling) purely to absorb
-    # scheduler contention; the assertion itself, and the mechanism being
-    # tested (the service must genuinely advance on its own via its real
-    # tick loop while holding the lease), are completely unchanged.
-    for _ in range(400):
+    # Local-demo-fixed repair pass: even the previous 400-iteration (12s)
+    # budget was still observed to occasionally fail under this pass's
+    # heavier full-suite load (more tests now collected overall than when
+    # that budget was set). Raised further to 1000 iterations (30s
+    # ceiling) for the same reason as before -- purely to absorb
+    # scheduler/event-loop contention from everything else running
+    # concurrently in a full-suite run, never to change what is being
+    # proven. This branch still returns as soon as `advanced` becomes
+    # true, so a healthy run (the overwhelming majority) is unaffected in
+    # wall-clock time; only a starved run gets the extra headroom. The
+    # assertion itself, and the mechanism being tested (the service must
+    # genuinely advance on its own via its real tick loop while holding
+    # the lease), are completely unchanged.
+    for _ in range(1000):
         await asyncio.sleep(TEST_TICK_SECONDS)
         state = await repository.get_state(service.race_id)
         if state.lap > 24:

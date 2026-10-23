@@ -22,6 +22,8 @@ Two groups of tests:
 
 from __future__ import annotations
 
+import re
+
 import pytest
 
 from app.config import DEFAULT_KNOWLEDGE_BASE_DIR, DEFAULT_REGULATIONS_DIR
@@ -74,6 +76,59 @@ def test_supported_query_returns_found_true_with_matching_document(
     assert answer.evidence[0].title
     assert answer.evidence[0].excerpt
     assert answer.query == query
+
+
+@pytest.mark.parametrize(
+    "query",
+    [
+        "pit lane speed limit",
+        "pit-lane speed",
+        "mandatory pit limit",
+        "Pit-Lane Speed Limit?",
+        "PIT LANE SPEED LIMIT",
+        "  pit   lane   speed   limit  ",
+        "What is the pit entry speed requirement?",
+        "Is there a mandatory pit lane speed limit?",
+    ],
+)
+def test_pit_lane_speed_limit_query_is_found_local_demo_repair_issue_3(
+    regulation_service: RegulationService, query: str
+):
+    """Local-demo-fixed repair, issue 3: the knowledge corpus already
+    states (in `reg-pitlane-001-components`'s prose) that a mandatory
+    pit-lane speed limit applies during pit entry and lane transit - it
+    just previously lacked keyword coverage and was punctuation-sensitive
+    enough that none of these natural phrasings matched. This must now
+    find that fact for every wording/case/punctuation variant above,
+    without a numeric speed value ever being invented."""
+    answer = regulation_service.get_regulation(query)
+    assert answer.found is True, f"expected found=True for: {query!r}"
+    assert len(answer.evidence) >= 1
+    assert answer.evidence[0].document_id == "reg-pitlane-001"
+    assert answer.evidence[0].section_id == "reg-pitlane-001-components"
+    assert answer.evidence[0].source_path == "docs/sporting-rules/regulations/pit-lane.md"
+    # Honesty requirement: the corpus states a mandatory limit exists but
+    # never gives it a numeric value, and this fix must not invent one.
+    excerpt = answer.evidence[0].excerpt
+    assert "mandatory" in excerpt.lower()
+    assert "speed limit" in excerpt.lower()
+    assert not re.search(r"\d+\s*(km/?h|kph|mph)", excerpt.lower())
+
+
+def test_pit_lane_speed_limit_fix_does_not_reopen_the_safety_car_numeric_trap(
+    regulation_service: RegulationService,
+):
+    """Regression guard for the exact collision this fix's first attempt
+    caused: blurring hyphen/space forms during normalization made
+    "safety-car" collide with the "safety car" keyword and, combined with
+    "pit loss", spuriously satisfy the trackstatus safety-car/pit-loss
+    fact for a query that invents a specific numeric percentage this
+    corpus never states. That must still correctly return found=False."""
+    answer = regulation_service.get_regulation(
+        "Is there a fixed safety-car pit loss reduction percentage of 40 percent?"
+    )
+    assert answer.found is False
+    assert answer.evidence == ()
 
 
 def test_supported_evidence_tuple_is_empty_iff_not_found(regulation_service: RegulationService):

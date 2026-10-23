@@ -16,6 +16,26 @@ actually deploy it, from the
 > demo. Nothing here is sourced from, affiliated with, or endorsed by
 > Formula 1, the FIA, or any real motorsport series, team or driver.
 
+> **Local demo status vs. AWS status — read this before presenting.**
+> The release you have (`pit-wall-copilot-v1.1-local-demo-fixed-aws-pending`)
+> has its **local backend functionality validated**: the full local test
+> suite passes, the natural-language undercut question is grounded in the
+> real StrategyEngine, the pit-lane speed-limit regulation query is found
+> honestly (no invented numeric value), the simulator's lap-28 completion
+> is clearly reported, no exposed token remains in this repository, and
+> the local test suite makes no outbound AWS/network call at all. **AWS
+> deployment itself is still pending** — nothing in this repository has
+> been proven to run on a real ECS task, behind a real ALB, calling a real
+> Bedrock endpoint, or reporting to real CloudWatch/X-Ray. See
+> [`LOCAL-DEMO-VALIDATION-REPORT.md`](./LOCAL-DEMO-VALIDATION-REPORT.md)
+> and [`LOCAL-DEMO-CHECKLIST.md`](./LOCAL-DEMO-CHECKLIST.md) for the exact,
+> current, honest scope of what has and has not been verified. In
+> particular: `event_broker=memory` (this project's local-demo default) is
+> correct **only** for a single backend process — a real multi-instance
+> AWS deployment requires the configured cross-instance broker
+> (`EVENT_BROKER=redis`; see `AWS_ARCHITECTURE.md`), and evidence collected
+> against `127.0.0.1` must never be presented as AWS evidence.
+
 ## 0. Spec v1.1 pass 4 — production-readiness hardening (start here)
 
 This repository has been through a fourth hardening pass focused

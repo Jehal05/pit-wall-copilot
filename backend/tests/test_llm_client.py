@@ -105,11 +105,65 @@ def test_bedrock_client_configures_bounded_connect_and_read_timeouts():
 
 
 def test_bedrock_client_explain_raises_llm_client_error_without_real_aws_access():
-    """Exercises the real failure path (no AWS credentials/network here)
-    end to end: invoke_model must fail, and BedrockLLMClient must wrap
-    that failure in LLMClientError rather than letting a raw boto3/botocore
-    exception escape. This is a genuine assertion about error handling,
-    not a claim that Bedrock itself was successfully called."""
+    """Local-demo-fixed repair, issue 5: this test used to make a REAL
+    `bedrock-runtime` network call and simply expect it to fail (no AWS
+    credentials/network available in that environment) — unsafe, because
+    it stops being a no-network test and starts being a real (and, in an
+    environment that DOES have Bedrock access and billing enabled,
+    billable) Bedrock invocation the moment it runs somewhere less
+    restricted. It also means this test's pass/fail depended on the
+    ambient network environment rather than on `BedrockLLMClient`'s own
+    error-handling code.
+
+    Replaced with a `botocore.stub.Stubber`: a local, fully offline test
+    double that intercepts the call inside botocore itself, before any
+    DNS lookup, HTTP connection, or credential lookup happens, and hands
+    back a realistic AWS-shaped error (`ThrottlingException`, the same
+    error code exercised in `test_bedrock_trust_scenarios.py`'s scenario
+    5). This proves the exact same contract the original test intended —
+    a real Bedrock-shaped failure is converted to `LLMClientError`, never
+    left as a raw boto3/botocore exception — with zero network dependency
+    at all, so it passes identically whether or not the sandbox running it
+    happens to have AWS egress.
+    """
+    from botocore.stub import Stubber
+
     client = BedrockLLMClient(model_id="anthropic.claude-3-haiku-20240307-v1:0", region_name="us-east-1")
-    with pytest.raises(LLMClientError):
-        client.explain(system_prompt=SYSTEM_PROMPT, grounded_facts=SAMPLE_FACTS, citations=[])
+    stubber = Stubber(client._client)
+    stubber.add_client_error(
+        "invoke_model",
+        service_error_code="ThrottlingException",
+        service_message="Too many requests, please wait before trying again.",
+        http_status_code=429,
+    )
+    with stubber:
+        with pytest.raises(LLMClientError):
+            client.explain(system_prompt=SYSTEM_PROMPT, grounded_facts=SAMPLE_FACTS, citations=[])
+    # The Stubber asserts internally that the expected call was made and
+    # that no unconsumed responses remain; nothing further to check here.
+
+
+def test_bedrock_client_explain_never_attempts_real_network_access(monkeypatch):
+    """Belt-and-suspenders companion to the Stubber test above: even if a
+    future change accidentally bypassed the Stubber, this asserts at the
+    socket layer that `explain()` makes no outbound connection attempt at
+    all. `socket.create_connection` is patched to raise immediately if
+    called; the Stubber (which intercepts far earlier, inside botocore's
+    request pipeline) means it is never reached, and this test proves
+    that by construction rather than by hoping the network is unreachable
+    in whatever environment runs it."""
+    import socket as socket_module
+
+    from botocore.stub import Stubber
+
+    def _fail_if_called(*args, **kwargs):  # pragma: no cover - should never run
+        raise AssertionError("explain() attempted a real network connection")
+
+    monkeypatch.setattr(socket_module, "create_connection", _fail_if_called)
+
+    client = BedrockLLMClient(model_id="anthropic.claude-3-haiku-20240307-v1:0", region_name="us-east-1")
+    stubber = Stubber(client._client)
+    stubber.add_client_error("invoke_model", service_error_code="ThrottlingException")
+    with stubber:
+        with pytest.raises(LLMClientError):
+            client.explain(system_prompt=SYSTEM_PROMPT, grounded_facts=SAMPLE_FACTS, citations=[])

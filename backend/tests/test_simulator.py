@@ -139,3 +139,96 @@ async def test_advance_once_helper_moves_exactly_one_lap(simulator):
     after = await simulator.advance_once_for_testing(simulator.race_id)
     assert after.lap == before.lap + 1
     assert after.state_version == before.state_version + 1
+
+
+# Local-demo-fixed repair, issue 4: the scenario intentionally authors only
+# laps 24-28 (5 demo laps out of the fictional 58-lap race) and stopping
+# there is correct completion, not a frozen/stuck simulator — but the
+# tick loop and control status must make that unambiguous rather than
+# leaving the demo looking like it silently died. These tests pin down
+# the exact completion contract the demo script (and any UI) relies on.
+
+
+async def test_status_is_running_while_progressing_and_completed_once_lap_28_is_reached(simulator):
+    """The status endpoint's backing control state must clearly read
+    RUNNING while the demo is still advancing, and only flip to COMPLETED
+    once lap 28 (the authored end of this demo segment) is actually
+    reached — never before, and never silently staying RUNNING forever
+    after."""
+    control_before_start = await simulator.get_control(simulator.race_id)
+    assert control_before_start.status == SimulatorStatus.STOPPED
+
+    await simulator.start(simulator.race_id)
+    await asyncio.sleep(HALF_TICK)
+    mid_control = await simulator.get_control(simulator.race_id)
+    assert mid_control.status == SimulatorStatus.RUNNING
+    assert mid_control.current_lap < 28
+
+    await _wait_until_lap(simulator, 28)
+    final_control = await simulator.get_control(simulator.race_id)
+    assert final_control.status == SimulatorStatus.COMPLETED
+    assert final_control.current_lap == 28
+
+
+async def test_no_further_state_version_is_written_after_completion(simulator):
+    """Once the demo reaches lap 28/COMPLETED, the background tick loop
+    must stop advancing entirely - no further state_version bump, no
+    further lap change - rather than continuing to tick harmlessly (or
+    worse, erroring) forever in the background. This is what makes a
+    polling client's own loop safe to stop the moment it observes
+    COMPLETED: there is nothing more coming after it."""
+    await simulator.start(simulator.race_id)
+    await _wait_until_lap(simulator, 28)
+
+    completed_state = await simulator.get_state(simulator.race_id)
+    completed_control = await simulator.get_control(simulator.race_id)
+    assert completed_state.lap == 28
+    assert completed_control.status == SimulatorStatus.COMPLETED
+
+    # Give the (already-finished) tick loop several more full intervals to
+    # prove it does not keep writing after completion.
+    await asyncio.sleep(TEST_TICK_SECONDS * 3)
+
+    still_state = await simulator.get_state(simulator.race_id)
+    still_control = await simulator.get_control(simulator.race_id)
+    assert still_state.lap == 28
+    assert still_state.state_version == completed_state.state_version
+    assert still_control.status == SimulatorStatus.COMPLETED
+
+    # The background loop task itself should have exited (returned False
+    # from `_advance`), not be sitting there still ticking indefinitely.
+    assert simulator._task is not None  # noqa: SLF001
+    assert simulator._task.done()  # noqa: SLF001
+
+
+async def test_restart_after_completion_is_a_no_op_and_reset_starts_a_fresh_run(simulator):
+    """Calling `/start` again after COMPLETED must not error and must not
+    resurrect the finished run (spec: "COMPLETED; caller must reset to run
+    again") - it is reported as-is. A subsequent `reset()` is the one
+    documented way back to a fresh, running demo, and that fresh run must
+    genuinely restart from lap 24, not continue from wherever the
+    completed run left off."""
+    await simulator.start(simulator.race_id)
+    await _wait_until_lap(simulator, 28)
+    completed_control = await simulator.get_control(simulator.race_id)
+    assert completed_control.status == SimulatorStatus.COMPLETED
+
+    # Restarting a COMPLETED run is a no-op that reports COMPLETED as-is.
+    restart_attempt = await simulator.start(simulator.race_id)
+    assert restart_attempt.status == SimulatorStatus.COMPLETED
+    still_state = await simulator.get_state(simulator.race_id)
+    assert still_state.lap == 28
+
+    # Reset is the documented way back to a fresh, running demo.
+    reset_state = await simulator.reset(simulator.race_id)
+    assert reset_state.lap == 24
+    assert reset_state.state_version == 0
+    reset_control = await simulator.get_control(simulator.race_id)
+    assert reset_control.status == SimulatorStatus.STOPPED
+    assert reset_control.run_id != completed_control.run_id
+
+    # And the fresh run can actually run again through to completion.
+    await simulator.start(simulator.race_id)
+    await _wait_until_lap(simulator, 28)
+    final_control = await simulator.get_control(simulator.race_id)
+    assert final_control.status == SimulatorStatus.COMPLETED

@@ -27,6 +27,7 @@ from app.domain.agent_models import (
 )
 from app.domain.models import RaceState
 from app.services.regulation_service import RegulationService
+from app.services.strategy_engine import StrategyEngine, StrategyValidationError
 
 
 def _utc_now() -> datetime:
@@ -211,8 +212,79 @@ class AgentQueryService:
 
     _DRIVER_ID_RE = re.compile(r"\bCAR[_\s-]?0*([0-9]{1,2})\b", re.IGNORECASE)
 
-    def __init__(self, regulation_service: RegulationService):
+    def __init__(self, regulation_service: RegulationService, strategy_engine: Optional[StrategyEngine] = None):
         self._regulation_service = regulation_service
+        self._strategy_engine = strategy_engine
+
+    def _find_all_driver_ids(self, query: str) -> list[str]:
+        ids: list[str] = []
+        for match in self._DRIVER_ID_RE.finditer(query):
+            driver_id = f"CAR_{int(match.group(1)):02d}"
+            if driver_id not in ids:
+                ids.append(driver_id)
+        return ids
+
+    @staticmethod
+    def _looks_like_undercut_question(normalized: str) -> bool:
+        return "undercut" in normalized or ("chance" in normalized and "ahead" in normalized)
+
+    def _unsupported(self, query: str, narrative: str) -> AgentQueryResult:
+        return AgentQueryResult(
+            query=query, status="UNSUPPORTED", confidence=0.0, narrative=narrative,
+            evidence=(), created_at=_utc_now(),
+        )
+
+    def _answer_undercut_question(self, race_state: RaceState, query: str) -> AgentQueryResult:
+        """Routes an undercut question to the existing StrategyEngine (the same
+        calculation POST /strategy/undercut uses). Every number in the
+        narrative/evidence comes from the returned UndercutResult."""
+        if self._strategy_engine is None:
+            return self._unsupported(query, "Strategy calculation is not available, so I won't guess.")
+        ids = self._find_all_driver_ids(query)
+        if len(ids) < 2:
+            return self._unsupported(
+                query, "To check an undercut I need two drivers, for example: can CAR_04 undercut CAR_03?"
+            )
+        candidate_id, target_id = ids[0], ids[1]
+        if race_state.driver(candidate_id) is None or race_state.driver(target_id) is None:
+            return self._unsupported(query, "I don't have both of those drivers in the current race state.")
+        try:
+            result = self._strategy_engine.calculate_undercut(race_state, candidate_id, target_id)
+        except StrategyValidationError as exc:
+            return self._unsupported(query, f"I can't evaluate that undercut: {exc}")
+        probability_pct = f"{result.confidence.probability_ahead * 100:.1f}%"
+        candidate_schedule = next((s for s in result.pit_schedules if s.driver_id == result.candidate), None)
+        narrative = (
+            f"{result.candidate} vs {result.target}: the undercut window is {result.window}. "
+            f"Expected margin is {result.expected_margin_ms}ms, with a {probability_pct} probability "
+            f"{result.candidate} ends up ahead (from a {result.confidence.trials}-trial simulation)."
+        )
+        if candidate_schedule is not None:
+            narrative += f" Recommended pit lap for {result.candidate}: {candidate_schedule.pit_lap}."
+        source = result.calculation_id
+
+        def item(field: str, value: str) -> AgentEvidenceItem:
+            return AgentEvidenceItem(type="strategy_calculation", source_id=source, field=field, value=value)
+
+        evidence = [
+            item("source_state_version", str(result.source_state_version)),
+            item("candidate", result.candidate),
+            item("target", result.target),
+            item("window", str(result.window)),
+            item("expected_margin_ms", str(result.expected_margin_ms)),
+            item("probability_ahead", str(result.confidence.probability_ahead)),
+        ]
+        for schedule in result.pit_schedules:
+            evidence.append(
+                item(
+                    f"pit_schedule.{schedule.driver_id}",
+                    f"pit_lap={schedule.pit_lap},compound_after_pit={schedule.compound_after_pit}",
+                )
+            )
+        return AgentQueryResult(
+            query=query, status="SUPPORTED", confidence=0.95, narrative=narrative,
+            evidence=tuple(evidence), created_at=_utc_now(),
+        )
 
     def _find_driver(self, race_state: RaceState, query: str):
         match = self._DRIVER_ID_RE.search(query)
@@ -230,6 +302,9 @@ class AgentQueryService:
                 narrative="Please ask a specific question about the race or the rules.",
                 evidence=(), created_at=_utc_now(),
             )
+
+        if self._looks_like_undercut_question(normalized):
+            return self._answer_undercut_question(race_state, query)
 
         driver = self._find_driver(race_state, query)
 

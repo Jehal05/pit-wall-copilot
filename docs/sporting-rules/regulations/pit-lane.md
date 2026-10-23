@@ -6,7 +6,7 @@ Version: 1.0
 ## Pit loss components
 
 Fact-Id: reg-pitlane-001-components
-Keywords: pit loss, pit entry, lane transit, stationary time, pit exit, four components
+Keywords: pit loss, pit entry, lane transit, stationary time, pit exit, four components, pit lane speed, pit-lane speed, lane speed, speed limit, pit limit, mandatory pit limit, pit entry speed
 
 Pit loss is made up of four components, each modeled separately and added
 together exactly once, on the lap the stop occurs: pit entry (the

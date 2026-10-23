@@ -92,7 +92,24 @@ class _RegulationFact:
 
 
 def _normalize(text: str) -> str:
-    return re.sub(r"\s+", " ", text.strip().lower())
+    """Lowercase and collapse whitespace. Deliberately does NOT collapse
+    hyphens into spaces (or vice versa): "safety-car" and "safety car" are
+    kept distinct on purpose, because a fact's keyword set may legitimately
+    combine a hyphenated concept ("safety car") with another keyword
+    ("pit loss") to recognize a real supported question, and blurring
+    hyphen/space forms would let an unrelated query that merely juxtaposes
+    those same two ideas (e.g. one inventing a specific numeric percentage
+    that this corpus never states) spuriously match too - see
+    `test_unsupported_query_returns_found_false_with_no_evidence` for the
+    concrete regression this must not reintroduce. Instead, trailing/
+    leading punctuation such as "?" or "!" is stripped so it can't block a
+    boundary match, and keyword phrases that need to match BOTH a
+    hyphenated and an un-hyphenated spelling of the same query (e.g.
+    "pit-lane speed" vs "pit lane speed") are authored as separate,
+    explicit keyword entries rather than relying on normalization to blur
+    the two - see the pit-lane regulation's keyword list."""
+    text = re.sub(r"[^\w\s-]", " ", text.strip().lower())
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def _keyword_present(keyword: str, normalized_query: str) -> bool:

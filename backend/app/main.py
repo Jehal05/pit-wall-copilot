@@ -193,7 +193,7 @@ async def lifespan(app: FastAPI):
     # above, and DEFAULT_REGULATIONS_DIR's comment in config.py.
     regulations_dir = Path(settings.regulations_dir) if settings.regulations_dir else DEFAULT_REGULATIONS_DIR
     regulation_service = RegulationService(regulations_dir, repo_root=DEFAULT_KNOWLEDGE_BASE_DIR.parent.parent)
-    agent_query_service = AgentQueryService(regulation_service=regulation_service)
+    agent_query_service = AgentQueryService(regulation_service=regulation_service, strategy_engine=strategy_engine)
 
     # Spec v1.1 repair 11: no default demo-access-token is baked into
     # source anymore (config.py). If nothing was supplied via a real env
