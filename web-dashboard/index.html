@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pit Wall Copilot</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600&family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,600;1,700;1,800&family=Barlow:wght@400;500;600&family=Bodoni+Moda:opsz,wght@6..96,500;6..96,700;6..96,800&family=Libre+Franklin:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#e9ecf1; --bg2:#f5f6f9; --panel:#ffffff; --panel2:#f0f2f6; --line:#e1e4ea; --line2:#c9cfda;
@@ -274,6 +274,120 @@ body:not([data-view="sim"]) .only-sim{display:none!important}
 .tyrow b{font-size:14px!important}
 .setup select{max-width:190px}
 
+
+/* ---------- v5: broadcast look ---------- */
+body{background:#e6e8ed}
+html[data-theme="heritage"] body{background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 7%,var(--bg)) 0,var(--bg) 320px)}
+.top{padding:0 24px 0 0;gap:18px;border-bottom:0;background:#fff;box-shadow:0 2px 0 var(--accent),0 6px 18px rgba(21,21,30,.08);min-height:62px}
+.mark{display:flex;align-self:stretch;gap:5px;padding:0 14px 0 20px;background:var(--accent);margin-right:2px;align-items:stretch;clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,0 100%);padding-right:26px}
+.mark i{width:7px;background:#fff;transform:skewX(-20deg);margin:12px 0;opacity:.95}
+.mark i:nth-child(2){opacity:.7}.mark i:nth-child(3){opacity:.45}
+.stripe{display:none}
+.brand h1 em{font-style:italic;color:var(--accent);font-weight:800}
+html:not([data-theme="heritage"]) .brand h1{font-style:italic;font-size:27px}
+.lapbox{margin-left:6px;background:#15151e;color:#fff;padding:3px 26px 3px 22px;align-items:baseline;gap:8px;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%)}
+.lapbox .lbl{font:italic 800 14px var(--font-display);letter-spacing:.14em;color:#ff5a4f}
+.lapbox .lap{font-size:38px;font-style:italic}
+.lapbox .of{color:#aeb2c0;font-size:18px}
+.gpname{font:italic 700 15px var(--font-display);letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);white-space:nowrap;border-left:3px solid var(--accent);padding-left:12px}
+.flag{border:0;border-radius:0;padding:6px 18px 6px 14px;font:italic 800 15px var(--font-display);letter-spacing:.1em;text-transform:uppercase;background:#0c8a4f;color:#fff;clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.flag i{background:#fff;box-shadow:none;animation:blink 1.6s infinite}
+.flag.idle{background:#6b7080}.flag.idle i{animation:none;background:#d7d9e0}
+.flag.done{background:#15151e;background-image:repeating-conic-gradient(#fff 0 25%,#15151e 0 50%);background-size:14px 14px}
+.flag.done span{background:#15151e;padding:1px 8px}
+.flag.sc{background:#f5b700;color:#15151e}.flag.sc i{background:#15151e}
+html[data-theme="heritage"] .mark{background:var(--accent)}
+html[data-theme="heritage"] .lapbox,html[data-theme="heritage"] .flag{clip-path:none}
+@media (max-width:1100px){.gpname{display:none}}
+@media (max-width:760px){.mark{padding:0 8px 0 10px;display:none}.top{padding:8px 16px}}
+.top .brand{flex-direction:column;align-items:flex-start;gap:0;flex:0 1 auto;min-width:0}
+.top .brand small{max-width:250px;overflow:hidden;text-overflow:ellipsis;font-size:11px;line-height:1.2;margin-top:-2px}
+.top .brand h1{line-height:1.05}
+.lapbox{white-space:nowrap;flex:none}.lapbox .of{white-space:nowrap}
+.gpname{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:14px;letter-spacing:.08em}
+.top .seg,.flag{flex:none}
+.top .spacer{flex:1 1 0;min-width:0}
+@media (max-width:1760px){.gpname{display:none}}
+.top .brand{flex:none}.pitpill{font-size:12px;line-height:1.1;padding:1px 10px 1px 8px}.lt3 .b b{white-space:nowrap}
+.lights[hidden],.banner[hidden],.lt3[hidden]{display:none!important}
+/* cards: dark broadcast title strips */
+html:not([data-theme="heritage"]) .card{border-radius:3px;border:1px solid var(--line2)}
+html:not([data-theme="heritage"]) .card>h2{background:#15151e;color:#fff;border-bottom:0;font-style:italic;position:relative;padding-left:26px;font-size:16px;letter-spacing:.08em}
+html:not([data-theme="heritage"]) .card>h2::before{content:"";position:absolute;left:11px;top:9px;bottom:9px;width:5px;background:var(--accent);transform:skewX(-18deg)}
+html:not([data-theme="heritage"]) .card>h2 span{color:#9ea3b3}
+html:not([data-theme="heritage"]) .btn{border-radius:0;font-style:italic;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);padding:9px 24px;border:0;background:#e3e6ec}
+html:not([data-theme="heritage"]) .btn.primary{background:var(--accent)}
+html:not([data-theme="heritage"]) .btn:hover{background:#d3d7e0}html:not([data-theme="heritage"]) .btn.primary:hover{background:#b80500}
+html:not([data-theme="heritage"]) .seg{border-radius:0;border:0;background:#e3e6ec}
+html:not([data-theme="heritage"]) .seg button{font-style:italic;letter-spacing:.04em}
+html:not([data-theme="heritage"]) .seg button[aria-pressed="true"]{background:#15151e;color:#fff}
+/* timing tower */
+.row .pos{background:#15151e;color:#fff;font-style:italic;font-size:21px;height:28px;line-height:28px;clip-path:polygon(0 0,100% 0,86% 100%,0 100%);letter-spacing:.02em}
+.row:first-child .pos,.tower .row[data-p="1"] .pos{background:var(--accent)}
+.row .bar{width:6px;height:30px;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+html:not([data-theme="heritage"]) .row .code{font-style:italic;font-size:23px;letter-spacing:.03em}
+.row .gap{font-variant-numeric:tabular-nums;font-size:19px;font-style:italic}
+.pitpill{display:inline-block;background:var(--accent);color:#fff;font:italic 800 14px var(--font-display);letter-spacing:.1em;padding:1px 12px 1px 9px;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);animation:blink 1s infinite}
+.tyre{box-shadow:inset 0 0 0 2px #fff,0 0 0 1px rgba(21,21,30,.2)}
+/* track overlays */
+.trackwrap{overflow:hidden}
+.banner{position:absolute;top:10px;left:50%;transform:translateX(-50%);padding:4px 26px;font:italic 800 17px var(--font-display);letter-spacing:.16em;text-transform:uppercase;background:#f5b700;color:#15151e;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);z-index:3;white-space:nowrap}
+.banner.rain{background:#2b7be4;color:#fff}.banner.final{background:#15151e;color:#fff}.banner.go{background:#0c8a4f;color:#fff}
+.lt3{position:absolute;right:0;bottom:16px;z-index:4;display:flex;align-items:stretch;max-width:60%;animation:ltin .45s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+.lt3.out{animation:ltout .35s ease-in forwards}
+.lt3 .k{background:var(--lc,#e10600);color:#fff;font:italic 800 14px var(--font-display);letter-spacing:.14em;padding:6px 14px 6px 16px;display:flex;align-items:center;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);margin-right:-8px;position:relative;z-index:1}
+.lt3 .b{background:#15151e;color:#fff;padding:5px 18px 5px 20px;line-height:1.1}
+.lt3 .b b{display:block;font:italic 700 20px var(--font-display);letter-spacing:.02em}
+.lt3 .b small{display:block;font-size:11.5px;color:#b9bdca}
+.lt3 .tc{width:6px;background:var(--tc,#e10600)}
+@keyframes ltin{from{transform:translateX(105%)}to{transform:none}}
+@keyframes ltout{to{transform:translateX(105%)}}
+.cam{position:absolute;left:10px;bottom:10px;z-index:3;width:196px;background:rgba(21,21,30,.9);color:#fff;font-family:var(--font-display);clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%)}
+.cam:empty{display:none}
+.cam .h{display:flex;align-items:center;gap:8px;padding:5px 10px;border-bottom:1px solid rgba(255,255,255,.14);font-size:12px;letter-spacing:.1em}
+.cam .h i{width:5px;height:16px;background:var(--tc);transform:skewX(-16deg)}
+.cam .h b{font:italic 800 18px var(--font-display);letter-spacing:.04em}
+.cam .h span{margin-left:auto;font-size:10px;color:#9ea3b3;letter-spacing:.08em}
+.cam .m{display:flex;align-items:flex-end;gap:14px;padding:4px 12px 2px}
+.cam .m div{line-height:1}
+.cam .m b{font:italic 800 38px var(--font-display);font-variant-numeric:tabular-nums}
+.cam .m small{display:block;font-size:10px;letter-spacing:.14em;color:#9ea3b3;margin-top:1px}
+.cam .m .g b{font-size:30px;color:#ffd200}
+.cam .tb{display:grid;grid-template-columns:30px 1fr;gap:3px 8px;padding:2px 12px 4px;font-size:10px;letter-spacing:.14em;color:#9ea3b3;align-items:center}
+.cam .tb s{display:block;height:6px;background:rgba(255,255,255,.14);text-decoration:none}
+.cam .tb s i{display:block;height:100%}
+.cam .dr{padding:3px 12px 6px;font:italic 800 12px var(--font-display);letter-spacing:.16em;color:#6b7080}
+.cam .dr.on{color:#19e08a}
+.cam .dr em{float:right;font-style:normal;color:#9ea3b3;font-weight:600;font-size:10px}
+@media (max-width:760px){.cam{width:150px}.cam .m b{font-size:28px}}
+/* start lights */
+.lights{position:absolute;inset:0;z-index:6;display:grid;place-content:center;justify-items:center;gap:14px;background:rgba(21,21,30,.45);transition:opacity .6s}
+.lights.out{opacity:0}
+.gantry{display:flex;gap:10px;padding:12px 16px;background:#15151e;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.pod{display:flex;flex-direction:column;gap:7px;padding:8px 7px;background:#262833;border-radius:8px}
+.pod i{width:34px;height:34px;border-radius:50%;background:#3b3d49;box-shadow:inset 0 3px 6px rgba(0,0,0,.6)}
+.pod.on i{background:#ff1e12;box-shadow:0 0 18px 4px rgba(255,30,18,.75),inset 0 -3px 6px rgba(120,0,0,.5)}
+.lmsg{font:italic 800 26px var(--font-display);letter-spacing:.14em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6);min-height:32px;text-align:center}
+@media (max-width:760px){.pod i{width:22px;height:22px}}
+.car-pulse{fill:none;stroke:var(--accent);stroke-width:2;opacity:.75;animation:pulse 1.4s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pulse{from{transform:scale(.6);opacity:.9}to{transform:scale(1.5);opacity:0}}
+.ctag text{font-family:var(--font-display);font-weight:800;font-size:11px;font-style:italic;letter-spacing:.04em;fill:#fff}
+.cornr{font-family:var(--font-display);font-weight:700;font-size:10px;fill:#15151e}
+.drsl{font-family:var(--font-display);font-weight:800;font-style:italic;font-size:10px;letter-spacing:.1em;fill:#fff}
+/* podium */
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:6px 0 16px;position:relative}
+.podium .st{flex:1;max-width:170px;text-align:center}
+.podium .nm{font:italic 800 20px var(--font-display);letter-spacing:.03em;line-height:1}
+.podium .tm{font-size:11px;color:var(--ink3);margin:2px 0 6px}
+.podium .blk{background:linear-gradient(180deg,#2a2d3a,#15151e);color:#fff;border-top:6px solid var(--tc);font:italic 800 46px var(--font-display);display:grid;place-items:center;position:relative}
+.podium .blk small{position:absolute;bottom:4px;font:600 11px var(--font-body);color:#b9bdca;letter-spacing:.04em}
+.podium .blk{align-content:start;padding-top:4px}.podium .st:nth-child(2) .blk{height:132px}.podium .st:nth-child(1) .blk{height:104px}.podium .st:nth-child(3) .blk{height:88px}
+.podium .st:nth-child(2) .nm{font-size:25px}
+.podium .st{animation:rise .7s cubic-bezier(.2,.8,.2,1) both}.podium .st:nth-child(1){animation-delay:.25s}.podium .st:nth-child(3){animation-delay:.1s}
+@keyframes rise{from{transform:translateY(50px);opacity:0}to{transform:none;opacity:1}}
+.cf{position:absolute;top:-10px;width:7px;height:12px;opacity:0;animation:fall 2.8s ease-in forwards}
+@keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0)}100%{opacity:0;transform:translateY(240px) rotate(540deg)}}
+
 /* ---------- toast + dialog ---------- */
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
 .toast.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
@@ -309,9 +423,10 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
 </head>
 <body data-view="replay">
 <header class="top">
-  <div class="stripe"></div>
-  <div class="brand"><h1>Pit Wall Copilot</h1><small id="brand-sub">Synthetic demo. All data fictional.</small></div>
-  <div class="lapbox"><span class="num lap" id="lap">--</span><span class="of num">/ <span id="total">58</span></span></div>
+  <div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="brand"><h1>Pit Wall <em>Copilot</em></h1><small id="brand-sub">Synthetic demo. All data fictional.</small></div>
+  <div class="lapbox"><span class="lbl">LAP</span><span class="num lap" id="lap">--</span><span class="of num">/ <span id="total">58</span></span></div>
+  <div class="gpname" id="gpname"></div>
   <span class="flag idle" id="flag"><i></i><span id="flagtxt">Ready</span></span>
   <div class="spacer"></div>
   <div class="seg" role="group" aria-label="Data source">
@@ -350,7 +465,12 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <h2>Circuit <span id="circ-sub">Fictional layout, car spacing from real timing gaps</span></h2>
       <div class="setup only-sim"><label>Circuit <select id="s-track" aria-label="Circuit"></select></label><label>Weather <select id="s-wx" aria-label="Weather"></select></label><label>Driver <select id="s-mine" aria-label="Your driver"></select></label><span class="setup-note" id="trk-note"></span></div>
       <div class="telem" id="telem"></div>
-      <div class="trackwrap"><svg class="track" id="track" viewBox="0 0 800 470" role="img" aria-label="Circuit map with live car positions"></svg></div>
+      <div class="trackwrap"><svg class="track" id="track" viewBox="0 0 800 470" role="img" aria-label="Circuit map with live car positions"></svg>
+        <div class="banner" id="banner" hidden></div>
+        <div class="lt3" id="lt3" hidden></div>
+        <div class="cam only-sim" id="cam"></div>
+        <div class="lights" id="lights" hidden><div class="gantry"><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div><div class="pod"><i></i><i></i></div></div><div class="lmsg" id="lmsg"></div></div>
+      </div>
       <div class="controls only-replay">
         <button class="btn primary" id="b-start">Start</button>
         <button class="btn" id="b-pause">Pause</button>
@@ -506,13 +626,15 @@ function drawTrack(){
   svg.dataset.fx="";
   svg.innerHTML=`
     <defs><pattern id="chk" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#fff"/><rect x="4" y="4" width="4" height="4" fill="#fff"/><rect x="4" width="4" height="4" fill="#15151e"/><rect y="4" width="4" height="4" fill="#15151e"/></pattern></defs>
+    <path d="${PATH}" fill="none" stroke="#cdbf97" stroke-width="${TW+30}" stroke-linejoin="round" opacity=".38"/>
+    <path d="${PATH}" fill="none" stroke="#b9ab84" stroke-width="${TW+17}" stroke-linejoin="round" opacity=".32"/>
     <path d="${PATH}" fill="none" stroke="${css("--kerb-a")}" stroke-width="${TW+7}" stroke-linejoin="round"/>
     <path d="${PATH}" fill="none" stroke="${css("--kerb-b")}" stroke-width="${TW+7}" stroke-linejoin="round" stroke-dasharray="${Math.round(TW*0.48)} ${Math.round(TW*0.48)}"/>
     <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="${TW}" stroke-linejoin="round"/>
     <path id="wetlay" d="${PATH}" fill="none" stroke="#7fa3d4" stroke-width="${TW}" stroke-linejoin="round" opacity="0"/>
     <path id="sheen" d="${PATH}" fill="none" stroke="#ffffff" stroke-width="${Math.max(2,TW/10)}" stroke-dasharray="2 18" stroke-linecap="round" opacity="0"/>
     <path id="centre" d="${PATH}" fill="none" stroke="${css("--lane")}" stroke-width="1.6" stroke-dasharray="9 12" opacity=".55"/>
-    <g id="sf"></g><g id="cars"></g>
+    <g id="trkfx"></g><g id="sf"></g><g id="cars"></g>
     <g id="wxfx" pointer-events="none"><rect id="skytint" width="800" height="470" fill="#3d5069" opacity="0"/><g id="rainlines" opacity="0">${rl}</g></g>`;
   pathEl=$("centre"); plen=pathEl.getTotalLength();
   const p0=pathEl.getPointAtLength(1), p1=pathEl.getPointAtLength(6);
@@ -532,9 +654,60 @@ function drawTrack(){
   $("sf").innerHTML=`<path d="${pitD}" fill="none" stroke="${css("--track")}" stroke-width="${Math.max(6,TW*0.41)}" stroke-linecap="round" opacity=".85"/><path d="${pitD}" fill="none" stroke="${css("--lane")}" stroke-width="1.4" stroke-dasharray="4 6" opacity=".7"/><text x="${PIT[3].x+ix*8}" y="${PIT[3].y+iy*8+4}" text-anchor="${ix>0.5?"start":(ix<-0.5?"end":"middle")}" fill="${css("--ink2")}" font-size="10" font-family="${css("--font-body")}">Pit lane</text><g transform="translate(${p0.x} ${p0.y}) rotate(${a})"><rect x="-3" y="${-TW*0.55}" width="6" height="${TW*1.1}" fill="url(#chk)"/></g>
     <text x="${p0.x+dx*26}" y="${p0.y+dy*26+4}" text-anchor="${dx<-0.5?"end":(dx>0.5?"start":"middle")}" fill="${css("--ink2")}" font-size="11" font-family="${css("--font-body")}">Start / finish</text>`;
   $("cars").innerHTML="";
+  analyzeTrack();
 }
+
+/* ---- circuit analysis: corner numbers, DRS zones, sector marks, speed profile (all derived from the outline; illustrative) ---- */
+let TRK={n:0,v:[],thr:[],brk:[],drs:[]}, CURT=null;
+function analyzeTrack(){
+  const N=480, pts=[]; for(let i=0;i<N;i++){ const q=pathEl.getPointAtLength(plen*i/N); pts.push([q.x,q.y]); }
+  const W=5, k=new Array(N).fill(0), sg=new Array(N).fill(0);
+  for(let i=0;i<N;i++){ const a=pts[(i-W+N)%N], b=pts[i], c=pts[(i+W)%N];
+    const v1=[b[0]-a[0],b[1]-a[1]], v2=[c[0]-b[0],c[1]-b[1]];
+    const ang=Math.atan2(v1[0]*v2[1]-v1[1]*v2[0],v1[0]*v2[0]+v1[1]*v2[1]); k[i]=Math.abs(ang); sg[i]=Math.sign(ang)||1; }
+  const ks=k.map((_,i)=>{let s=0;for(let j=-3;j<=3;j++)s+=k[(i+j+N)%N];return s/7});
+  // corners = strongest curvature peaks, numbered from the start line
+  const want=Math.min((CURT&&CURT.turns)||12,22), cand=[];
+  for(let i=0;i<N;i++){ let mx=true; for(let j=-10;j<=10;j++){ if(ks[(i+j+N)%N]>ks[i]) {mx=false;break} } if(mx&&ks[i]>0.22) cand.push(i); }
+  cand.sort((a,b)=>ks[b]-ks[a]); const pick=[]; for(const i of cand){ if(pick.length>=want) break; if(pick.every(j=>Math.min(Math.abs(i-j),N-Math.abs(i-j))>=12)) pick.push(i); }
+  pick.sort((a,b)=>a-b);
+  // DRS zones = longest near-straight runs
+  let s0=ks.findIndex(x=>x>0.12), runs=[];
+  if(s0>=0){ let cur=null; for(let q=0;q<=N;q++){ const i=(s0+q)%N, lo=ks[i]<0.085; if(lo){ if(!cur) cur={s:i,len:0}; cur.len++; } else if(cur){ runs.push(cur); cur=null; } } if(cur) runs.push(cur); }
+  runs=runs.filter(r=>r.len>=N*0.05).sort((a,b)=>b.len-a.len).slice(0,(CURT&&CURT.drs>=1200)?2:(CURT&&CURT.drs<700?1:2));
+  const drs=runs.map(r=>({a:((r.s+3)%N)/N,b:((r.s+r.len-4)%N)/N,s:(r.s+3)%N,len:r.len-7}));
+  // speed profile
+  const km=(CURT&&CURT.km)||5.2, lt=(CURT&&CURT.lapTime)||90000, vavg=km/(lt/3.6e6);
+  let v=ks.map(x=>Math.max(0.2,Math.exp(-2.2*Math.max(0,x-0.04))));
+  for(let r=0;r<2;r++){ for(let i=0;i<N;i++){ const pr=v[(i-1+N)%N]; v[i]=Math.min(v[i],pr+0.012); } for(let i=N-1;i>=0;i--){ const nx=v[(i+1)%N]; v[i]=Math.min(v[i],nx+0.028); } }
+  const mean=v.reduce((a,b)=>a+b,0)/N, vmax=Math.min(352,vavg/mean*1.0);
+  const spd=v.map(x=>x*vmax), thr=[], brk=[];
+  for(let i=0;i<N;i++){ const dv=(v[(i+3)%N]-v[i]); brk.push(dv<-0.012?Math.min(1,-dv/0.06):0); thr.push(dv>0.004?1:(brk[i]>0?0:Math.min(1,0.45+v[i]*0.55))); }
+  TRK={n:N,v:spd,thr,brk,drs,pts,corners:pick.map((i,n)=>({i,n:n+1,s:sg[i]}))};
+  // draw
+  let svg="";
+  drs.forEach(z=>{ const pp=[]; for(let q=0;q<=z.len;q++) pp.push(pts[(z.s+q)%N].map(v=>v.toFixed(1)).join(",")); svg+=`<polyline points="${pp.join(" ")}" fill="none" stroke="#12c47a" stroke-width="${Math.max(3,TW*0.22)}" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>`;
+    const m=pts[(z.s+(z.len>>1))%N], s0=pts[0], nearS=Math.hypot(m[0]-s0[0],m[1]-s0[1])<70; svg+=`<g transform="translate(${m[0]-16} ${nearS?m[1]+TW*0.9-4:m[1]-TW*0.9-8})"><rect width="32" height="13" rx="2" fill="#12c47a"/><text class="drsl" x="16" y="10" text-anchor="middle">DRS</text></g>`; });
+  [1/3,2/3].forEach((f,ix)=>{ const a=ptAt(f), b=ptAt(f+0.004), nx=-(b.y-a.y), ny=(b.x-a.x), L=Math.hypot(nx,ny)||1, ux=nx/L, uy=ny/L, h=TW*0.62;
+    svg+=`<line x1="${a.x-ux*h}" y1="${a.y-uy*h}" x2="${a.x+ux*h}" y2="${a.y+uy*h}" stroke="${ix?"#2b7be4":"#f5b700"}" stroke-width="3.2"/><g transform="translate(${a.x+ux*(h+9)-9} ${a.y+uy*(h+9)-6.5})"><rect width="18" height="13" rx="2" fill="${ix?"#2b7be4":"#f5b700"}"/><text class="drsl" x="9" y="10" text-anchor="middle" style="fill:${ix?"#fff":"#15151e"}">S${ix+2}</text></g>`; });
+  TRK.corners.forEach(c=>{ const a=pts[c.i], b=pts[(c.i+4)%N], d=pts[(c.i-4+N)%N]; let tx=b[0]-d[0], ty=b[1]-d[1]; const L=Math.hypot(tx,ty)||1; tx/=L; ty/=L;
+    let nx=-ty*(-c.s), ny=tx*(-c.s); const o=TW*0.5+9; const x=a[0]+nx*o, y=a[1]+ny*o;
+    svg+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="7.4" fill="#fff" stroke="#15151e" stroke-width="1.2"/><text class="cornr" x="${x.toFixed(1)}" y="${(y+3.4).toFixed(1)}" text-anchor="middle">${c.n}</text>`; });
+  $("trkfx").innerHTML=svg;
+}
+function trkAt(f){ const N=TRK.n; if(!N) return {v:200,thr:.6,brk:0,drs:false}; const x=((f%1)+1)%1*N, i=Math.floor(x)%N, j=(i+1)%N, u=x-Math.floor(x);
+  const dz=TRK.drs.some(z=>{ const a=z.s/N, b=(z.s+z.len)/N; const ff=((f%1)+1)%1; return b>a?(ff>=a&&ff<=b):(ff>=a||ff<=b%1); });
+  return {v:TRK.v[i]*(1-u)+TRK.v[j]*u,thr:TRK.thr[i],brk:TRK.brk[i],drs:dz}; }
+function headAt(f){ const a=ptAt(f), b=ptAt(f+0.0035); return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI; }
+function carInner(s,col,id){ const r=(x,y,w,h,fill,extra="")=>`<rect x="${(x*s).toFixed(2)}" y="${(y*s).toFixed(2)}" width="${(w*s).toFixed(2)}" height="${(h*s).toFixed(2)}" fill="${fill}" ${extra}/>`;
+  const poly=[[-1.6,-.3],[-.7,-.5],[.2,-.5],[.5,-.2],[1.55,-.08],[1.55,.08],[.5,.2],[.2,.5],[-.7,.5],[-1.6,.3]].map(q=>(q[0]*s).toFixed(2)+","+(q[1]*s).toFixed(2)).join(" ");
+  return r(.8,-.98,.48,.34,"#111")+r(.8,.64,.48,.34,"#111")+r(-1.28,-1.0,.56,.38,"#111")+r(-1.28,.62,.56,.38,"#111")+r(1.55,-.95,.3,1.9,"#20222b")+r(-1.95,-.82,.34,1.64,"#20222b")
+   +`<polygon points="${poly}" fill="${col}" stroke="rgba(255,255,255,.92)" stroke-width="${(.13*s).toFixed(2)}" stroke-linejoin="round"/>`
+   +`<ellipse cx="${(.05*s).toFixed(2)}" cy="0" rx="${(.34*s).toFixed(2)}" ry="${(.17*s).toFixed(2)}" fill="#15151e"/><circle cx="${(.12*s).toFixed(2)}" cy="0" r="${(.13*s).toFixed(2)}" fill="#fff"/>`; }
+
 function applyTrack(id){
-  const t=id==="replay"?REPLAY_TRACK:(TRACKS[id]||TRACKS.monza); PATH=t.path; PITSPAN=t.pitSpan; TW=t.tw; drawTrack();
+  const t=id==="replay"?REPLAY_TRACK:(TRACKS[id]||TRACKS.monza); PATH=t.path; PITSPAN=t.pitSpan; TW=t.tw; CURT=t; drawTrack();
+  $("gpname").textContent=id==="replay"?"Fictional circuit":(t.full+" · "+t.km+" km");
   $("circ-sub").textContent=id==="replay"?"Fictional layout, car spacing from real timing gaps":t.full+" · "+t.km+" km";
 }
 function ptAt(frac){const f=((frac%1)+1)%1;return pathEl.getPointAtLength(f*plen)}
@@ -593,16 +766,14 @@ function render(force){
       const gapLaps=d.gapL/d.base_pace_ms;
       const p=ptAt(s.lapFloat/1.0 - gapLaps);
       let el=g.querySelector(`[data-id="${d.key}"]`);
+      const col=TEAM[d.team_name]||"#888", sc=Math.max(5.5,Math.min(8.5,TW*0.3)), mineR=d.driver_id==="CAR_04";
       if(!el){
         el=document.createElementNS("http://www.w3.org/2000/svg","g"); el.dataset.id=d.key;
-        el.innerHTML=`<circle class="car-dot" r="11"/><text class="carlabel" y="-17" text-anchor="middle"></text>`;
+        el.innerHTML=`<g class="pl">${mineR?'<circle class="car-pulse" r="'+(sc*2.4)+'"/>':""}</g><g class="rot">${carInner(sc,col)}</g><g class="ctag" transform="translate(0 ${-(sc*2.1+10)})"><rect x="-17" y="-8" width="34" height="15" rx="2" fill="${col}" stroke="#fff" stroke-width="1.3"/><text y="3.4" text-anchor="middle">${CODE(d.driver_id)}</text></g>`;
         g.appendChild(el);
       }
       el.setAttribute("transform",`translate(${p.x} ${p.y})`);
-      const c=el.querySelector("circle"); c.setAttribute("fill",TEAM[d.team_name]||"#888");
-      c.setAttribute("r", d.driver_id==="CAR_04"?13:11);
-      c.setAttribute("stroke", d.driver_id==="CAR_04"?css("--ink"):"#fff");
-      const tx=el.querySelector("text"); tx.textContent=CODE(d.driver_id); tx.setAttribute("y", d.driver_id==="CAR_04"?"32":"-17");
+      el.querySelector(".rot").setAttribute("transform",`rotate(${headAt(s.lapFloat-gapLaps).toFixed(1)})`);
     });
   }
 
@@ -1232,7 +1403,7 @@ function simCompute(){
 }
 function clearTower(){ $("tower").innerHTML=""; Object.keys(towerEls).forEach(k=>delete towerEls[k]); }
 function simResetState(){
-  SIM.tau=0; SIM.running=false; SIM.evIdx=0; SIM.seen=new Set(); SIM.finishShown=false; SIM.chartKey="";
+  cancelLights(); $("lt3").hidden=true; SIM.tau=0; SIM.running=false; SIM.evIdx=0; SIM.seen=new Set(); SIM.finishShown=false; SIM.chartKey="";
   S.feed=[]; S.feedIdx=-1; renderFeed(); $("toast").classList.remove("show");
   simRender(true);
 }
@@ -1278,9 +1449,9 @@ function simXY(c){
   if(k>=0 && !c.done){
     let u=null;
     if(tlc[k].pit&&f>=1-PITSPAN) u=(f-(1-PITSPAN))/(2*PITSPAN); else if(k>0&&tlc[k-1].pit&&f<=PITSPAN) u=(f+PITSPAN)/(2*PITSPAN);
-    if(u!=null&&PIT.length){ const x=Math.min(Math.max(u,0),1)*24, a=Math.floor(x), b=Math.min(a+1,24), t=x-a; return {x:lerp(PIT[a].x,PIT[b].x,t),y:lerp(PIT[a].y,PIT[b].y,t),pit:true}; }
+    if(u!=null&&PIT.length){ const x=Math.min(Math.max(u,0),1)*24, a=Math.floor(x), b=Math.min(a+1,24), t=x-a, a2=Math.min(a,23); return {x:lerp(PIT[a].x,PIT[b].x,t),y:lerp(PIT[a].y,PIT[b].y,t),pit:true,h:Math.atan2(PIT[a2+1].y-PIT[a2].y,PIT[a2+1].x-PIT[a2].x)*180/Math.PI}; }
   }
-  const q=ptAt(c.done?0:c.D); return {x:q.x,y:q.y,pit:false};
+  const dd=c.done?0:c.D, q=ptAt(dd); return {x:q.x,y:q.y,pit:false,h:headAt(dd)};
 }
 function simWxAt(D){
   const R=SIM.res, W=R.W, RA=R.rain, fl=Math.floor(D), i=Math.max(0,Math.min(R.laps,fl)), f=D<0?0:Math.min(1,D-fl), j=Math.min(R.laps+1,i+1);
@@ -1322,13 +1493,60 @@ function simWxRender(snap,lead){
   $("wx-radar").innerHTML=s;
   $("radar-me").textContent=surname(SIM.mine)+"'s tyres";
 }
+
+function simOverlay(snap,lead,scNow,lapNow,wxs,me,allDone){
+  const R=SIM.res, T=TRACKS[SIM.track], b=$("banner");
+  let txt="",cls="";
+  if(allDone){ txt="Chequered flag"; cls="final"; }
+  else if(scNow){ txt="Safety car · no overtaking"; }
+  else if(SIM.running&&lapNow===R.laps){ txt="Final lap"; cls="final"; }
+  else if(SIM.running&&wxs.rain>0.5){ txt=wxs.rain>0.85?"Heavy rain":"Rain on track"; cls="rain"; }
+  else if(SIM.running&&lapNow===1&&lead.D<0.35){ txt="Green flag"; cls="go"; }
+  if(txt){ b.hidden=false; b.className="banner "+cls; b.textContent=txt; } else b.hidden=true;
+  const cam=$("cam"); if(!me||SIM.tau<=0&&!SIM.running){ cam.innerHTML=""; return; }
+  const f=((me.D%1)+1)%1, pr=trkAt(f), pit=simXY(me).pit, w=wxs.w;
+  let kmh=pr.v*(1-0.14*Math.min(1,w))+Math.sin(SIM.tau/700+me.D*40)*2.2, thr=pr.thr, brk=pr.brk;
+  if(scNow){ kmh=Math.min(kmh,Math.max(95,pr.v*0.42)); thr=0.35; brk=0; }
+  if(pit){ kmh=80; thr=0.4; brk=0; }
+  if(me.done||(!SIM.running&&SIM.tau<=0)){ kmh=0; thr=0; brk=0; }
+  kmh=Math.max(0,Math.min(355,kmh)); const g=kmh<4?"N":[0,72,105,145,185,225,265,300].reduce((a,x,i)=>kmh>=x?i+1:a,1);
+  const drsOn=!scNow&&!pit&&pr.drs&&me.pos>1&&me.gapAhead<1000&&lapNow>=3&&w<0.5;
+  cam.style.setProperty("--tc",TEAMS[me.team].color);
+  cam.innerHTML=`<div class="h"><i></i><b>${me.code}</b><span>ONBOARD · SIM</span></div>
+   <div class="m"><div><b>${Math.round(kmh)}</b><small>KM/H</small></div><div class="g"><b>${g}</b><small>GEAR</small></div></div>
+   <div class="tb">THR<s><i style="width:${Math.round(thr*100)}%;background:#19e08a"></i></s>BRK<s><i style="width:${Math.round(brk*100)}%;background:#ff3b30"></i></s></div>
+   <div class="dr${drsOn?" on":""}">DRS ${drsOn?"OPEN":(pr.drs?"ZONE":"CLOSED")}<em>${pit?"PIT LIMITER":""}</em></div>`;
+}
+const LT={last:0,timer:0};
+function showLT(e){
+  const mine=drv(SIM.mine).code, now=performance.now();
+  const map={pass:["OVERTAKE","#e10600"],fast:["FASTEST LAP","#8a2be2"],sc:["SAFETY CAR","#d9a000"],inc:["INCIDENT","#d9a000"],wx:["RACE CONTROL","#2b7be4"],pit:["PIT STOP","#464b59"]};
+  const m=map[e.kind]; if(!m) return;
+  if(e.kind==="pit"&&e.title.indexOf(mine)<0&&!/safety/i.test(e.detail||"")) return;
+  if(e.kind==="pass"&&now-LT.last<1400&&e.a!==SIM.mine&&e.b!==SIM.mine) return;
+  LT.last=now; const el=$("lt3"); clearTimeout(LT.timer);
+  const tc=e.a&&drv(e.a)?TEAMS[drv(e.a).team].color:m[1];
+  el.hidden=false; el.className="lt3"; el.style.setProperty("--lc",m[1]); void el.offsetWidth;
+  el.innerHTML=`<div class="tc" style="--tc:${tc}"></div><div class="k">${m[0]}</div><div class="b"><b>${esc(e.title)}</b><small>${esc(e.detail||"")}</small></div>`;
+  LT.timer=setTimeout(()=>{ el.classList.add("out"); LT.timer=setTimeout(()=>{ el.hidden=true; },380); },3400/Math.max(1,Math.sqrt(SIM.speed||1)));
+}
+/* start lights */
+const LIGHTS={timers:[]};
+function cancelLights(){ LIGHTS.timers.forEach(clearTimeout); LIGHTS.timers=[]; SIM.lights=false; const L=$("lights"); if(L) L.hidden=true; }
+function runLights(done){
+  const L=$("lights"), pods=[...L.querySelectorAll(".pod")]; cancelLights(); L.hidden=false; L.classList.remove("out"); pods.forEach(p=>p.classList.remove("on")); $("lmsg").textContent="";
+  SIM.lights=true; let i=0; const T=(fn,ms)=>LIGHTS.timers.push(setTimeout(fn,ms));
+  const step=()=>{ if(i<5){ pods[i++].classList.add("on"); $("lmsg").textContent=""; T(step,i<5?520:640); }
+    else T(()=>{ pods.forEach(p=>p.classList.remove("on")); L.classList.add("out"); $("lmsg").textContent="LIGHTS OUT AND AWAY WE GO"; SIM.lights=false; done(); T(()=>{ L.hidden=true; },1400); },700+Math.floor(Math.random()*800)); };
+  step(); simRender();
+}
 function simRender(){
   if(!pathEl||!SIM.res) return;
   const R=SIM.res, T=TRACKS[SIM.track], snap=simSnap(SIM.tau), lead=snap[0];
   const lapNow=Math.min(Math.max(1,Math.floor(Math.max(0,lead.D))+1),R.laps), done=lead.done;
   $("lap").textContent=lapNow; $("total").textContent=R.laps; $("tower-lap").textContent="Lap "+lapNow+" / "+R.laps;
   const scNow=!done&&lead.scLap, allDone=snap.every(c=>c.done);
-  const fl=$("flag"); fl.className="flag"+(allDone?" done":(SIM.running?"":" idle")); $("flagtxt").textContent=allDone?"Chequered flag":(scNow?"Safety car":(SIM.running?"Green flag":(SIM.tau>0?"Paused":"Ready")));
+  const fl=$("flag"); fl.className="flag"+(allDone?" done":(scNow?" sc":(SIM.running||SIM.lights?"":" idle"))); $("flagtxt").textContent=allDone?"Chequered flag":(scNow?"Safety car":(SIM.running?"Green flag":(SIM.lights?"Lights":(SIM.tau>0?"Paused":"Ready"))));
   // fastest lap so far
   let fast=null; for(const h of R.fastHist){ if(h.t<=SIM.tau) fast=h; else break; }
   // tower
@@ -1343,19 +1561,21 @@ function simRender(){
     const stops=R.tl[c.id].filter((x,ii)=>x.pit&&(c.i<0?false:ii<c.i)).length;
     li.querySelector(".team").textContent=surname(c.id)+" · "+TEAMS[c.team].name;
     const isF=fast&&fast.id===c.id&&c.lastLt&&Math.abs(c.lastLt-fast.lt)<1;
-    li.querySelector(".gap").innerHTML=(c.pos===1?"Leader":fmt(c.gapAhead))+`<small style="${isF?"color:var(--purple,#9b2fd8);font-weight:700":""}">${c.lastLt?lapFmt(c.lastLt):"--"}</small>`;
+    li.dataset.p=c.pos; const inPit=c.pitNow&&c.f>=1-PITSPAN;
+    li.querySelector(".gap").innerHTML=(inPit?'<span class="pitpill">PIT</span>':(c.pos===1?"Leader":fmt(c.gapAhead)))+`<small style="${isF?"color:var(--purple,#9b2fd8);font-weight:700":""}">${c.lastLt?lapFmt(c.lastLt):"--"}</small>`;
     const ty=li.querySelector(".tyre"); ty.style.setProperty("--c",TYRE[c.comp]||"#999"); ty.querySelector(".tl").textContent=c.pitNow&&c.f>=1-PITSPAN?"P":c.comp[0]; ty.querySelector("em").textContent=c.age+"L";
   });
   // cars on circuit
   let g=$("simcars"); if(!g){ g=document.createElementNS("http://www.w3.org/2000/svg","g"); g.id="simcars"; $("track").insertBefore(g,$("wxfx")); }
-  const rad=Math.max(7,Math.min(10,T.tw*0.55));
+  const sc=Math.max(5.2,Math.min(8.2,T.tw*0.36));
   snap.slice().reverse().forEach(c=>{
-    let el=g.querySelector(`[data-id="${c.id}"]`);
-    if(!el){ el=document.createElementNS("http://www.w3.org/2000/svg","g"); el.dataset.id=c.id; el.innerHTML=`<title>${drv(c.id).name}</title><circle class="car-dot" r="${rad}"/><text class="pn" text-anchor="middle" fill="#fff" font-weight="800" font-size="${rad+1}" font-family="${css("--font-display")}"></text><text class="carlabel" text-anchor="middle" font-size="12"></text>`; g.appendChild(el); }
-    const p=simXY(c); el.setAttribute("transform",`translate(${p.x} ${p.y})`);
-    const dot=el.querySelector("circle"); dot.setAttribute("fill",TEAMS[c.team].color); dot.setAttribute("stroke",c.id===SIM.mine?css("--ink"):"#fff"); dot.setAttribute("stroke-width",c.id===SIM.mine?3.4:2.4);
-    const pn=el.querySelector(".pn"); pn.textContent=c.pos; pn.setAttribute("y",rad*0.38);
-    const lb=el.querySelector(".carlabel"); const show=c.id===SIM.mine||c.pos===1; lb.textContent=show?c.code:""; lb.setAttribute("y",c.id===SIM.mine?rad+15:-rad-6);
+    let el=g.querySelector(`[data-id="${c.id}"]`), col=TEAMS[c.team].color;
+    if(!el){ el=document.createElementNS("http://www.w3.org/2000/svg","g"); el.dataset.id=c.id; el.innerHTML=`<title>${drv(c.id).name}</title><g class="pl"></g><g class="rot">${carInner(sc,col)}</g><g class="ctag"><rect x="-17" y="-8" width="34" height="15" rx="2" stroke="#fff" stroke-width="1.3"/><text y="3.4" text-anchor="middle"></text></g>`; g.appendChild(el); }
+    const p=simXY(c); el.setAttribute("transform",`translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+    el.querySelector(".rot").setAttribute("transform",`rotate(${p.h.toFixed(1)})`);
+    const isMine=c.id===SIM.mine, pl=el.querySelector(".pl"); if(isMine&&!pl.firstChild) pl.innerHTML=`<circle class="car-pulse" r="${sc*2.4}"/>`; else if(!isMine&&pl.firstChild) pl.innerHTML="";
+    const tag=el.querySelector(".ctag"), show=isMine||c.pos<=3;
+    tag.style.display=show?"":"none"; if(show){ tag.querySelector("rect").setAttribute("fill",col); tag.querySelector("text").textContent=c.pos<=3&&!isMine?"P"+c.pos+" "+c.code:c.code; const w=isMine&&c.pos>3?34:46; const r=tag.querySelector("rect"); r.setAttribute("width",w); r.setAttribute("x",-w/2); tag.setAttribute("transform",`translate(0 ${(c.pos%2?-1:1)*(sc*2.1+10)})`); }
   });
   [...g.children].forEach(el=>{ if(el.dataset.id===SIM.mine) g.appendChild(el); });
   let scEl=g.querySelector('[data-sc]');
@@ -1369,13 +1589,14 @@ function simRender(){
     <div>Fastest lap<b style="color:var(--purple,#9b2fd8)">${fast?fast.id+" "+lapFmt(fast.lt):"--"}</b></div>
     <div>Weather<b>${wxCond(wxs.w,wxs.rain)}</b></div>`;
   $("alx-watch").textContent=`${drv(SIM.mine).name} · ${TEAMS[drv(SIM.mine).team].name} · ${T.name}`;
+  simOverlay(snap,lead,scNow,lapNow,wxs,me,allDone);
   // events -> feed + copilot
   const evs=R.events;
   while(SIM.evIdx<evs.length&&evs[SIM.evIdx].t<=SIM.tau){
     const e=evs[SIM.evIdx++], key=e.kind+"|"+e.L+"|"+e.title;
     if(SIM.seen.has(key)) continue; SIM.seen.add(key);
     const kind=e.kind==="pass"?"alert":(e.kind==="pit"||e.kind==="fast"||e.kind==="blk"?"lap":(e.kind==="wx"?"wx":(e.kind==="inc"?"inc":"start")));
-    S.feed.unshift({kind,lap:e.L,title:e.title,detail:e.detail}); renderFeed();
+    S.feed.unshift({kind,lap:e.L,title:e.title,detail:e.detail}); renderFeed(); showLT(e);
     if(e.radio) simRadio(e);
   }
   simCharts(snap); simTyres(snap); simWxRender(snap,lead);
@@ -1423,7 +1644,8 @@ function simFinishDialog(){
   const r=SIM.res, W=r.final[0], T=TRACKS[r.track], X=WX[r.wx], fl=r.fastest, flc=fl.id?drv(fl.id):null;
   const myPos=r.final.findIndex(f=>f.id===r.mine)+1, myG=r.start[r.mine].grid+1;
   $("dlg-t").textContent="Chequered flag";
-  $("dlg-b").innerHTML=`<p style="margin-top:0">${drv(W.id).name} wins the simulated ${T.name} race (seed ${r.seed}). ${surname(r.mine)} finished P${myPos} from P${myG}. The same seed always gives the same race.</p>
+  const podHtml=`<div class="podium">${[1,0,2].map(i=>{const f=r.final[i]; return `<div class="st" style="--tc:${TEAMS[f.team].color}"><div class="nm">${esc(surname(f.id))}</div><div class="tm">${TEAMS[f.team].name}</div><div class="blk">${i+1}<small>${i===0?"WINNER":"+"+((f.T-W.T)/1000).toFixed(1)+"s"}</small></div></div>`}).join("")}${Array.from({length:46},(_,k)=>`<span class="cf" style="left:${(k*53)%100}%;background:${["#e10600","#15151e","#f5b700","#2b7be4","#ffffff"][k%5]};animation-delay:${((k*37)%100)/60}s;border:1px solid rgba(0,0,0,.15)"></span>`).join("")}</div>`;
+  $("dlg-b").innerHTML=podHtml+`<p style="margin-top:0">${drv(W.id).name} wins the simulated ${T.name} race (seed ${r.seed}). ${surname(r.mine)} finished P${myPos} from P${myG}. The same seed always gives the same race.</p>
   <table style="width:100%;border-collapse:collapse;font-size:13px">${r.final.map((f,i)=>`<tr style="border-top:1px solid var(--line);${f.id===r.mine?"background:color-mix(in srgb,var(--accent) 12%,transparent)":""}"><td style="padding:5px 4px;font-family:var(--font-display);font-size:17px;font-weight:700">P${i+1}</td><td><span style="display:inline-block;width:4px;height:14px;background:${TEAMS[f.team].color};vertical-align:-2px;margin-right:6px"></span><b>${f.code}</b> ${esc(f.name)}</td><td>${TEAMS[f.team].name}</td><td>${i===0?"Winner":"+"+((f.T-W.T)/1000).toFixed(1)+"s"}</td><td>${f.stops} stop${f.stops===1?"":"s"}</td><td>${POINTS[i]||0} pts</td></tr>`).join("")}</table>
   <p style="margin:10px 0 0;font-size:13px">${T.full}, ${X.name.toLowerCase()}. Fastest lap: ${flc?flc.name+" "+lapFmt(fl.lt):"--"}. ${r.tries?`Pass attempts: ${r.tries}, completed: ${r.tries-r.fails} (${Math.round(100*(r.tries-r.fails)/r.tries)}%).`:"No close battles."}</p>
   <p style="color:var(--ink3);font-size:12px">Simulated result, not a prediction. Team pace and driver form are invented numbers, circuit traits are rough, and the weather is simulated. Unofficial fan project, not affiliated with Formula 1, the FIA or any team. Separate from the backend strategy engine and not AWS-validated.</p>
@@ -1431,9 +1653,9 @@ function simFinishDialog(){
   $("dlg").showModal(); $("again").onclick=()=>{ $("dlg").close(); $("s-newseed").click(); $("s-start").click(); };
 }
 /* controls */
-function simStart(){ if(SIM.tau>=SIM.res.endT-1||SIM.finishShown){ simResetState(); } SIM.running=true; }
+function simStart(){ if(SIM.lights||SIM.running) return; if(SIM.tau>=SIM.res.endT-1||SIM.finishShown){ simResetState(); } if(SIM.tau<=0) runLights(()=>{ SIM.running=true; }); else SIM.running=true; }
 $("s-start").onclick=simStart;
-$("s-pause").onclick=()=>{ SIM.running=false; simRender(); };
+$("s-pause").onclick=()=>{ cancelLights(); SIM.running=false; simRender(); };
 $("s-reset").onclick=()=>{ SIM.ic=[]; simCompute(); simResetState(); };
 $("s-seed").onchange=()=>{ SIM.seed=+$("s-seed").value||7; SIM.ic=[]; simCompute(); simResetState(); logBubble("al","Race simulator",esc(simPlanText())); };
 $("s-newseed").onclick=()=>{ $("s-seed").value=1+Math.floor(Math.random()*9000); $("s-seed").onchange(); };

@@ -28,3 +28,11 @@ Circuit outlines are simplified from the open [f1-circuits](https://github.com/b
 ![Chequered flag and points](screenshots/simulator-chequered-flag-classification.png)
 ![Replay](screenshots/grand-prix-replay-projection.png)
 ![Eight circuits](screenshots/circuits-simplified-from-open-data.png)
+
+## Broadcast-style presentation (v5)
+
+The Grand Prix theme now follows a TV-broadcast look: dark title strips, a slanted timing tower with PIT badges, top-down cars with code tags, DRS zones, numbered corners and sector marks derived from each circuit outline, a start-lights sequence, an onboard panel (speed, gear, throttle, brake, DRS), lower-third overtake graphics, safety-car and final-lap banners, and a podium finish.
+
+All of it is illustrative. Onboard numbers come from a speed profile computed from the outline's curvature and the circuit's lap time, not from real telemetry. Unofficial fan project, not affiliated with Formula 1, the FIA or any team; no official logos or fonts are used.
+
+Screenshots: `screenshots/broadcast-*.png`.
