@@ -233,7 +233,8 @@ body:not([data-view="sim"]) .only-sim{display:none!important}
 .tbar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}.tbar i{display:block;height:100%;transition:width .3s}
 .tdot{width:12px;height:12px;border-radius:50%;border:1px solid var(--line2)}
 .tyrow .tn{color:var(--ink3);text-align:right}
-#simcharts{grid-template-columns:1fr 1fr}
+#simcharts{grid-template-columns:1fr}
+#simcharts svg{height:auto!important}
 @media (max-width:760px){#simcharts{grid-template-columns:1fr}}
 
 
@@ -257,6 +258,21 @@ body:not([data-view="sim"]) .only-sim{display:none!important}
 .ev-row.wx{background:color-mix(in srgb,var(--rain) 9%,transparent)}
 .ev-row.wx .tt{color:var(--rain)}
 .ev-row.inc .tt{color:var(--bad)}
+
+
+/* ---------- v4: real field ---------- */
+.tower.dense .row{height:46px;grid-template-columns:28px 5px 1fr auto auto;gap:8px}
+.tower.dense .row .pos{font-size:21px}
+.tower.dense .row .bar{height:28px}
+.tower.dense .row .code{font-size:18px}
+.tower.dense .row .gap{font-size:15px;min-width:58px}
+.tower.dense .row .gap small{font-size:10px}
+.tower.dense .tyre{width:28px;height:28px;font-size:14px;border-width:3px}
+.tower.dense .tyre em{font-size:9px;bottom:-8px}
+.tyrow{padding:3px 16px!important;font-size:12px}
+.tyrow.me{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.tyrow b{font-size:14px!important}
+.setup select{max-width:190px}
 
 /* ---------- toast + dialog ---------- */
 .toast{position:fixed;left:50%;top:84px;transform:translate(-50%,-30px);opacity:0;pointer-events:none;z-index:40;min-width:min(520px,92vw);background:var(--panel2);border:2px solid var(--good);border-radius:var(--radius);padding:14px 20px;box-shadow:0 20px 60px rgba(0,0,0,.55);transition:.45s cubic-bezier(.2,.9,.2,1)}
@@ -294,7 +310,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
 <body data-view="replay">
 <header class="top">
   <div class="stripe"></div>
-  <div class="brand"><h1>Pit Wall Copilot</h1><small>Synthetic demo. All data fictional.</small></div>
+  <div class="brand"><h1>Pit Wall Copilot</h1><small id="brand-sub">Synthetic demo. All data fictional.</small></div>
   <div class="lapbox"><span class="num lap" id="lap">--</span><span class="of num">/ <span id="total">58</span></span></div>
   <span class="flag idle" id="flag"><i></i><span id="flagtxt">Ready</span></span>
   <div class="spacer"></div>
@@ -332,7 +348,7 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
   <section class="col mid">
     <div class="card trackcard">
       <h2>Circuit <span id="circ-sub">Fictional layout, car spacing from real timing gaps</span></h2>
-      <div class="setup only-sim"><label>Circuit <select id="s-track" aria-label="Circuit"></select></label><label>Weather <select id="s-wx" aria-label="Weather"></select></label><span class="setup-note" id="trk-note"></span></div>
+      <div class="setup only-sim"><label>Circuit <select id="s-track" aria-label="Circuit"></select></label><label>Weather <select id="s-wx" aria-label="Weather"></select></label><label>Driver <select id="s-mine" aria-label="Your driver"></select></label><span class="setup-note" id="trk-note"></span></div>
       <div class="telem" id="telem"></div>
       <div class="trackwrap"><svg class="track" id="track" viewBox="0 0 800 470" role="img" aria-label="Circuit map with live car positions"></svg></div>
       <div class="controls only-replay">
@@ -353,14 +369,14 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <button class="btn" id="s-reset">Reset</button>
       <label class="seedbox">Seed <input id="s-seed" type="number" value="7" min="1" max="9999"></label>
       <button class="btn" id="s-newseed">New seed</button>
-      <select id="s-strat" aria-label="CAR_04 strategy"><option value="29">OKA: undercut, pit lap 29 (engine plan)</option><option value="36">OKA: stay out, pit lap 36</option></select>
+      <select id="s-strat" aria-label="Strategy"></select>
       <div class="seg" role="group" aria-label="Speed" id="sspeed"><button data-s="1" aria-pressed="false">1x</button><button data-s="2" aria-pressed="true">2x</button><button data-s="4" aria-pressed="false">4x</button><button data-s="8" aria-pressed="false">8x</button></div>
       <button class="btn call" id="s-sc">Safety car</button>
     </div>
     <div class="card only-sim" id="wxcard"><h2>Weather and grip <span>simulated, not real data</span></h2>
       <div class="wxgrid" id="wx-now"></div>
       <div class="radar"><svg id="wx-radar" viewBox="0 0 640 106" role="img" aria-label="Weather timeline for the race"></svg></div>
-      <div class="radar-key"><span><i style="background:#4f86d6"></i>Track wetness (faded = forecast)</span><span><i style="background:#2fa84f"></i>Fastest tyre: intermediates</span><span><i style="background:#2b7be4"></i>Full wets</span><span><i style="background:var(--line2)"></i>Slicks</span><span>Bottom strip: CAR_04's tyres</span></div>
+      <div class="radar-key"><span><i style="background:#4f86d6"></i>Track wetness (faded = forecast)</span><span><i style="background:#2fa84f"></i>Fastest tyre: intermediates</span><span><i style="background:#2b7be4"></i>Full wets</span><span><i style="background:var(--line2)"></i>Slicks</span><span id="radar-me">Your driver's tyres</span></div>
     </div>
     <div class="card only-sim"><h2>Race charts <span>from the simulated laps</span></h2><div class="charts" id="simcharts"></div></div>
     <div class="pair only-replay">
@@ -405,10 +421,10 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="simrow" id="simrow"></div>
     </div>
     <div class="card only-sim">
-      <h2>Tyres and race model <span>browser model</span></h2>
+      <h2>Tyres and race model <span>tyre age / life, in laps</span></h2>
       <div id="tyres" style="padding:8px 0 4px"></div>
-      <div class="assump"><span class="chip">pit stop costs about 21s</span><span class="chip">safety car stop about 11.5s</span><span class="chip">tyre wear and cliff</span><span class="chip">fuel burn</span><span class="chip">dirty air</span><span class="chip">overtaking odds</span></div>
-      <div class="alx-foot">Seeded from the scenario's real car data and the engine's pit plan. Separate from the backend strategy engine, which only runs on the replay.</div>
+      <div class="assump" id="trk-chips"></div>
+      <div class="alx-foot">Team pace and driver form are invented for the simulation, circuit traits are rough, and the weather is simulated. Separate from the backend strategy engine, which only runs on the replay. Circuit outlines are simplified from the open f1-circuits data (OpenStreetMap contributors).</div>
     </div>
     <div class="card alexa">
       <h2>Pit Wall Copilot <span id="ask-src">Alexa+ simulated</span></h2>
@@ -422,10 +438,12 @@ footer{padding:4px 24px 28px;color:var(--ink3);font-size:12px}
       <div class="alx-log" id="alx-log" aria-live="polite"><div class="empty" id="alx-empty">Ask in plain language, tap a phrase, or press the mic. Every answer shows the tool calls behind it.</div></div>
       <form class="ask" id="askform"><input id="askin" placeholder="Ask Pit Wall Copilot" aria-label="Question"><button class="btn primary" style="padding:8px 14px;font-size:15px">Send</button></form>
       <div class="chips" id="chips">
-        <button class="chip" data-q="Can CAR_04 undercut CAR_03?">Can car 4 undercut car 3?</button>
-        <button class="chip" data-q="What is the pit lane speed limit?">Pit lane speed limit?</button>
+        <button class="chip only-replay" data-q="Can CAR_04 undercut CAR_03?">Can car 4 undercut car 3?</button>
+        <button class="chip only-replay" data-q="What is the pit lane speed limit?">Pit lane speed limit?</button>
         <button class="chip" data-q="What is the weather forecast?">Weather forecast?</button>
-        <button class="chip only-sim" data-q="Should CAR_04 box for intermediates?">Box for inters?</button>
+        <button class="chip only-sim" data-q="Who is leading?">Who is leading?</button>
+        <button class="chip only-sim" data-q="How are we doing?">How are we doing?</button>
+        <button class="chip only-sim" data-q="Should we box now?">Box now?</button>
       </div>
       <div class="alx-foot">Simulated in the browser; not a real Alexa device. Voice uses your browser's speech features.</div>
     </div>
@@ -478,7 +496,8 @@ try{const t=localStorage.getItem("pwc-theme"); if(t) document.documentElement.da
 
 /* ================= circuit ================= */
 const PATH_MERIDIAN = "M130 300 C 88 210, 150 92, 290 104 S 470 196, 545 132 S 722 66, 728 190 S 648 330, 562 342 S 468 436, 330 420 S 160 398, 130 300 Z";
-let PATH = PATH_MERIDIAN, PITSPAN = 0.085;
+let PATH = PATH_MERIDIAN, PITSPAN = 0.085, TW = 29;
+const REPLAY_TRACK = {path:PATH_MERIDIAN,pitSpan:0.085,tw:29};
 let pathEl=null, plen=0, PIT=[];
 function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
 function drawTrack(){
@@ -487,11 +506,11 @@ function drawTrack(){
   svg.dataset.fx="";
   svg.innerHTML=`
     <defs><pattern id="chk" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#fff"/><rect x="4" y="4" width="4" height="4" fill="#fff"/><rect x="4" width="4" height="4" fill="#15151e"/><rect y="4" width="4" height="4" fill="#15151e"/></pattern></defs>
-    <path d="${PATH}" fill="none" stroke="${css("--kerb-a")}" stroke-width="36" stroke-linejoin="round"/>
-    <path d="${PATH}" fill="none" stroke="${css("--kerb-b")}" stroke-width="36" stroke-linejoin="round" stroke-dasharray="14 14"/>
-    <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="29" stroke-linejoin="round"/>
-    <path id="wetlay" d="${PATH}" fill="none" stroke="#7fa3d4" stroke-width="29" stroke-linejoin="round" opacity="0"/>
-    <path id="sheen" d="${PATH}" fill="none" stroke="#ffffff" stroke-width="3" stroke-dasharray="2 18" stroke-linecap="round" opacity="0"/>
+    <path d="${PATH}" fill="none" stroke="${css("--kerb-a")}" stroke-width="${TW+7}" stroke-linejoin="round"/>
+    <path d="${PATH}" fill="none" stroke="${css("--kerb-b")}" stroke-width="${TW+7}" stroke-linejoin="round" stroke-dasharray="${Math.round(TW*0.48)} ${Math.round(TW*0.48)}"/>
+    <path d="${PATH}" fill="none" stroke="${css("--track")}" stroke-width="${TW}" stroke-linejoin="round"/>
+    <path id="wetlay" d="${PATH}" fill="none" stroke="#7fa3d4" stroke-width="${TW}" stroke-linejoin="round" opacity="0"/>
+    <path id="sheen" d="${PATH}" fill="none" stroke="#ffffff" stroke-width="${Math.max(2,TW/10)}" stroke-dasharray="2 18" stroke-linecap="round" opacity="0"/>
     <path id="centre" d="${PATH}" fill="none" stroke="${css("--lane")}" stroke-width="1.6" stroke-dasharray="9 12" opacity=".55"/>
     <g id="sf"></g><g id="cars"></g>
     <g id="wxfx" pointer-events="none"><rect id="skytint" width="800" height="470" fill="#3d5069" opacity="0"/><g id="rainlines" opacity="0">${rl}</g></g>`;
@@ -505,18 +524,18 @@ function drawTrack(){
   for(let k=0;k<=24;k++){
     const f=-PITSPAN+2*PITSPAN*k/24, a=ptAt(f), b=ptAt(f+0.004), nx=-(b.y-a.y), ny=(b.x-a.x), L=Math.hypot(nx,ny)||1;
     let ux=nx/L, uy=ny/L; if(((cxm-a.x)*ux+(cym-a.y)*uy)<0){ux=-ux;uy=-uy}
-    PIT.push({x:a.x+ux*34,y:a.y+uy*34});
+    PIT.push({x:a.x+ux*TW*1.17,y:a.y+uy*TW*1.17});
   }
   const pitD="M"+PIT.map(q=>q.x.toFixed(1)+" "+q.y.toFixed(1)).join(" L");
   let dx=p0.x-PIT[12].x, dy=p0.y-PIT[12].y; const dl=Math.hypot(dx,dy)||1; dx/=dl; dy/=dl;
   const ix=-dx, iy=-dy;
-  $("sf").innerHTML=`<path d="${pitD}" fill="none" stroke="${css("--track")}" stroke-width="12" stroke-linecap="round" opacity=".85"/><path d="${pitD}" fill="none" stroke="${css("--lane")}" stroke-width="1.4" stroke-dasharray="4 6" opacity=".7"/><text x="${PIT[3].x+ix*8}" y="${PIT[3].y+iy*8+4}" text-anchor="${ix>0.5?"start":(ix<-0.5?"end":"middle")}" fill="${css("--ink2")}" font-size="10" font-family="${css("--font-body")}">Pit lane</text><g transform="translate(${p0.x} ${p0.y}) rotate(${a})"><rect x="-3" y="-16" width="6" height="32" fill="url(#chk)"/></g>
+  $("sf").innerHTML=`<path d="${pitD}" fill="none" stroke="${css("--track")}" stroke-width="${Math.max(6,TW*0.41)}" stroke-linecap="round" opacity=".85"/><path d="${pitD}" fill="none" stroke="${css("--lane")}" stroke-width="1.4" stroke-dasharray="4 6" opacity=".7"/><text x="${PIT[3].x+ix*8}" y="${PIT[3].y+iy*8+4}" text-anchor="${ix>0.5?"start":(ix<-0.5?"end":"middle")}" fill="${css("--ink2")}" font-size="10" font-family="${css("--font-body")}">Pit lane</text><g transform="translate(${p0.x} ${p0.y}) rotate(${a})"><rect x="-3" y="${-TW*0.55}" width="6" height="${TW*1.1}" fill="url(#chk)"/></g>
     <text x="${p0.x+dx*26}" y="${p0.y+dy*26+4}" text-anchor="${dx<-0.5?"end":(dx>0.5?"start":"middle")}" fill="${css("--ink2")}" font-size="11" font-family="${css("--font-body")}">Start / finish</text>`;
   $("cars").innerHTML="";
 }
 function applyTrack(id){
-  const t=TRACKS[id]||TRACKS.meridian; PATH=t.path; PITSPAN=t.pitSpan; drawTrack();
-  $("circ-sub").textContent=S.mode==="sim"?t.name+" · "+t.sub:"Fictional layout, car spacing from real timing gaps";
+  const t=id==="replay"?REPLAY_TRACK:(TRACKS[id]||TRACKS.monza); PATH=t.path; PITSPAN=t.pitSpan; TW=t.tw; drawTrack();
+  $("circ-sub").textContent=id==="replay"?"Fictional layout, car spacing from real timing gaps":t.full+" · "+t.km+" km";
 }
 function ptAt(frac){const f=((frac%1)+1)%1;return pathEl.getPointAtLength(f*plen)}
 
@@ -631,7 +650,7 @@ function render(force){
 /* ================= race control feed ================= */
 function renderFeed(){
   $("alert-count").textContent=S.feed.length?S.feed.length+" events":"";
-  $("alerts").innerHTML=S.feed.length?S.feed.map(e=>`<div class="ev-row ${e.kind}"><span class="lp">L${e.lap}</span><div><div class="tt">${esc(e.title)}</div><div class="dd">${esc(e.detail)}</div></div></div>`).join(""):'<div class="empty">Press Start. Lap events and strategy alerts appear here as they happen.</div>';
+  $("alerts").innerHTML=S.feed.length?S.feed.slice(0,80).map(e=>`<div class="ev-row ${e.kind}"><span class="lp">L${e.lap}</span><div><div class="tt">${esc(e.title)}</div><div class="dd">${esc(e.detail)}</div></div></div>`).join(""):'<div class="empty">Press Start. Lap events and strategy alerts appear here as they happen.</div>';
 }
 function syncFeed(){
   const n=S.frames.length; if(!n) return;
@@ -813,7 +832,7 @@ function fromReg(r,q){
     evidence:[{field:"source",value:e.source_path}]};
 }
 async function resolveQuestion(q){
-  if(S.mode==="sim"){ const a=simAnswer(q); if(a) return a; return fromAgent({...REPLAY.agentRefusal,query:q}); }
+  if(S.mode==="sim"){ if(/speed limit|pit lane|pit-lane|regulation/i.test(q)) return fromReg({...REPLAY.regulation},q); const a=simAnswer(q); if(a) return a; return fromAgent({...REPLAY.agentRefusal,query:q}); }
   if(S.mode==="live"){
     if(/speed limit|pit lane|pit-lane|regulation|rule/i.test(q)) return fromReg(await liveFetch("/v1/regulations?query="+encodeURIComponent(q)),q);
     return fromAgent(await liveFetch("/v1/agent/query","POST",{race_id:"demo-race-001",query:q}));
@@ -904,12 +923,14 @@ async function livePoll(){
 function setMode(m){
   S.mode=m; ["replay","sim","live"].forEach(k=>$("src-"+k).setAttribute("aria-pressed",k===m));
   document.body.dataset.view=m==="sim"?"sim":"replay";
-  $("tower-note").textContent=m==="sim"?"Gaps are to the car ahead; the small time is each car's last lap. Purple is the fastest lap. Four cars, as in the scenario.":"Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.";
+  $("brand-sub").textContent=m==="sim"?"Simulated race. Unofficial fan project, not affiliated with F1, the FIA or any team.":"Synthetic demo. All data fictional.";
+  clearTower(); $("tower").classList.remove("dense");
+  $("tower-note").textContent=m==="sim"?"Gaps are to the car ahead; the small time is each car's last lap; purple is the fastest lap. Team pace and driver form are invented. Names identify the simulated entries only.":"Gaps are to the car ahead. Positions 3, 4, 7 and 11 are the four cars in the fixed demo scenario.";
   const sg=$("simcars"); if(sg) sg.remove(); const cg=$("cars"); if(cg) cg.style.display=m==="sim"?"none":"";
   try{ speechSynthesis.cancel(); }catch(e){}
   $("cfg").classList.toggle("on",m==="live"); clearInterval(S.live.timer);
   $("ask-src").textContent=m==="live"?"live backend":"Alexa+ simulated";
-  if(m!=="sim") applyTrack("meridian");
+  if(m!=="sim") applyTrack("replay");
   if(m==="replay"){ loadReplay(); resetReplay(); }
   else if(m==="sim"){ S.frames=[]; S.running=false; S.proj=null; simEnter(); }
   else { S.frames=[]; S.cursor=0; S.running=false; S.alerts=[]; S.live.seenVersions.clear(); S.feed=[];S.feedIdx=-1;S.proj=null;renderFeed(); }
@@ -918,34 +939,56 @@ $("src-replay").onclick=()=>setMode("replay"); $("src-sim").onclick=()=>setMode(
 $("cfg-connect").onclick=()=>{ S.live.url=$("cfg-url").value.replace(/\/$/,""); S.live.token=$("cfg-token").value; S.live.seenVersions.clear(); S.frames=[]; clearInterval(S.live.timer); livePoll(); S.live.timer=setInterval(livePoll,600); };
 
 /* ================= RACE SIMULATOR (browser model) =================
-   A lap-by-lap model seeded from the scenario's real car data (positions, gaps, tyres,
-   base pace) and the engine's own pit plan for CAR_04 and CAR_03. It is an independent,
-   illustrative model: tyre wear, fuel burn, dirty air, pit loss, safety car, overtaking odds,
-   plus three fictional circuits and a weather timeline (dry, overcast, rain, changing rain).
-   Circuits and weather are simulated. It is NOT the backend strategy engine, not a real
-   forecast and not AWS-validated. */
-const SIMCFG={pitLoss:21000,pitLossSC:11500,scLaps:3,noise:190,
-  deg:{SOFT:105,MEDIUM:62,HARD:40,INTER:78,WET:62}, off:{SOFT:-650,MEDIUM:0,HARD:420,INTER:0,WET:0}, life:{SOFT:24,MEDIUM:30,HARD:42,INTER:30,WET:34},
-  cliff:190,fuel:32,dirty:300,drs:1000};
+   A lap-by-lap model of a 10-car race (five teams, two drivers each) on eight real circuit layouts with
+   a weather timeline. Tyre wear, fuel burn, dirty air, pit stops, overtaking odds, mistakes, safety cars
+   and weather (slicks, intermediates, full wets) are modelled.
+   It is an illustrative browser model: team pace and driver form are invented numbers, circuit
+   characteristics are rough and qualitative, the weather is simulated, and results are NOT predictions
+   of real races. Unofficial fan project, not affiliated with Formula 1, the FIA or any team.
+   Circuit outlines are simplified from the open f1-circuits GeoJSON data (derived from OpenStreetMap).
+   It is separate from the backend strategy engine and not AWS-validated. */
+const SIMCFG={scLaps:3,noise:170,
+  deg:{SOFT:105,MEDIUM:62,HARD:40,INTER:78,WET:62}, off:{SOFT:-650,MEDIUM:0,HARD:420,INTER:0,WET:0}, life:{SOFT:22,MEDIUM:31,HARD:44,INTER:30,WET:34},
+  cliff:190,fuel:32};
+const POINTS=[25,18,15,12,10,8,6,4,2,1];
 
-/* ---- fictional circuits (SVG paths in an 800x470 box; start line is the first point of the path) ---- */
-const TRACKS={
-  meridian:{id:"meridian",name:"Meridian GP",sub:"5.2 km · 14 turns · overtaking: medium",
-    path:"M130 300 C 88 210, 150 92, 290 104 S 470 196, 545 132 S 722 66, 728 190 S 648 330, 562 342 S 468 436, 330 420 S 160 398, 130 300 Z",
-    pitSpan:0.085,pitLoss:21000,drs:1000,dirty:300,passBase:0.18,passK:700,degM:1,inc:0.10,crash:1,lapOff:0,
-    corners:["Turn 3","Turn 7","the hairpin","Turn 12"],blurb:"Balanced layout with one DRS zone. Undercuts work and passes are possible but not free."},
-  porto:{id:"porto",name:"Porto Verde Street Circuit",sub:"3.9 km · 17 turns · overtaking: very hard",
-    path:"M105 250 L105 100 Q105 70 135 70 L300 70 Q330 70 330 100 L330 150 Q330 180 360 180 L440 180 Q470 180 470 150 L470 100 Q470 70 500 70 L670 70 Q700 70 700 100 L700 230 Q700 260 670 260 L610 260 Q580 260 580 290 L580 330 Q580 360 550 360 L440 360 Q410 360 410 330 L410 310 Q410 280 380 280 L270 280 Q240 280 240 310 L240 370 Q240 400 210 400 L135 400 Q105 400 105 370 Z",
-    pitSpan:0.058,pitLoss:18500,drs:750,dirty:380,passBase:0.07,passK:1300,degM:0.86,inc:0.38,crash:1.7,lapOff:2200,
-    corners:["the harbour hairpin","the tunnel exit","Turn 9","the final chicane"],blurb:"Tight walls and a short pit lane. Track position is gold, passes are rare, and incidents are common."},
-  altura:{id:"altura",name:"Altura Speedway",sub:"6.1 km · 11 turns · overtaking: easy",
-    path:"M420 400 L600 400 C 680 400, 740 370, 740 310 C 740 260, 700 235, 650 225 L 560 205 C 500 192, 505 150, 560 140 L 640 126 C 700 114, 730 90, 700 62 C 680 44, 640 42, 600 46 L 330 70 C 270 76, 230 100, 230 150 C 230 200, 270 215, 310 228 C 350 240, 355 285, 310 300 C 250 318, 160 320, 130 350 C 110 372, 150 400, 250 400 Z",
-    pitSpan:0.085,pitLoss:24000,drs:1450,dirty:230,passBase:0.32,passK:520,degM:1.18,inc:0.12,crash:1.2,lapOff:-2600,
-    corners:["Turn 1","the long right-hander","the final sweeper","Turn 8"],blurb:"Long straights and a long pit lane. Slipstreams make passing easy, but stops cost more and tyres work hard."}
+/* ---- teams and drivers (2026 entries; pace and form numbers are invented for the simulation) ---- */
+const TEAMS={
+  rb:{id:"rb",name:"Red Bull",color:"#223971",pace:170},
+  fer:{id:"fer",name:"Ferrari",color:"#E8002D",pace:120},
+  mcl:{id:"mcl",name:"McLaren",color:"#FF8000",pace:0},
+  aud:{id:"aud",name:"Audi",color:"#5B6068",pace:620},
+  rbr:{id:"rbr",name:"Racing Bulls",color:"#5E8BFF",pace:520}
 };
-TRACKS.meridian.pitLossSC=11500;
-Object.values(TRACKS).forEach(t=>{t.pitLossSC=Math.round(t.pitLoss*0.548);});
+const DRIVERS=[
+  {id:"VER",name:"Max Verstappen",team:"rb",skill:-60},{id:"HAD",name:"Isack Hadjar",team:"rb",skill:110},
+  {id:"LEC",name:"Charles Leclerc",team:"fer",skill:-50},{id:"HAM",name:"Lewis Hamilton",team:"fer",skill:-30},
+  {id:"NOR",name:"Lando Norris",team:"mcl",skill:-40},{id:"PIA",name:"Oscar Piastri",team:"mcl",skill:-30},
+  {id:"BOR",name:"Gabriel Bortoleto",team:"aud",skill:60},{id:"HUL",name:"Nico Hulkenberg",team:"aud",skill:0},
+  {id:"LAW",name:"Liam Lawson",team:"rbr",skill:40},{id:"LIN",name:"Arvid Lindblad",team:"rbr",skill:110}
+];
 
+/* ---- real circuits (outlines simplified from open data; race numbers are rough and illustrative) ---- */
+const TRACKS={};
+function addTrack(t){TRACKS[t.id]=Object.assign({pitSpan:0.06,tw:18,pitLossSC:0},t);TRACKS[t.id].pitLossSC=Math.round(t.pitLoss*0.55);}
+addTrack({id:"monaco",name:"Monaco",full:"Circuit de Monaco",km:3.337,laps:78,turns:19,lapTime:74000,pitLoss:19500,drs:600,dirty:420,passBase:0.012,passK:2600,degM:0.78,inc:0.55,crash:1.9,tw:15,blurb:"Walls everywhere and almost no overtaking. Grid position and the pit stop decide the race, and safety cars are likely.",
+  path:"M545.2 290.2 C547.0 289.6,548.6 289.3,550.1 289.4 C551.7 289.4,552.1 289.4,554.5 290.5 C557.0 291.6,551.1 286.1,564.8 296.0 C578.6 305.8,624.9 340.0,637.1 349.7 C649.4 359.3,638.4 352.4,638.4 354.0 C638.3 355.6,637.6 357.8,636.8 359.3 C636.1 360.9,635.1 362.0,633.8 363.0 C632.5 364.1,632.1 365.1,629.0 365.7 C626.0 366.4,618.5 366.3,615.5 366.8 C612.5 367.4,613.5 367.4,611.1 369.0 C608.7 370.6,604.4 374.4,601.1 376.4 C597.9 378.3,593.5 379.8,591.6 380.8 C589.6 381.9,589.9 381.8,589.5 382.5 C589.0 383.1,588.7 384.1,588.7 385.0 C588.8 385.9,589.1 387.1,589.6 388.0 C590.1 388.8,591.0 389.7,591.9 390.2 C592.8 390.6,594.2 391.0,595.2 390.8 C596.2 390.7,597.0 390.2,598.0 389.4 C598.9 388.5,597.9 388.1,600.7 385.6 C603.5 383.2,611.8 376.7,614.7 374.6 C617.6 372.5,617.0 373.3,618.1 373.0 C619.2 372.7,620.0 372.6,621.4 373.0 C622.7 373.3,625.0 373.8,626.2 375.0 C627.5 376.2,628.1 378.0,628.9 380.2 C629.7 382.4,629.7 384.4,631.0 388.2 C632.2 392.1,635.6 399.7,636.6 403.3 C637.6 407.0,637.3 408.4,637.1 410.1 C636.8 411.8,636.5 412.8,635.3 413.7 C634.0 414.5,636.0 415.0,629.7 415.0 C623.4 415.0,608.2 414.8,597.2 413.7 C586.3 412.7,573.0 410.4,563.9 408.7 C554.7 407.0,548.7 405.4,542.6 403.5 C536.5 401.7,532.9 400.4,527.5 397.8 C522.1 395.1,515.5 391.4,510.1 387.8 C504.8 384.3,500.9 381.1,495.5 376.4 C490.0 371.8,482.9 366.6,477.5 359.9 C472.0 353.2,468.7 347.1,463.0 336.2 C457.3 325.4,447.7 304.9,443.4 295.0 C439.0 285.1,439.2 284.3,437.0 276.7 C434.9 269.2,432.5 258.7,430.7 249.8 C428.9 240.9,427.4 227.9,426.2 223.2 C425.0 218.5,425.3 222.2,423.5 221.6 C421.8 221.1,417.3 220.7,415.8 219.8 C414.3 218.8,414.8 217.5,414.4 215.9 C414.1 214.3,413.1 212.3,413.5 210.4 C413.9 208.4,416.4 205.9,417.0 204.3 C417.6 202.7,419.7 219.0,417.2 200.9 C414.8 182.9,405.2 113.8,402.2 95.8 C399.2 77.8,401.2 94.1,399.2 92.9 C397.1 91.6,394.5 90.2,390.0 88.2 C385.5 86.3,376.3 82.5,372.3 81.1 C368.3 79.7,368.8 80.2,366.0 79.8 C363.1 79.3,360.7 78.5,355.0 78.3 C349.2 78.1,335.9 78.1,331.4 78.4 C327.0 78.6,329.3 79.1,328.2 79.8 C327.2 80.4,327.0 80.4,325.1 82.5 C323.2 84.7,318.9 90.7,316.9 92.7 C314.8 94.7,321.2 92.9,312.8 94.5 C304.5 96.0,276.1 100.5,266.9 102.1 C257.7 103.8,259.7 104.1,257.7 104.4 C255.6 104.8,255.6 104.6,254.7 104.3 C253.8 104.0,253.4 104.1,252.3 102.5 C251.1 100.9,248.9 96.2,247.6 94.7 C246.4 93.3,246.3 93.8,244.9 93.8 C243.5 93.8,244.0 93.0,239.2 94.6 C234.4 96.1,221.5 100.9,216.4 103.1 C211.3 105.2,211.6 105.3,208.6 107.2 C205.7 109.1,201.7 111.6,198.5 114.3 C195.3 116.9,192.5 118.8,189.5 123.2 C186.6 127.6,182.5 137.5,180.7 140.7 C178.9 143.9,180.0 141.9,178.6 142.5 C177.2 143.2,173.9 144.5,172.3 144.7 C170.6 144.8,169.8 144.4,168.9 143.6 C168.0 142.9,168.1 144.7,166.9 140.3 C165.7 136.0,162.5 123.0,161.7 117.5 C161.0 111.9,161.5 109.8,162.3 107.3 C163.1 104.8,165.1 103.2,166.5 102.4 C168.0 101.6,168.9 102.7,171.0 102.3 C173.1 101.9,176.0 101.9,179.0 100.2 C182.0 98.5,184.7 95.1,189.2 91.9 C193.7 88.7,201.1 83.8,206.2 81.1 C211.4 78.5,209.3 79.3,220.1 76.1 C230.9 73.0,257.1 65.2,271.0 62.0 C284.9 58.9,294.0 58.3,303.7 57.2 C313.3 56.0,322.0 55.4,328.9 55.0 C335.9 54.6,338.3 54.7,345.4 55.0 C352.4 55.3,362.3 55.5,371.0 57.1 C379.7 58.6,391.5 63.2,397.7 64.3 C404.0 65.4,406.3 63.7,408.6 63.9 C410.8 64.0,410.3 64.4,411.0 65.2 C411.7 66.0,412.0 66.7,412.6 68.6 C413.2 70.6,414.1 72.6,414.7 77.0 C415.3 81.3,415.3 87.2,416.2 94.6 C417.2 102.0,417.2 108.6,420.3 121.4 C423.3 134.2,431.6 158.4,434.6 171.3 C437.6 184.3,437.1 192.9,438.2 199.0 C439.3 205.1,438.0 200.2,441.3 207.8 C444.6 215.3,454.6 235.5,458.0 244.3 C461.3 253.1,460.3 253.4,461.6 260.6 C462.9 267.7,464.6 281.5,465.7 287.1 C466.8 292.7,466.9 291.7,468.3 294.4 C469.6 297.1,471.5 300.5,473.8 303.2 C476.1 306.0,479.4 308.9,481.8 310.9 C484.3 312.9,486.3 314.2,488.6 315.2 C490.9 316.3,493.2 316.9,495.7 317.2 C498.1 317.4,500.7 317.1,503.1 316.8 C505.5 316.6,506.4 316.9,510.0 315.6 C513.7 314.3,520.1 313.0,525.0 309.2 C529.9 305.4,536.1 295.9,539.5 292.8 C542.9 289.6,543.5 290.7,545.2 290.2 Z"});
+addTrack({id:"monza",name:"Monza",full:"Autodromo Nazionale Monza",km:5.793,laps:53,turns:11,lapTime:82000,pitLoss:24000,drs:1500,dirty:200,passBase:0.34,passK:450,degM:0.8,inc:0.22,crash:1.0,tw:21,blurb:"Long straights and big slipstreams: passing is easy, one stop is normal, and a poor start costs places fast.",
+  path:"M316.0 66.7 C363.2 71.2,461.0 79.3,490.4 81.9 C519.8 84.5,492.0 82.1,492.5 82.4 C493.1 82.8,493.5 82.3,493.7 83.9 C493.9 85.5,493.1 90.2,493.7 92.0 C494.4 93.9,492.0 95.5,497.6 94.7 C503.2 93.9,521.0 88.7,527.2 87.3 C533.4 85.9,532.4 86.5,534.8 86.3 C537.3 86.0,533.2 85.4,541.8 85.9 C550.3 86.3,576.6 88.2,585.9 89.2 C595.2 90.1,593.5 90.4,597.5 91.5 C601.5 92.7,606.8 94.9,609.9 96.1 C613.1 97.4,613.0 97.2,616.2 99.2 C619.4 101.2,625.9 105.7,629.1 108.3 C632.4 110.8,632.8 111.1,635.8 114.5 C638.7 117.9,643.6 123.5,647.0 128.7 C650.4 133.9,653.7 139.8,656.2 145.9 C658.7 151.9,660.8 159.9,662.2 165.0 C663.5 170.1,663.0 165.0,664.1 176.3 C665.3 187.7,667.7 213.9,669.1 233.2 C670.5 252.4,671.7 281.5,672.7 291.8 C673.7 302.2,673.6 294.2,675.1 295.0 C676.6 295.8,680.0 296.2,681.6 296.8 C683.1 297.5,683.4 295.6,684.6 299.0 C685.7 302.3,684.3 303.3,688.4 316.9 C692.6 330.4,705.9 369.0,709.6 380.3 C713.3 391.6,710.6 382.7,710.7 384.8 C710.7 386.9,710.8 390.3,709.9 393.1 C709.0 395.9,707.1 399.2,705.3 401.4 C703.4 403.7,701.1 405.4,698.8 406.6 C696.5 407.7,703.8 407.1,691.5 408.5 C679.1 409.9,636.5 413.9,624.8 415.0 C613.1 416.1,622.4 415.2,621.0 414.9 C619.7 414.6,617.9 414.2,616.5 413.2 C615.2 412.1,620.7 422.2,612.9 408.3 C605.1 394.4,578.8 345.7,569.7 329.7 C560.6 313.6,566.2 322.0,558.3 312.0 C550.4 302.0,542.1 292.1,522.2 269.4 C502.4 246.7,454.2 192.3,439.3 175.8 C424.5 159.3,437.5 171.4,433.2 170.6 C428.8 169.9,417.6 171.7,413.2 171.6 C408.9 171.5,409.5 171.1,407.1 170.1 C404.7 169.2,401.0 167.2,398.9 165.9 C396.9 164.6,396.8 164.4,394.7 162.3 C392.7 160.2,389.4 155.2,386.8 153.2 C384.2 151.3,388.2 152.1,379.1 150.7 C370.1 149.4,377.5 149.9,332.3 145.1 C287.0 140.2,146.3 126.1,107.7 121.7 C69.0 117.4,102.0 119.8,100.3 119.0 C98.6 118.1,98.7 118.0,97.3 116.4 C95.9 114.9,93.2 112.2,91.9 109.5 C90.6 106.7,89.5 102.9,89.3 99.8 C89.1 96.8,89.7 94.4,90.5 91.4 C91.4 88.4,92.9 84.9,94.4 82.0 C96.0 79.2,97.5 77.1,100.0 74.5 C102.5 72.0,106.1 68.9,109.4 66.7 C112.8 64.6,116.1 63.1,120.0 61.6 C123.8 60.1,128.3 58.6,132.7 57.7 C137.2 56.7,134.2 56.3,146.7 55.9 C159.2 55.5,179.4 53.5,207.7 55.3 C235.9 57.1,268.9 62.3,316.0 66.7 Z"});
+addTrack({id:"spa",name:"Spa-Francorchamps",full:"Circuit de Spa-Francorchamps",km:7.004,laps:44,turns:19,lapTime:106000,pitLoss:20500,drs:1300,dirty:250,passBase:0.26,passK:560,degM:1.0,inc:0.3,crash:1.2,tw:19,blurb:"The longest lap, with real rain risk. A shower on one part of the circuit can turn the race.",
+  path:"M629.9 163.6 C652.6 150.6,676.2 136.9,685.9 131.5 C695.7 126.1,687.7 131.0,688.5 131.2 C689.3 131.4,690.2 131.9,690.7 132.6 C691.2 133.3,691.7 134.5,691.7 135.6 C691.8 136.6,693.9 132.3,690.8 138.9 C687.7 145.5,677.4 167.0,673.2 175.1 C669.0 183.2,670.1 181.3,665.6 187.4 C661.2 193.5,661.1 198.0,646.5 211.7 C631.9 225.5,590.0 259.6,578.1 269.9 C566.1 280.1,577.1 270.0,574.8 273.3 C572.5 276.7,566.8 286.3,564.3 289.8 C561.8 293.3,562.5 292.6,559.7 294.4 C557.0 296.3,553.5 299.1,547.8 300.9 C542.1 302.6,529.9 303.9,525.6 304.8 C521.2 305.7,533.8 298.9,521.7 306.2 C509.7 313.5,467.4 340.3,453.3 348.5 C439.3 356.8,470.1 345.7,437.3 355.5 C404.5 365.4,290.6 397.9,256.3 407.8 C222.0 417.6,236.4 413.4,231.7 414.6 C226.9 415.8,229.1 415.1,227.7 415.0 C226.3 414.9,224.6 414.8,223.2 414.3 C221.9 413.8,221.6 414.0,219.7 411.9 C217.8 409.8,214.4 403.7,211.8 401.5 C209.3 399.2,206.4 398.8,204.4 398.3 C202.4 397.8,205.1 397.5,199.9 398.5 C194.8 399.5,179.3 403.6,173.4 404.4 C167.5 405.2,166.9 404.1,164.6 403.4 C162.4 402.7,169.1 412.6,160.0 400.2 C151.0 387.7,118.8 341.4,110.2 328.7 C101.6 316.1,108.7 325.9,108.4 324.5 C108.1 323.0,108.1 321.7,108.3 320.2 C108.5 318.7,108.9 317.1,109.6 315.7 C110.3 314.3,111.2 313.0,112.3 312.0 C113.3 311.0,114.8 310.0,116.1 309.4 C117.4 308.8,118.6 308.5,120.0 308.3 C121.3 308.1,122.8 307.9,124.1 308.1 C125.5 308.3,126.7 308.8,128.0 309.4 C129.3 310.0,130.9 310.8,132.0 311.8 C133.1 312.7,131.3 309.7,134.8 315.2 C138.3 320.7,149.5 339.3,153.0 344.8 C156.6 350.2,155.2 347.1,156.3 348.0 C157.4 348.8,158.4 349.3,159.6 349.7 C160.8 350.1,162.0 350.4,163.4 350.4 C164.9 350.5,161.4 352.2,168.2 350.1 C175.0 348.0,195.7 340.5,204.1 337.9 C212.5 335.2,203.7 337.0,218.8 334.1 C233.8 331.1,281.0 322.9,294.4 320.2 C307.8 317.5,297.0 319.6,299.2 318.1 C301.3 316.5,305.3 312.9,307.2 310.9 C309.1 309.0,309.5 307.8,310.3 306.2 C311.2 304.5,311.7 305.7,312.4 301.0 C313.1 296.2,314.3 282.8,314.5 277.8 C314.7 272.8,314.6 274.3,313.7 271.1 C312.9 267.9,310.6 261.5,309.3 258.6 C308.0 255.7,307.3 255.3,305.8 253.5 C304.4 251.7,303.5 249.9,300.4 247.6 C297.2 245.3,302.4 246.2,287.0 239.6 C271.6 233.0,222.1 213.8,207.9 207.9 C193.8 202.1,203.8 205.9,202.1 204.7 C200.5 203.6,199.3 202.4,198.1 200.9 C197.0 199.4,195.9 197.5,195.2 195.7 C194.5 194.0,194.0 192.2,193.7 190.5 C193.4 188.8,193.4 187.3,193.6 185.6 C193.7 184.0,193.0 184.2,194.6 180.8 C196.2 177.4,201.4 168.7,202.9 165.2 C204.4 161.7,204.0 162.4,203.8 159.8 C203.6 157.1,202.4 151.8,201.6 149.3 C200.7 146.9,200.4 146.8,198.6 145.1 C196.8 143.3,199.1 144.6,190.6 139.0 C182.1 133.4,155.2 116.6,147.6 111.6 C140.0 106.6,145.9 110.5,145.1 108.9 C144.2 107.2,142.8 103.5,142.4 101.5 C142.0 99.5,142.3 98.4,142.7 97.0 C143.0 95.6,140.6 98.6,144.5 93.1 C148.3 87.5,161.1 69.5,166.0 63.7 C170.8 57.8,171.8 59.3,173.8 58.1 C175.8 56.9,175.6 56.9,178.0 56.4 C180.3 55.9,185.3 55.1,187.9 55.0 C190.6 54.9,189.3 54.3,194.0 55.8 C198.7 57.3,210.4 61.5,216.0 63.9 C221.5 66.3,223.8 68.1,227.4 70.3 C230.9 72.5,233.7 74.4,237.3 77.3 C241.0 80.3,244.4 83.2,249.3 88.0 C254.2 92.7,262.4 101.1,266.7 105.8 C271.0 110.5,268.6 105.4,274.8 116.2 C281.1 127.1,298.4 160.7,303.9 170.9 C309.5 181.2,305.7 174.4,308.1 177.6 C310.5 180.7,314.7 186.1,318.5 189.7 C322.2 193.3,326.7 196.6,330.6 199.3 C334.6 201.9,333.2 201.4,342.0 205.5 C350.9 209.5,375.9 220.6,383.9 223.8 C391.9 227.1,387.6 224.8,389.8 225.0 C392.0 225.3,394.9 225.4,397.2 225.3 C399.6 225.1,392.7 228.1,403.9 224.1 C415.1 220.0,451.0 205.6,464.3 201.1 C477.6 196.5,477.5 197.8,483.7 196.7 C490.0 195.6,492.4 195.3,501.8 194.5 C511.3 193.7,533.4 192.3,540.3 191.9 C547.1 191.6,542.1 192.1,542.8 192.4 C543.5 192.7,544.2 193.3,544.6 193.9 C545.0 194.6,545.2 195.2,545.2 196.3 C545.2 197.4,544.6 198.5,544.6 200.3 C544.6 202.2,544.7 205.9,545.2 207.4 C545.6 208.8,546.5 208.8,547.2 209.2 C548.0 209.6,535.8 217.3,549.6 209.7 C563.4 202.1,607.1 176.6,629.9 163.6 Z"});
+addTrack({id:"suzuka",name:"Suzuka",full:"Suzuka International Racing Course",km:5.807,laps:53,turns:18,lapTime:91000,pitLoss:22500,drs:1000,dirty:340,passBase:0.1,passK:1000,degM:1.22,inc:0.25,crash:1.3,tw:16,blurb:"A fast, flowing figure of eight. Hard on the tyres and hard to pass.",
+  path:"M638.7 247.3 C656.8 269.2,664.5 278.0,680.3 297.3 C696.1 316.7,723.9 350.2,733.4 363.3 C742.9 376.4,736.5 372.7,737.1 375.8 C737.8 378.8,737.2 379.9,737.1 381.6 C736.9 383.3,737.4 382.4,736.3 386.1 C735.3 389.7,732.0 399.9,730.7 403.6 C729.3 407.3,729.6 406.5,728.0 408.2 C726.3 409.9,722.9 412.4,720.7 413.5 C718.5 414.7,716.7 414.8,714.8 415.0 C712.9 415.2,711.3 415.2,709.4 414.8 C707.5 414.4,705.4 413.9,703.5 412.8 C701.6 411.8,704.6 417.9,698.0 408.5 C691.3 399.0,670.3 365.4,663.6 355.9 C657.0 346.4,661.1 352.5,658.2 351.3 C655.4 350.1,650.9 349.0,646.5 348.6 C642.1 348.1,635.4 348.8,631.6 348.5 C627.9 348.1,626.3 347.3,624.2 346.3 C622.1 345.3,620.5 344.0,618.9 342.6 C617.4 341.2,615.9 339.3,614.9 337.7 C613.9 336.1,614.5 338.0,613.0 333.0 C611.6 328.0,607.9 312.9,606.4 307.6 C604.8 302.3,604.8 303.1,603.6 301.1 C602.4 299.1,600.7 297.1,599.1 295.5 C597.5 294.0,595.9 292.9,593.9 291.8 C592.0 290.6,589.6 289.4,587.4 288.7 C585.2 288.0,584.7 287.7,580.7 287.4 C576.7 287.2,567.7 287.5,563.5 287.2 C559.3 286.9,557.7 286.3,555.5 285.6 C553.3 285.0,551.9 284.2,550.0 283.0 C548.2 281.9,546.0 280.4,544.4 278.7 C542.8 277.0,541.4 274.7,540.3 272.6 C539.1 270.6,538.3 268.4,537.7 266.4 C537.1 264.4,536.7 262.5,536.6 260.6 C536.4 258.7,535.0 260.6,536.6 255.0 C538.2 249.4,544.4 232.5,546.2 227.1 C548.0 221.7,547.2 224.2,547.4 222.4 C547.7 220.6,548.2 218.9,547.7 216.2 C547.2 213.5,545.6 208.7,544.5 206.2 C543.4 203.7,544.1 203.4,541.2 201.1 C538.3 198.8,532.3 195.2,527.1 192.4 C521.9 189.7,515.1 186.4,509.8 184.5 C504.5 182.7,500.6 181.9,495.3 181.4 C490.0 181.0,482.1 181.3,478.1 181.6 C474.2 181.9,475.1 182.1,471.8 183.3 C468.6 184.5,462.3 187.1,458.8 188.9 C455.2 190.6,453.4 191.5,450.4 193.6 C447.4 195.7,443.6 198.8,440.8 201.4 C437.9 204.1,440.0 201.3,433.2 209.4 C426.4 217.5,406.3 243.1,399.9 250.0 C393.5 257.0,403.4 250.3,394.9 251.2 C386.3 252.1,356.8 254.7,348.6 255.4 C340.4 256.0,346.7 255.4,345.7 255.0 C344.6 254.6,343.2 253.8,342.5 252.9 C341.8 251.9,342.7 255.2,341.2 249.2 C339.7 243.3,336.7 233.3,333.6 217.3 C330.5 201.2,324.4 164.6,322.5 153.0 C320.5 141.5,321.8 150.6,322.0 148.0 C322.2 145.4,321.1 144.3,323.5 137.4 C325.9 130.5,334.5 112.4,336.3 106.5 C338.1 100.6,335.1 102.9,334.3 101.9 C333.6 100.8,333.2 100.6,331.9 100.2 C330.6 99.8,327.9 99.3,326.4 99.5 C325.0 99.8,328.5 93.7,323.4 101.6 C318.2 109.5,300.8 138.2,295.3 146.7 C289.8 155.1,293.2 149.8,290.5 152.2 C287.9 154.6,282.5 159.1,279.4 161.3 C276.3 163.5,274.5 164.2,271.9 165.3 C269.4 166.3,267.7 166.9,264.2 167.6 C260.6 168.3,255.0 169.2,250.6 169.6 C246.2 170.0,241.5 170.2,237.8 170.1 C234.0 170.1,233.7 170.5,228.1 169.4 C222.5 168.3,211.9 165.9,204.0 163.3 C196.1 160.7,187.3 157.2,181.0 153.9 C174.6 150.7,169.7 146.7,165.9 143.8 C162.2 141.0,160.9 139.6,158.3 137.0 C155.7 134.4,153.4 132.4,150.4 128.3 C147.5 124.2,144.1 120.1,140.6 112.3 C137.0 104.6,132.0 89.0,129.0 81.6 C126.1 74.2,124.4 71.3,122.8 68.1 C121.3 65.0,120.9 64.3,119.7 62.8 C118.5 61.2,117.1 59.9,115.4 58.8 C113.8 57.7,111.9 56.9,109.8 56.3 C107.8 55.6,105.6 55.2,103.2 55.0 C100.7 54.8,98.9 54.7,95.2 55.2 C91.4 55.7,84.1 56.9,80.5 57.9 C76.9 58.8,75.6 59.6,73.5 60.8 C71.3 62.0,69.2 63.5,67.7 65.2 C66.1 66.8,65.0 68.9,64.2 70.7 C63.4 72.6,63.0 74.2,62.9 76.2 C62.7 78.3,62.6 80.2,63.3 83.1 C64.0 86.0,65.8 90.9,67.1 93.4 C68.4 95.8,65.9 93.0,71.0 97.7 C76.2 102.4,91.5 115.9,98.0 121.3 C104.4 126.8,103.3 125.9,110.0 130.4 C116.6 135.0,128.2 143.1,137.8 148.6 C147.4 154.0,160.2 159.9,167.5 163.3 C174.9 166.6,171.4 164.8,182.0 168.8 C192.6 172.7,212.6 180.4,231.2 186.9 C249.8 193.4,274.8 201.2,293.4 207.6 C311.9 214.1,333.3 222.4,342.5 225.6 C351.7 228.9,346.7 226.9,348.8 227.2 C350.9 227.5,351.9 227.9,355.1 227.4 C358.4 227.0,364.2 225.6,368.3 224.4 C372.5 223.1,374.8 222.4,380.0 219.9 C385.3 217.3,395.0 211.9,399.8 208.9 C404.7 205.9,400.7 209.3,409.2 201.6 C417.6 194.0,442.6 170.3,450.6 162.9 C458.6 155.6,454.1 159.7,457.2 157.4 C460.4 155.2,466.7 150.6,469.4 149.4 C472.0 148.2,471.0 148.7,473.2 150.2 C475.4 151.7,480.4 156.7,482.5 158.2 C484.6 159.7,484.6 159.1,485.7 159.2 C486.7 159.2,487.6 159.1,488.7 158.6 C489.7 158.1,489.5 158.3,492.2 156.3 C494.8 154.2,501.2 148.5,504.4 146.4 C507.7 144.2,509.0 143.9,511.7 143.3 C514.4 142.7,517.7 142.6,520.5 142.5 C523.4 142.5,526.0 142.6,528.8 143.0 C531.6 143.4,533.4 143.3,537.5 144.8 C541.6 146.2,549.4 149.5,553.6 151.7 C557.9 154.0,560.0 155.7,562.9 158.1 C565.8 160.4,558.6 150.9,571.3 165.8 C583.9 180.7,620.5 225.3,638.7 247.3 Z"});
+addTrack({id:"silverstone",name:"Silverstone",full:"Silverstone Circuit",km:5.891,laps:52,turns:18,lapTime:88000,pitLoss:21500,drs:1100,dirty:300,passBase:0.2,passK:700,degM:1.15,inc:0.22,crash:1.1,tw:19,blurb:"High-speed corners wear the tyres. Passing is possible, and the weather changes fast.",
+  path:"M695.0 269.2 C697.2 293.0,699.8 321.7,700.7 334.6 C701.5 347.4,700.6 342.8,700.0 346.2 C699.3 349.6,698.1 352.7,697.0 355.1 C695.9 357.6,695.1 358.8,693.1 361.0 C691.1 363.1,687.9 366.0,685.1 367.9 C682.2 369.8,685.8 369.3,675.9 372.3 C665.9 375.3,637.3 383.2,625.3 385.9 C613.4 388.7,621.6 387.6,604.0 388.9 C586.4 390.2,535.3 392.2,519.5 393.7 C503.7 395.2,513.4 395.9,509.3 397.8 C505.3 399.8,498.9 403.8,495.2 405.6 C491.5 407.5,489.5 408.4,487.1 408.9 C484.8 409.4,483.2 409.0,481.0 408.8 C478.8 408.5,480.0 409.4,473.9 407.3 C467.8 405.3,451.5 398.2,444.7 396.3 C437.8 394.3,436.3 395.4,432.9 395.6 C429.5 395.7,427.1 396.3,424.5 397.3 C421.9 398.2,421.0 398.8,417.3 401.2 C413.6 403.7,405.8 409.9,402.0 412.2 C398.3 414.4,397.6 414.2,395.0 414.7 C392.5 415.2,389.4 415.3,386.8 415.0 C384.1 414.7,381.9 414.6,379.2 413.2 C376.6 411.7,373.4 409.0,371.0 406.5 C368.6 404.0,367.9 402.9,364.9 398.0 C361.9 393.1,355.8 381.8,352.8 377.3 C349.7 372.8,349.6 373.2,346.5 370.9 C343.4 368.6,365.2 380.4,334.2 363.5 C303.2 346.6,196.3 289.5,160.6 269.5 C124.8 249.4,128.4 248.9,119.9 243.4 C111.5 237.8,112.5 238.2,110.0 236.0 C107.4 233.8,106.2 232.2,104.7 230.0 C103.2 227.9,102.1 225.5,101.2 223.1 C100.3 220.7,99.6 218.2,99.3 215.9 C99.1 213.5,99.5 211.5,99.9 209.2 C100.3 206.8,100.8 204.1,101.6 201.8 C102.3 199.5,103.1 197.5,104.3 195.6 C105.5 193.6,106.8 191.7,108.7 190.0 C110.6 188.3,111.5 187.5,115.7 185.3 C119.9 183.1,128.6 179.6,133.9 176.8 C139.2 174.1,142.3 172.6,147.7 168.9 C153.1 165.2,159.8 160.0,166.1 154.6 C172.3 149.2,176.7 143.8,185.0 136.6 C193.3 129.3,210.3 115.6,215.7 110.9 C221.1 106.2,217.0 109.3,217.3 108.3 C217.7 107.3,217.9 106.0,217.7 104.8 C217.5 103.6,217.9 103.6,216.0 101.3 C214.1 98.9,208.1 92.9,206.3 90.5 C204.4 88.1,204.9 88.5,205.0 86.8 C205.1 85.0,205.7 81.8,206.7 80.0 C207.7 78.1,208.1 78.0,210.9 75.6 C213.7 73.1,219.9 67.5,223.4 65.1 C226.9 62.6,228.9 62.0,231.7 60.8 C234.5 59.6,236.5 58.8,240.1 57.8 C243.8 56.9,250.7 55.4,253.5 55.0 C256.4 54.6,254.8 54.4,257.4 55.7 C260.0 57.0,246.4 45.7,269.2 62.9 C291.9 80.1,372.4 142.2,393.9 158.8 C415.4 175.4,396.8 160.8,398.2 162.5 C399.6 164.2,401.4 166.6,402.4 168.9 C403.4 171.2,403.9 174.2,404.2 176.5 C404.6 178.9,405.3 175.0,404.4 182.8 C403.6 190.6,400.0 215.4,399.1 223.5 C398.1 231.7,398.2 227.4,398.7 231.7 C399.3 236.1,400.9 245.4,402.2 249.6 C403.5 253.9,399.1 247.7,406.5 257.3 C413.8 266.9,438.8 297.7,446.1 307.2 C453.5 316.7,449.6 312.6,450.4 314.4 C451.1 316.3,450.9 317.3,450.7 318.5 C450.6 319.7,450.2 320.7,449.6 321.7 C449.0 322.7,448.0 323.7,447.0 324.5 C446.1 325.3,449.6 324.5,444.1 326.2 C438.7 327.9,420.0 332.9,414.3 334.7 C408.7 336.6,411.2 336.3,410.1 337.3 C409.0 338.3,408.0 339.5,407.5 340.8 C407.1 342.1,407.0 343.5,407.3 344.9 C407.7 346.4,408.4 348.2,409.4 349.5 C410.3 350.7,410.2 350.9,413.0 352.3 C415.9 353.7,421.7 356.0,426.6 357.7 C431.6 359.4,437.6 361.5,443.0 362.7 C448.4 363.8,455.1 364.3,459.2 364.5 C463.3 364.7,465.7 364.3,467.8 363.9 C469.9 363.6,470.2 363.2,471.7 362.2 C473.1 361.2,451.2 385.6,476.6 357.8 C502.1 330.1,598.8 224.7,624.4 196.0 C650.0 167.3,629.1 188.5,630.3 185.5 C631.4 182.5,631.3 180.5,631.4 178.0 C631.4 175.4,631.3 172.8,630.5 170.2 C629.7 167.6,627.8 164.0,626.6 162.2 C625.4 160.4,624.6 160.2,623.1 159.4 C621.7 158.6,623.3 158.3,618.0 157.4 C612.6 156.5,596.5 155.0,591.1 154.1 C585.8 153.3,587.3 153.3,585.6 152.3 C584.0 151.3,582.4 150.0,581.2 148.3 C580.0 146.7,578.9 144.5,578.3 142.4 C577.6 140.3,577.2 138.2,577.3 135.9 C577.5 133.6,578.3 130.7,579.2 128.6 C580.1 126.6,580.6 125.3,582.7 123.5 C584.7 121.7,589.2 119.0,591.5 118.0 C593.8 117.0,594.9 117.5,596.6 117.5 C598.4 117.6,592.9 114.3,602.2 118.6 C611.5 122.9,641.7 137.0,652.5 143.4 C663.3 149.7,662.4 151.5,667.0 156.6 C671.7 161.6,677.1 167.7,680.5 173.6 C683.8 179.4,684.8 175.7,687.2 191.6 C689.7 207.5,692.7 245.3,695.0 269.2 Z"});
+addTrack({id:"interlagos",name:"Interlagos",full:"Autodromo Jose Carlos Pace",km:4.309,laps:71,turns:15,lapTime:70500,pitLoss:21000,drs:1100,dirty:280,passBase:0.25,passK:620,degM:1.0,inc:0.3,crash:1.2,tw:19,blurb:"A short lap and a long race, with good passing into the first corner and a habit of sudden rain.",
+  path:"M275.9 89.9 C230.8 101.2,163.5 118.8,139.5 125.2 C115.5 131.6,135.1 126.7,132.0 128.6 C128.8 130.4,123.1 134.3,120.6 136.2 C118.2 138.1,118.3 138.5,117.4 140.1 C116.5 141.7,115.5 143.9,115.1 145.8 C114.7 147.7,114.9 149.4,115.1 151.4 C115.3 153.3,115.8 156.0,116.3 157.5 C116.8 159.1,116.2 158.5,118.0 160.7 C119.8 162.9,123.9 167.4,127.2 170.7 C130.5 174.0,135.7 178.1,138.0 180.4 C140.2 182.6,140.0 182.7,140.8 184.2 C141.6 185.7,142.2 187.5,142.6 189.2 C142.9 190.9,143.2 192.2,142.9 194.2 C142.5 196.3,142.5 197.7,140.5 201.5 C138.5 205.3,133.4 212.4,131.0 217.0 C128.6 221.7,127.2 225.8,125.9 229.3 C124.7 232.9,124.2 234.3,123.6 238.5 C122.9 242.6,121.8 248.5,122.1 254.5 C122.4 260.4,124.1 269.2,125.3 274.3 C126.4 279.3,127.5 281.4,129.1 284.9 C130.7 288.3,132.6 291.5,134.8 294.8 C137.1 298.0,139.8 301.6,142.5 304.6 C145.2 307.5,146.6 309.3,150.9 312.5 C155.1 315.6,163.6 320.9,168.1 323.4 C172.5 325.8,167.5 324.1,177.5 327.3 C187.4 330.4,198.8 334.8,227.6 342.4 C256.3 350.1,303.8 361.3,349.9 373.2 C396.1 385.1,477.8 407.0,504.7 413.9 C531.5 420.9,509.2 414.9,511.3 415.0 C513.5 415.1,515.8 414.7,517.5 414.3 C519.3 414.0,520.2 413.6,521.8 412.8 C523.3 412.0,525.2 411.0,526.8 409.4 C528.3 407.8,529.8 405.5,531.0 403.3 C532.2 401.1,532.1 404.2,534.0 396.2 C535.8 388.2,540.6 364.2,542.1 355.4 C543.7 346.6,543.5 348.2,543.5 343.4 C543.4 338.7,542.4 331.1,541.7 326.9 C540.9 322.7,541.0 322.2,539.1 318.3 C537.2 314.4,532.8 307.2,530.4 303.6 C528.0 299.9,528.8 300.3,524.5 296.4 C520.2 292.4,515.1 287.9,504.8 280.0 C494.5 272.1,477.8 259.7,462.8 248.9 C447.8 238.0,430.1 226.2,414.8 215.0 C399.4 203.9,378.8 188.4,370.6 182.1 C362.3 175.8,366.7 179.0,365.2 177.3 C363.8 175.6,362.9 174.1,361.9 171.9 C360.9 169.8,359.8 167.0,359.2 164.3 C358.6 161.6,358.2 159.4,358.1 155.9 C358.0 152.4,358.1 146.7,358.4 143.2 C358.7 139.7,358.8 138.3,359.8 134.8 C360.8 131.3,362.9 126.0,364.6 122.2 C366.4 118.3,368.5 114.5,370.2 111.9 C371.9 109.4,373.2 108.2,374.7 106.8 C376.2 105.4,377.4 104.5,379.2 103.4 C381.0 102.3,383.1 101.1,385.7 100.2 C388.2 99.2,388.8 99.0,394.4 97.7 C400.0 96.3,411.5 93.5,419.2 92.0 C427.0 90.5,434.3 89.3,441.0 88.6 C447.6 87.9,454.9 87.8,459.1 88.1 C463.3 88.4,464.1 88.9,466.1 90.3 C468.0 91.6,469.8 94.0,470.9 96.2 C471.9 98.4,472.3 101.5,472.4 103.4 C472.4 105.3,471.8 106.3,471.3 107.8 C470.8 109.3,471.8 108.7,469.5 112.4 C467.1 116.0,459.4 126.2,457.1 129.7 C454.7 133.3,455.9 131.6,455.4 133.6 C455.0 135.6,454.4 139.6,454.3 141.6 C454.2 143.6,454.4 144.1,454.8 145.8 C455.3 147.4,455.7 149.5,457.0 151.5 C458.2 153.6,460.7 156.6,462.6 158.4 C464.5 160.1,466.3 161.2,468.3 162.2 C470.2 163.2,472.6 163.8,474.5 164.2 C476.4 164.6,477.9 164.6,479.8 164.6 C481.7 164.5,482.8 165.1,486.0 163.7 C489.1 162.3,492.9 161.0,498.6 156.1 C504.3 151.2,514.8 139.4,520.1 134.3 C525.3 129.2,526.9 128.0,530.1 125.5 C533.3 123.1,535.6 121.2,539.1 119.5 C542.5 117.8,546.6 116.4,551.0 115.1 C555.5 113.8,560.6 112.7,565.9 111.7 C571.2 110.8,579.0 109.7,583.0 109.4 C587.0 109.1,587.3 109.0,589.7 109.9 C592.0 110.8,595.4 112.8,596.9 114.7 C598.4 116.5,598.9 118.6,598.8 121.0 C598.7 123.4,604.1 121.3,596.4 129.1 C588.8 136.9,561.4 159.7,553.0 167.8 C544.5 175.8,547.7 174.1,545.8 177.6 C543.9 181.1,542.5 184.9,541.5 188.8 C540.5 192.7,540.1 197.7,539.8 200.9 C539.5 204.0,539.5 204.7,539.8 207.6 C540.0 210.4,540.6 215.0,541.3 218.1 C542.0 221.2,542.6 223.4,543.9 226.1 C545.1 228.9,546.8 231.8,548.8 234.6 C550.8 237.5,553.6 241.0,555.8 243.3 C558.0 245.5,556.3 244.1,562.1 248.1 C568.0 252.1,577.3 258.5,591.0 267.0 C604.7 275.6,634.3 293.8,644.4 299.5 C654.5 305.1,649.0 301.1,651.5 300.8 C654.0 300.6,657.5 298.9,659.4 297.8 C661.3 296.7,661.6 296.1,663.0 294.0 C664.4 291.8,664.5 293.1,667.7 285.0 C671.0 276.8,679.7 253.8,682.5 245.2 C685.4 236.6,685.1 239.5,684.9 233.4 C684.8 227.2,683.0 216.7,681.5 208.2 C680.0 199.8,679.2 192.5,676.0 182.5 C672.8 172.6,666.4 157.7,662.3 148.7 C658.3 139.8,654.3 133.4,651.6 128.8 C648.9 124.2,649.1 124.5,646.2 120.9 C643.2 117.3,637.0 110.5,633.8 107.3 C630.6 104.1,629.6 103.4,627.2 101.7 C624.8 99.9,624.1 98.9,619.5 96.7 C614.8 94.5,610.6 91.9,599.1 88.5 C587.6 85.1,562.9 79.2,550.6 76.5 C538.3 73.8,539.7 75.6,525.1 72.3 C510.6 69.0,475.4 59.4,463.4 56.6 C451.4 53.8,457.2 55.5,453.1 55.3 C449.1 55.0,444.3 54.9,439.2 55.0 C434.1 55.1,427.4 55.3,422.6 55.8 C417.8 56.2,434.7 51.9,410.2 57.6 C385.8 63.3,321.0 78.7,275.9 89.9 Z"});
+addTrack({id:"bahrain",name:"Bahrain",full:"Bahrain International Circuit",km:5.412,laps:57,turns:15,lapTime:93000,pitLoss:22500,drs:1300,dirty:280,passBase:0.27,passK:580,degM:1.3,inc:0.15,crash:1.0,tw:19,blurb:"Abrasive asphalt and heat. Tyres fall away early, two stops are common, and the braking zones give passes.",
+  path:"M413.9 66.6 C458.2 68.6,522.3 69.4,563.6 70.8 C604.9 72.1,644.6 73.7,661.7 74.7 C678.8 75.7,665.2 75.6,666.1 76.6 C666.9 77.5,666.9 79.1,666.8 80.5 C666.7 81.8,669.6 80.1,665.6 84.7 C661.6 89.3,647.0 103.3,642.8 108.1 C638.7 112.9,641.0 111.7,640.7 113.6 C640.5 115.5,639.2 112.8,641.2 119.6 C643.2 126.5,650.5 147.6,652.6 154.8 C654.7 162.1,653.5 160.6,653.5 163.3 C653.6 166.0,660.6 131.2,653.0 170.9 C645.5 210.7,616.2 362.1,608.3 401.9 C600.5 441.7,607.1 407.7,606.0 409.8 C604.9 411.8,603.3 413.1,601.6 414.0 C599.9 414.9,597.8 415.0,596.0 415.0 C594.1 415.0,592.5 414.8,590.6 414.2 C588.7 413.6,586.6 412.8,584.6 411.6 C582.6 410.3,580.4 408.4,578.5 406.6 C576.7 404.8,578.9 407.8,573.6 400.8 C568.4 393.9,556.1 375.7,546.9 365.1 C537.6 354.5,524.3 342.6,518.2 337.2 C512.2 331.8,515.6 335.2,510.5 332.8 C505.5 330.4,492.5 325.0,487.9 322.8 C483.3 320.6,484.9 321.7,483.0 319.4 C481.2 317.0,478.0 312.0,476.8 308.9 C475.6 305.7,475.3 306.1,475.8 300.5 C476.4 294.9,479.4 280.5,480.0 275.2 C480.7 269.9,480.0 270.7,479.8 268.4 C479.5 266.0,479.1 263.4,478.4 261.3 C477.7 259.2,477.0 257.6,475.4 255.5 C473.8 253.3,480.8 258.2,468.8 248.4 C456.9 238.7,415.4 206.5,403.9 197.2 C392.3 187.8,400.4 194.2,399.4 192.2 C398.5 190.2,397.9 187.0,398.3 185.1 C398.7 183.2,400.0 181.6,401.8 180.6 C403.5 179.6,405.8 179.3,408.8 179.0 C411.7 178.8,405.4 177.2,419.4 179.3 C433.5 181.4,471.6 188.2,493.1 191.6 C514.5 195.1,536.6 199.0,548.2 199.8 C559.9 200.7,559.4 197.8,562.9 196.7 C566.4 195.5,565.1 197.1,569.2 193.0 C573.3 188.9,584.1 175.9,587.4 171.9 C590.6 167.9,588.7 170.1,588.8 169.1 C588.8 168.0,588.6 166.7,587.9 165.9 C587.2 165.1,594.6 165.7,584.6 164.1 C574.6 162.5,554.9 158.7,527.7 156.4 C500.6 154.2,462.0 152.5,421.6 150.7 C381.2 148.8,309.8 146.1,285.3 145.4 C260.8 144.7,277.5 145.6,274.6 146.5 C271.8 147.3,269.9 148.9,268.3 150.7 C266.7 152.5,265.7 154.6,264.8 157.2 C264.0 159.9,263.2 163.3,263.0 166.4 C262.8 169.5,263.2 172.3,263.7 175.9 C264.2 179.4,264.6 183.7,266.0 187.7 C267.3 191.7,269.6 196.1,271.8 199.8 C274.0 203.5,276.1 206.7,279.0 210.0 C281.9 213.4,285.9 217.3,289.3 220.0 C292.6 222.7,292.7 223.2,299.3 226.1 C305.8 229.0,321.7 234.4,328.6 237.4 C335.6 240.3,337.7 241.6,341.0 243.7 C344.2 245.7,345.9 247.4,348.2 249.7 C350.5 252.0,352.7 254.7,354.7 257.6 C356.8 260.5,359.0 263.3,360.5 267.1 C362.1 270.8,363.2 275.6,363.8 280.2 C364.4 284.8,364.4 290.5,364.1 294.6 C363.7 298.8,366.1 294.9,361.7 304.9 C357.2 314.9,342.2 345.1,337.3 354.6 C332.3 364.1,333.8 359.7,331.9 361.9 C329.9 364.2,328.7 366.0,325.6 368.3 C322.5 370.5,316.3 374.1,313.3 375.3 C310.2 376.5,309.4 375.8,307.4 375.3 C305.5 374.8,303.4 373.7,301.4 372.2 C299.4 370.6,297.4 368.3,295.3 365.9 C293.2 363.4,315.4 404.1,288.8 357.2 C262.3 310.3,161.9 130.7,136.0 84.4 C110.2 38.1,133.9 81.6,133.5 79.5 C133.0 77.3,132.7 73.4,133.2 71.6 C133.7 69.7,131.7 70.7,136.5 68.1 C141.3 65.6,156.1 58.3,162.1 56.1 C168.1 53.9,149.8 54.6,172.4 55.0 C194.9 55.4,257.4 56.8,297.7 58.7 C337.9 60.6,369.5 64.6,413.9 66.6 Z"});
+addTrack({id:"singapore",name:"Singapore",full:"Marina Bay Street Circuit",km:4.928,laps:62,turns:19,lapTime:96500,pitLoss:26500,drs:800,dirty:380,passBase:0.05,passK:1500,degM:1.1,inc:0.62,crash:1.7,tw:15,blurb:"A tight street circuit in the heat. Passing is very hard, the pit stop is costly, and safety cars are close to certain.",
+  path:"M665.6 192.0 C669.0 217.7,675.9 270.6,677.8 287.4 C679.6 304.2,677.4 291.1,676.7 292.8 C676.0 294.5,676.9 292.7,673.7 297.5 C670.5 302.3,660.7 317.6,657.5 321.8 C654.4 326.1,663.0 323.2,655.0 323.1 C646.9 323.0,626.0 322.4,609.5 321.2 C593.0 319.9,566.0 316.7,556.0 315.5 C546.0 314.2,551.1 314.4,549.2 313.7 C547.4 313.0,546.2 312.1,544.9 311.1 C543.7 310.1,542.6 309.3,541.6 307.4 C540.5 305.6,539.3 303.2,538.8 300.1 C538.3 296.9,538.9 290.8,538.6 288.5 C538.3 286.2,565.1 288.1,537.2 286.3 C509.4 284.4,401.4 279.1,371.5 277.4 C341.7 275.7,361.9 276.5,358.1 275.8 C354.3 275.1,351.9 274.5,348.7 273.3 C345.5 272.0,350.5 277.8,339.0 268.5 C327.6 259.1,290.5 225.9,280.0 217.2 C269.5 208.6,277.5 216.5,276.0 216.6 C274.5 216.6,272.8 216.5,270.9 217.5 C269.1 218.5,267.0 218.0,264.7 222.4 C262.5 226.8,264.2 213.1,257.6 244.1 C251.0 275.1,230.9 380.4,225.0 408.4 C219.2 436.5,223.4 411.3,222.5 412.3 C221.7 413.3,221.5 413.8,219.9 414.3 C218.2 414.7,214.2 414.9,212.7 414.9 C211.2 414.9,212.0 415.3,210.9 414.2 C209.9 413.1,207.9 410.5,206.4 408.4 C204.9 406.4,203.2 404.3,201.8 402.0 C200.5 399.7,202.5 398.8,198.5 394.7 C194.5 390.6,183.5 382.5,177.7 377.4 C172.0 372.4,166.8 367.3,163.9 364.4 C161.1 361.5,161.7 362.4,160.6 359.8 C159.5 357.1,157.6 351.9,157.3 348.5 C157.0 345.1,158.1 341.5,158.7 339.2 C159.4 336.9,160.9 335.8,161.1 334.6 C161.3 333.3,162.1 332.8,159.9 331.6 C157.6 330.4,150.8 328.9,147.6 327.4 C144.4 326.0,144.4 325.7,140.8 323.1 C137.2 320.4,128.8 314.2,125.9 311.5 C123.0 308.8,124.2 309.6,123.6 306.7 C123.0 303.8,110.3 318.0,122.2 294.0 C134.2 270.1,181.9 186.2,195.4 163.2 C208.9 140.2,200.8 157.5,203.4 156.0 C206.0 154.6,207.3 153.0,211.2 154.5 C215.1 155.9,218.2 156.8,226.7 164.8 C235.3 172.7,256.0 195.7,262.4 202.2 C268.9 208.7,264.7 203.7,265.6 203.9 C266.6 204.0,265.1 208.7,268.3 203.2 C271.5 197.7,278.9 181.7,284.8 171.0 C290.7 160.3,299.9 145.3,303.6 139.1 C307.4 132.9,306.0 135.0,307.1 134.0 C308.2 132.9,308.9 132.5,310.4 132.8 C312.0 133.0,298.1 125.0,316.4 135.4 C334.7 145.9,400.1 184.4,420.1 195.4 C440.1 206.5,431.8 200.3,436.5 201.7 C441.1 203.1,422.4 202.1,447.8 203.8 C473.3 205.6,564.7 211.0,589.1 212.2 C613.6 213.4,592.5 211.8,594.6 211.1 C596.7 210.4,599.6 209.0,601.7 207.8 C603.9 206.5,606.0 205.5,607.6 203.6 C609.2 201.8,610.6 199.0,611.4 196.7 C612.2 194.5,612.3 193.9,612.3 190.2 C612.3 186.5,612.1 180.8,611.2 174.7 C610.4 168.6,610.8 165.0,607.2 153.6 C603.5 142.2,592.5 115.4,589.3 106.3 C586.2 97.2,588.3 101.8,588.1 99.0 C587.9 96.2,587.8 94.6,588.1 89.6 C588.5 84.5,589.3 73.5,590.2 68.6 C591.2 63.7,592.4 62.6,593.8 60.4 C595.2 58.2,597.2 56.3,598.7 55.4 C600.2 54.5,601.5 54.9,602.9 55.0 C604.2 55.1,604.6 54.0,606.6 56.0 C608.7 57.9,613.1 64.4,615.2 66.7 C617.2 69.0,616.9 68.7,619.1 70.0 C621.2 71.3,625.3 73.3,628.0 74.4 C630.7 75.5,632.7 76.3,635.5 76.5 C638.3 76.7,642.6 75.4,644.9 75.6 C647.3 75.7,648.6 76.6,649.8 77.5 C651.0 78.4,651.6 79.5,652.2 81.0 C652.9 82.5,652.8 77.8,653.7 86.5 C654.5 95.2,655.5 115.4,657.5 133.0 C659.5 150.6,662.2 166.3,665.6 192.0 Z"});
+
+TRACKS.monaco.pitSpan=0.035;TRACKS.singapore.pitSpan=0.045;TRACKS.bahrain.pitSpan=0.05;TRACKS.suzuka.pitSpan=0.045;TRACKS.interlagos.pitSpan=0.05;TRACKS.spa.pitSpan=0.03;
 /* ---- weather scenarios ---- */
 const WX={
   dry:{id:"dry",name:"Dry",sub:"Sunny, track 41 °C",air:29,trk:41,degM:1.0,inc:1},
@@ -969,12 +1012,13 @@ function wetPen(c,w){
 function wetBase(w){return 9000*w}
 function root(f,lo,hi){for(let i=0;i<40;i++){const m=(lo+hi)/2;if(f(m)>0)hi=m;else lo=m}return (lo+hi)/2}
 const XO={inter:root(w=>wetPen("SOFT",w)-wetPen("INTER",w),0.1,0.42), wet:root(w=>wetPen("INTER",w)-wetPen("WET",w),0.42,0.78)};
-function pickCompound(rem){return rem<=16?"SOFT":(rem<=28?"MEDIUM":"HARD")}
-function bestTyre(w,rem){const s=wetPen("SOFT",w),i=wetPen("INTER",w),x=wetPen("WET",w); if(s<=i&&s<=x) return pickCompound(rem); return i<=x?"INTER":"WET";}
+function lifeOf(c,T){return Math.max(8,Math.round(SIMCFG.life[c]/((T&&T.degM)||1)))}
+function pickCompound(rem,T){return rem<=lifeOf("SOFT",T)*0.9?"SOFT":(rem<=lifeOf("MEDIUM",T)*0.9?"MEDIUM":"HARD")}
+function bestTyre(w,rem,T){const s=wetPen("SOFT",w),i=wetPen("INTER",w),x=wetPen("WET",w); if(s<=i&&s<=x) return pickCompound(rem,T); return i<=x?"INTER":"WET";}
 function tyreType(c){return c==="INTER"||c==="WET"?c:"SLICK"}
-function tyreDeg(c,age,degM,w){
+function tyreDeg(c,age,degM,w,T){
   degM=degM||1; w=w||0;
-  const over=Math.max(0,age-SIMCFG.life[c]);
+  const over=Math.max(0,age-lifeOf(c,T));
   let d=SIMCFG.off[c]+SIMCFG.deg[c]*degM*age+over*SIMCFG.cliff*(1+over*0.08);
   if(c==="INTER"&&w<0.2) d+=age*(0.2-w)/0.2*150;      // intermediates overheat on a drying track
   if(c==="WET"&&w<0.5) d+=age*(0.5-w)/0.5*180;
@@ -982,75 +1026,94 @@ function tyreDeg(c,age,degM,w){
 }
 
 /* weather timeline: wetness and rain intensity for every lap (deterministic per seed) */
-function wxSeries(seed,wxId,B){
-  const L0=B.L0,total=B.total, r=rngFor(seed,0,"WX","cfg"), phase=r()*6.28;
-  const rainLap=33+Math.floor(r()*7), rainEnd=rainLap+13+Math.floor(r()*8);
+function wxSeries(seed,wxId,laps){
+  const r=rngFor(seed,0,"WX","cfg"), phase=r()*6.28;
+  const rainLap=Math.round(laps*(0.30+0.18*r())), rainEnd=rainLap+Math.round(laps*(0.20+0.14*r()));
   const w={},rain={}; let cur=wxId==="dryout"?0.62:0;
-  for(let L=L0;L<=total+1;L++){
+  for(let L=0;L<=laps+1;L++){
     let target=0,wr=0.15,dr=0.03;
     if(wxId==="light"){target=0.36+0.05*Math.sin(L/3+phase);wr=0.12;dr=0.03;}
     else if(wxId==="heavy"){target=0.84+0.05*Math.sin(L/4+phase);wr=0.22;}
     else if(wxId==="arrive"){target=(L>=rainLap&&L<rainEnd)?0.6+0.04*Math.sin(L/2+phase):0;wr=0.09;dr=0.035;}
     else if(wxId==="dryout"){target=0;dr=0.027;}
-    if(L>L0) cur+=Math.max(-dr,Math.min(wr,target-cur));
+    if(L>0) cur+=Math.max(-dr,Math.min(wr,target-cur));
     w[L]=Math.max(0,Math.min(1,cur)); rain[L]=target>0.05?Math.min(1,target/0.85):0;
   }
   return {w,rain,rainLap,rainEnd};
 }
 
-let SIMBASE=null;
-function simBase(){
-  if(SIMBASE) return SIMBASE;
-  const st=REPLAY.frames[0].state, sched=(REPLAY.frames[REPLAY.frames.length-1].undercut.pit_schedules)||[];
-  const cars=st.drivers.map(d=>{
-    const s=sched.find(x=>x.driver_id===d.driver_id);
-    const mid=Math.round((d.pit_window[0]+d.pit_window[1])/2);
-    const plan=s?{lap:s.pit_lap,comp:s.compound_after_pit}:{lap:mid,comp:d.compound==="HARD"?"MEDIUM":"HARD"};
-    return {id:d.driver_id,code:CODE(d.driver_id),name:d.display_name,team:d.team_name,
-      T0:d.gap_to_leader_ms,comp0:d.compound,age0:d.tire_age_laps,stops0:d.pit_stops,basePace:d.base_pace_ms,
-      k:d.current_lap_pace_ms-(d.base_pace_ms+tyreDeg(d.compound,d.tire_age_laps)),plan};
-  });
-  const minT=Math.min(...cars.map(c=>c.T0));
-  SIMBASE={L0:st.lap,total:st.total_laps,cars,tau0:minT,race0:st.race_time_ms};
-  return SIMBASE;
+/* stint plan: how many stops and which tyres, from the circuit's wear and the race length */
+function makePlan(seed,d,T,grid,laps,start){
+  const r=rngFor(seed,0,d.id,"plan"); let k=2;
+  const lf=c=>lifeOf(c,T);
+  const avg=(lf(start)+lf("MEDIUM")+lf("HARD"))/3;
+  while(k<4&&avg*k*0.9<laps) k++;
+  if(k===2&&r()<(T.degM>1.1?0.45:0.18)) k=3;      // some two-stoppers even when one would do
+  const pits=[], seq=[start]; let prev=start;
+  for(let i=1;i<k;i++){
+    const lap=Math.round(laps*i/k+gauss(r)*Math.min(3,laps*0.05));
+    const stintLen=Math.round(laps/k);
+    let nc=pickCompound(stintLen,T); if(i<k-1||nc===prev){ nc=prev==="HARD"?(r()<0.6?"MEDIUM":"SOFT"):(prev==="MEDIUM"?"HARD":"MEDIUM"); if(i===k-1&&stintLen<=lf("SOFT")*0.9) nc=r()<0.5?"SOFT":nc; }
+    pits.push({lap:Math.max(i*4,Math.min(laps-5,lap)),comp:nc}); seq.push(nc); prev=nc;
+  }
+  if(new Set(seq).size<2) pits[pits.length-1].comp=start==="HARD"?"MEDIUM":"HARD";
+  return pits;
+}
+function applyStrategy(pits,strat,laps){
+  const p=pits.map(x=>({...x}));
+  if(strat==="early") p[0].lap=Math.max(4,p[0].lap-6);
+  else if(strat==="late") p[0].lap=Math.min(laps-6,p[0].lap+7);
+  else if(strat==="twostop"&&p.length<2){ p.splice(0,1,{lap:Math.round(laps*0.30),comp:"MEDIUM"},{lap:Math.round(laps*0.66),comp:p[0].comp==="HARD"?"MEDIUM":"HARD"}); }
+  else if(strat==="onestop"&&p.length>1){ const lastC=p[p.length-1].comp; p.splice(0,p.length,{lap:Math.round(laps*0.5),comp:lastC==="SOFT"?"HARD":lastC}); }
+  return p.sort((a,b)=>a.lap-b.lap);
 }
 
-/* Run one complete race. okaPit: pit lap for CAR_04 (default the engine's plan).
-   ic: [{lap,type:"sc"}]. trackId and wxId pick the circuit and the weather scenario. */
-function runSim(seed,okaPit,ic,trackId,wxId){
-  const B=simBase(), total=B.total; ic=ic||[]; trackId=trackId||"meridian"; wxId=wxId||"dry";
-  const T=TRACKS[trackId], WXC=WX[wxId], wxs=wxSeries(seed,wxId,B), W=wxs.w;
-  const cars=B.cars.map(c=>{
-    const rj=rngFor(seed,0,c.id,"cfg"); const form=gauss(rj)*110, lifeAdj=Math.round(gauss(rj)*1.6), jit=Math.floor(rj()*3)-1;
-    const rw=rngFor(seed,0,c.id,"wx"); const wetSkill=Math.max(-0.25,Math.min(0.25,gauss(rw)*0.12)), thr=Math.min(4000,Math.max(300,1200+gauss(rw)*900)), look=0.3+0.7*rw(), bias=gauss(rw)*0.07;
-    let comp=c.comp0, age=c.age0;
-    if(W[B.L0+1]>0.2){ comp=bestTyre(W[B.L0+1],total-B.L0); age=2+Math.floor(rw()*5); }   // wet start: the team is already on the right tyre
-    return {id:c.id,code:c.code,T:c.T0,comp,age,stops:c.stops0,basePace:c.basePace,k:c.k,form,lifeAdj,wetSkill,thr,look,bias,lastSw:-9,
-    pitNext:(c.id==="CAR_04"&&okaPit)?okaPit:(c.id==="CAR_03"?c.plan.lap+Math.max(0,jit+1):c.plan.lap+jit),
-    compNext:(c.id==="CAR_04"&&okaPit&&okaPit!==c.plan.lap)?pickCompound(total-okaPit):c.plan.comp};});
-  const start={}; cars.forEach(c=>start[c.id]={comp:c.comp,age:c.age});
+/* Run one complete race.
+   opts: {mine:"LEC", strat:"auto"|"early"|"late"|"onestop"|"twostop"}; ic: [{lap,type:"sc"}] */
+function runSim(seed,opts,ic,trackId,wxId){
+  opts=opts||{}; ic=ic||[]; trackId=trackId||"monza"; wxId=wxId||"dry";
+  const T=TRACKS[trackId], WXC=WX[wxId], laps=T.laps, wxs=wxSeries(seed,wxId,laps), W=wxs.w, mine=opts.mine||"LEC";
+  const teamForm={}; Object.keys(TEAMS).forEach(k=>{teamForm[k]=gauss(rngFor(seed,0,k,"tf"))*170;});
+  // car set-up, qualifying and grid
+  const raw=DRIVERS.map(d=>{
+    const rj=rngFor(seed,0,d.id,"cfg"), form=gauss(rj)*110, lifeAdj=Math.round(gauss(rj)*1.6);
+    const base=T.lapTime+TEAMS[d.team].pace+teamForm[d.team]+d.skill+form;
+    const q=base+gauss(rngFor(seed,0,d.id,"q"))*140;
+    return {d,base,q,form,lifeAdj};
+  }).sort((a,b)=>a.q-b.q);
+  const cars=raw.map((x,g)=>{
+    const d=x.d, rw=rngFor(seed,0,d.id,"wx"), rs=rngFor(seed,0,d.id,"st");
+    const wetSkill=Math.max(-0.25,Math.min(0.25,gauss(rw)*0.12)), thr=Math.min(4000,Math.max(300,1200+gauss(rw)*900)), look=0.3+0.7*rw(), bias=gauss(rw)*0.07;
+    let comp, u=rs();
+    const hard=T.degM>1.15?0.34:0.2, soft=g<4?0.30:0.16;
+    comp=u<soft?"SOFT":(u<soft+hard?"HARD":"MEDIUM");
+    if(W[1]>0.2) comp=bestTyre(W[1],laps,T);
+    let pits=makePlan(seed,d,T,g,laps,comp);
+    if(d.id===mine&&opts.strat&&opts.strat!=="auto"&&!(W[1]>0.2)) pits=applyStrategy(pits,opts.strat,laps);
+    return {id:d.id,code:d.id,name:d.name,team:d.team,grid:g,T:g*230,comp,age:0,stops:0,basePace:x.base,form:x.form,lifeAdj:x.lifeAdj,
+      wetSkill,thr,look,bias,lastSw:-9,pits,pitNext:pits.length?pits[0].lap:1e9,compNext:pits.length?pits[0].comp:null,errLoss:0};
+  });
+  const start={}; cars.forEach(c=>start[c.id]={comp:c.comp,age:0,grid:c.grid});
   const tl={}; cars.forEach(c=>tl[c.id]=[]);
-  const events=[]; let sc=0, fastest={lt:1e12,id:null,L:0}, tries=0, fails=0; const lastBlk={};
-  // random incident (debris or a stranded car): more likely on tight circuits and in rain
-  const scQ=[]; const incR=rngFor(seed,0,"RACE","inc"), pickCorner=r=>T.corners[Math.floor(r()*T.corners.length)];
-  if(incR()<Math.min(0.9,T.inc*WXC.inc)){ const lap=B.L0+6+Math.floor(incR()*(total-B.L0-18)); scQ.push({lap,cause:(W[lap]>0.2?"A car is stranded at ":"Debris on track at ")+pickCorner(incR)}); }
-  for(let L=B.L0+1;L<=total;L++){
+  const events=[], fastHist=[]; let sc=0, fastest={lt:1e12,id:null,L:0}, tries=0, fails=0; const lastBlk={}, scQ=[];
+  const incR=rngFor(seed,0,"RACE","inc"), pickCorner=r=>"Turn "+(1+Math.floor(r()*T.turns));
+  for(let n=0;n<2;n++){ if(incR()<Math.min(0.9,T.inc*WXC.inc*(n?0.35:1))){ const lap=6+Math.floor(incR()*(laps-16)); if(!scQ.some(x=>Math.abs(x.lap-lap)<8)) scQ.push({lap,cause:(W[lap]>0.2?"A car is stranded at ":"Debris on track at ")+pickCorner(incR)}); } }
+  events.push({t:0,L:1,kind:"start",radio:true,title:"Lights out",detail:"Pole: "+cars[0].code+". "+(W[1]>0.2?"Wet start.":"Standing start on "+T.full+".")});
+  for(let L=1;L<=laps;L++){
     const order=[...cars].sort((a,b)=>a.T-b.T);
     const startRank={}; order.forEach((c,i)=>startRank[c.id]=i);
-    const wN=W[L], wP=W[L-1], wNext=W[L+1]!==undefined?W[L+1]:wN, rem=total-L;
-    // weather news for the race-control feed and the copilot
+    const wN=W[L], wP=W[L-1], wNext=W[L+1]!==undefined?W[L+1]:wN, rem=laps-L;
     const wev=(title,detail,radio)=>events.push({t:order[0].T,L,kind:"wx",radio:!!radio,title,detail});
-    if(L===B.L0+1&&wN>=0.2) wev("Wet track at the start","Track is "+Math.round(wN*100)+"% wet. The field starts on "+(bestTyre(wN,rem)==="WET"?"full wets":"intermediates")+".",true);
+    if(L===1&&wN>=0.2) wev("Wet track at the start","Track is "+Math.round(wN*100)+"% wet. The field starts on "+(bestTyre(wN,rem,T)==="WET"?"full wets":"intermediates")+".",true);
     if(wxId==="arrive"&&L===wxs.rainLap-3) wev("Radar: rain in about 3 laps","A shower is approaching the circuit. Slicks are fine for now. Decide whether to gamble early on intermediates.",true);
-    if(wP<0.03&&wN>=0.03&&wxs.rain[L]>0) wev("Rain on the circuit","First drops at "+pickCorner(rngFor(seed,L,"WX","c"))+". The track is getting slippery.",false);
-    if(wP<XO.inter&&wN>=XO.inter) wev("Crossover: intermediates now quicker","Track is "+Math.round(wN*100)+"% wet. Slicks lose time every lap from here.",true);
+    if(wP<0.03&&wN>=0.03&&wxs.rain[L]>0&&L>1) wev("Rain on the circuit","First drops at "+pickCorner(rngFor(seed,L,"WX","c"))+". The track is getting slippery.",false);
+    if(wP<XO.inter&&wN>=XO.inter&&L>1) wev("Crossover: intermediates now quicker","Track is "+Math.round(wN*100)+"% wet. Slicks lose time every lap from here.",true);
     if(wP<XO.wet&&wN>=XO.wet) wev("Crossover: full wets now quicker","Standing water. Intermediates are no longer the fastest tyre.",true);
     if(wP>=XO.wet&&wN<XO.wet) wev("Crossover: intermediates back ahead of wets","The worst of the water is gone.",true);
     if(wP>=XO.inter&&wN<XO.inter) wev("Crossover: slicks quicker again","The dry line is back. Intermediates are now the slow tyre.",true);
     if(wxs.rain[L-1]>0&&wxs.rain[L]===0&&wP>0.05) wev("Rain has stopped","The track will start to dry out.",false);
-    // safety car: user request or a queued incident
     const q=scQ.findIndex(x=>x.lap===L);
-    if(sc===0&&(ic.some(x=>x.type==="sc"&&x.lap===L)||q>=0)){
+    if(sc===0&&L>1&&(ic.some(x=>x.type==="sc"&&x.lap===L)||q>=0)){
       sc=SIMCFG.scLaps;
       events.push({t:order[0].T,L,kind:"sc",radio:true,title:"Safety car deployed",detail:(q>=0?scQ[q].cause+". ":"Incident on track. ")+`Field bunches up for ${SIMCFG.scLaps} laps. Pitting costs far less now.`});
     }
@@ -1062,32 +1125,31 @@ function runSim(seed,okaPit,ic,trackId,wxId){
       const wetActive=weff>0.12||c.comp==="INTER"||c.comp==="WET";
       c.wetActive=wetActive;
       if(wetActive){
-        const here=wetPen(c.comp,weff), best=Math.min(wetPen("SOFT",weff),wetPen("INTER",weff),wetPen("WET",weff)), bt=bestTyre(weff,rem);
-        if(planned&&tyreType(c.comp)===tyreType(bt)&&c.age<SIMCFG.life[c.comp]*0.85){ planned=false; c.pitNext=1e9; }   // already on the right tyre: skip the dry-weather stop
+        const here=wetPen(c.comp,weff), best=Math.min(wetPen("SOFT",weff),wetPen("INTER",weff),wetPen("WET",weff)), bt=bestTyre(weff,rem,T);
+        if(planned&&tyreType(c.comp)===tyreType(bt)&&c.age<lifeOf(c.comp,T)*0.85){ planned=false; c.pits.shift(); c.pitNext=c.pits.length?c.pits[0].lap:1e9; }
         const thr=scOn?c.thr*0.45:c.thr;
         if(!planned&&here-best>thr&&(here-best)*rem>T.pitLoss*(scOn?0.55:1)&&L-c.lastSw>=3&&rem>3) pit=true;
       }
       if(planned) pit=true;
-      if(!pit&&c.age>=SIMCFG.life[c.comp]+1+c.lifeAdj&&rem>5) pit=true;
-      if(!pit&&scOn&&c.age>=10&&rem>8&&c.stops<3&&!c.freeStop) pit=true;
-      if(L>=total) pit=false;
+      if(!pit&&c.age>=lifeOf(c.comp,T)+1+c.lifeAdj&&rem>4) pit=true;
+      if(!pit&&scOn&&!wetActive&&c.pits.length&&c.pits[0].lap-L<=10&&c.age>=7&&rem>5&&!c.freeStop) pit=true;    // free stop under the safety car
+      if(L>=laps) pit=false;
       c.pitNow=pit;
       const r=rngFor(seed,L,c.id,"n"); const noise=gauss(r)*SIMCFG.noise*(1+1.2*wN);
-      let lt=c.basePace+T.lapOff+c.k+tyreDeg(c.comp,c.age+1,T.degM*WXC.degM,wN)-SIMCFG.fuel*(L-B.L0)+c.form+noise;
+      let lt=c.basePace+tyreDeg(c.comp,c.age+1,T.degM*WXC.degM,wN,T)-SIMCFG.fuel*(L-1)+noise+(L===1?3200+c.grid*40:0);
       lt+=wetBase(wN)*(1+c.wetSkill)+wetPen(c.comp,wN);
       const i=startRank[c.id];
-      if(i>0&&!scOn){const gap=c.T-order[i-1].T; if(gap<T.drs) lt+=T.dirty*(1+0.6*wN)*(1-gap/T.drs);}
+      if(i>0&&!scOn&&L>1){const gap=c.T-order[i-1].T; if(gap<T.drs) lt+=T.dirty*(1+0.6*wN)*(1-gap/T.drs);}
       if(scOn) lt=c.basePace*(1.34+0.25*wN)+noise*0.4;
-      // mistakes: rare when dry, common on the wrong tyre in the wet; some end in a crash and a safety car
       c.errLoss=0;
       if(!scOn){
         const re=rngFor(seed,L,c.id,"e"), mis=wetPen(c.comp,wN)>4000?2.6:1;
-        const pe=(0.0015+0.014*Math.pow(wN,1.2)*T.crash)*mis;
+        const pe=(0.0012+0.014*Math.pow(wN,1.2)*T.crash+(L===1?0.01*T.crash:0))*mis;
         if(re()<pe){
           const crash=re()<(0.10+0.25*wN), loss=crash?14000+re()*6000:3500+re()*5000, corner=pickCorner(re);
           lt+=loss; c.errLoss=loss;
           events.push({t:c.T+lt*0.55,L,kind:"inc",title:crash?`${c.code} crashes at ${corner}`:`${c.code} spins at ${corner}`,
-            detail:crash?`Hits the barrier and limps on, losing ${(loss/1000).toFixed(1)}s. Safety car next lap.`:`Loses ${(loss/1000).toFixed(1)}s and rejoins.`,radio:c.id==="CAR_04"||c.id==="CAR_03"});
+            detail:crash?`Hits the barrier and limps on, losing ${(loss/1000).toFixed(1)}s. Safety car next lap.`:`Loses ${(loss/1000).toFixed(1)}s and rejoins.`,radio:c.id===mine});
           if(crash&&sc===0&&rem>6&&!scQ.some(x=>x.lap===L+1)) scQ.push({lap:L+1,cause:`${c.code} stopped at ${corner}`});
         }
       }
@@ -1099,31 +1161,30 @@ function runSim(seed,okaPit,ic,trackId,wxId){
       const r=rngFor(seed,L,c.id,"p");
       if(scOn){
         if(i===0) end=c.T+c.lt0;
-        else{const A=order[i-1]; const gs=c.T-A.T; end=fin.get(A.id)+Math.max(750,gs*0.45);}
+        else{const A=order[i-1]; const gs=c.T-A.T; end=fin.get(A.id)+Math.max(650,gs*0.45);}
         if(c.pitNow) end+=T.pitLossSC;
       }else{
         end=c.T+c.lt0+(c.pitNow?T.pitLoss:0);
         if(i>0){const A=order[i-1], Aend=fin.get(A.id);
           if(end<Aend&&!A.pitNow&&!c.pitNow){
             const gs=c.T-A.T, adv=A.lt0-c.lt0;
-            const pass=gs>T.drs*1.5?true:(r()<Math.min(0.92,Math.max(0.03,T.passBase+adv/T.passK+0.08*wN)));
+            const pass=gs>T.drs*1.5?true:(r()<Math.min(0.92,Math.max(0.02,T.passBase+adv/T.passK+0.08*wN+(L===1?0.15:0))));
             tries++;
-            if(!pass){ fails++; end=Aend+350+r()*200;
-              if(L-(lastBlk[c.id]||-9)>=4&&adv>60){ lastBlk[c.id]=L; events.push({t:c.T+c.lt0*0.8,L,kind:"blk",radio:false,title:`${c.code} stuck behind ${A.code}`,detail:`Faster by ${(adv/1000).toFixed(2)}s a lap but no room to pass at ${pickCorner(r)}. Dirty air costs the tyres.`}); } }
+            if(!pass){ fails++; end=Aend+300+r()*200;
+              if(L-(lastBlk[c.id]||-9)>=5&&adv>60&&L>1){ lastBlk[c.id]=L; events.push({t:c.T+c.lt0*0.8,L,kind:"blk",radio:false,title:`${c.code} stuck behind ${A.code}`,detail:`Faster by ${(adv/1000).toFixed(2)}s a lap but no room to pass at ${pickCorner(r)}. Dirty air costs the tyres.`}); } }
           }
         }
       }
       fin.set(c.id,end);
     }
     const after=[...cars].sort((a,b)=>fin.get(a.id)-fin.get(b.id));
-    // overtakes (only count a swap once, attributed to the car that moved up)
     for(let i=0;i<after.length;i++){
       const c=after[i];
       for(const o of order){
         if(o.id===c.id) continue;
         if(startRank[o.id]<startRank[c.id]&&fin.get(c.id)<fin.get(o.id)){
           const viaPit=o.pitNow||c.pitNow, viaErr=o.errLoss>0&&!viaPit;
-          events.push({t:fin.get(c.id),L,kind:"pass",a:c.id,b:o.id,viaPit,radio:(c.id==="CAR_04"||c.id==="CAR_03")&&(o.id==="CAR_04"||o.id==="CAR_03"),
+          events.push({t:fin.get(c.id),L,kind:"pass",a:c.id,b:o.id,viaPit,radio:(c.id===mine||o.id===mine)&&!viaPit,
             title:`${c.code} passes ${o.code}`,detail:`${viaPit?"Through the pit cycle":(viaErr?"After a mistake ahead":"On track")} on lap ${L}, now P${i+1}.`});
         }
       }
@@ -1131,38 +1192,100 @@ function runSim(seed,okaPit,ic,trackId,wxId){
     for(const c of cars){
       const end=fin.get(c.id), lt=end-c.T;
       tl[c.id].push({L,start:c.T,end,lt,comp:c.comp,age:c.age+1,pit:c.pitNow,sc:scOn,w:wN,err:c.errLoss>0});
-      if(!scOn&&!c.pitNow&&c.lt0<fastest.lt){fastest={lt:c.lt0,id:c.id,L}; events.push({t:end,L,kind:"fast",title:`Fastest lap: ${c.code}`,detail:`${lapFmt(c.lt0)} on lap ${L}.`});}
+      if(!scOn&&!c.pitNow&&L>1&&c.lt0<fastest.lt){ const owner=fastest.id!==c.id; fastest={lt:c.lt0,id:c.id,L}; fastHist.push({t:end,id:c.id,lt:c.lt0,L}); if(owner&&L>3) events.push({t:end,L,kind:"fast",title:`Fastest lap: ${c.code}`,detail:`${lapFmt(c.lt0)} on lap ${L}.`}); }
       if(c.pitNow){
-        const nc=c.wetActive?bestTyre(c.weff,total-L):(c.compNext||pickCompound(total-L));
+        const planned=c.pits.length&&(L===c.pitNext||c.pits[0].lap-L<=10);
+        const nc=c.wetActive?bestTyre(c.weff,laps-L,T):(planned&&c.compNext?c.compNext:pickCompound(laps-L,T));
         const why=tyreType(nc)!==tyreType(c.comp)&&(nc==="INTER"||nc==="WET"||tyreType(c.comp)!=="SLICK")?` (${nc==="INTER"?"track is wet":nc==="WET"?"standing water":"track is drying"})`:"";
-        events.push({t:end,L,kind:"pit",radio:(c.id==="CAR_04"||c.id==="CAR_03"),title:`${c.code} pits`,detail:`Lap ${L}: ${c.comp.toLowerCase()} to ${nc.toLowerCase()}${scOn?" under the safety car":""}${why}.`});
-        c.comp=nc; c.age=0; c.stops++; c.compNext=null; c.pitNext=1e9; c.lastSw=L; if(scOn) c.freeStop=true;
+        events.push({t:end,L,kind:"pit",radio:c.id===mine,title:`${c.code} pits`,detail:`Lap ${L}: ${c.comp.toLowerCase()} to ${nc.toLowerCase()}${scOn?" under the safety car":""}${why}.`});
+        if(planned&&c.pits.length&&!c.wetActive) c.pits.shift(); else if(c.wetActive&&c.pits.length&&L>=c.pits[0].lap-2) c.pits.shift();
+        c.pitNext=c.pits.length?c.pits[0].lap:1e9; c.compNext=c.pits.length?c.pits[0].comp:null;
+        c.comp=nc; c.age=0; c.stops++; c.lastSw=L; if(scOn) c.freeStop=true;
       }else c.age++;
       c.T=end;
     }
+    if(L===1){ const gain=after.map((c,i)=>({c,d:c.grid-i})).sort((a,b)=>b.d-a.d)[0]; if(gain.d>=2) events.push({t:after[0].T,L:1,kind:"start",title:"End of lap 1",detail:`${gain.c.code} makes up ${gain.d} places. ${after[0].code} leads.`}); }
     if(scOn){sc--; if(sc===0) events.push({t:after[0].T,L:L+1,kind:"sc",title:"Green flag",detail:"Safety car in. Racing resumes."});}
   }
   const finalOrder=[...cars].sort((a,b)=>a.T-b.T);
-  events.push({t:finalOrder[0].T,L:total,kind:"fin",radio:true,title:`Chequered flag: ${finalOrder[0].code} wins`,detail:finalOrder.map((c,i)=>`P${i+1} ${c.code}`).join(", ")+"."});
+  events.push({t:finalOrder[0].T,L:laps,kind:"fin",radio:true,title:`Chequered flag: ${finalOrder[0].code} wins`,detail:finalOrder.slice(0,3).map((c,i)=>`P${i+1} ${c.code}`).join(", ")+"."});
   events.sort((x,y)=>x.t-y.t);
-  return {seed,track:trackId,wx:wxId,W,rain:wxs.rain,start,tl,events,final:finalOrder.map(c=>({id:c.id,code:c.code,T:c.T,stops:c.stops})),fastest,tries,fails,endT:Math.max(...cars.map(c=>c.T))};
+  return {seed,track:trackId,wx:wxId,laps,mine,W,rain:wxs.rain,start,tl,events,fastHist,final:finalOrder.map(c=>({id:c.id,code:c.code,name:c.name,team:c.team,T:c.T,stops:c.stops,grid:c.grid})),fastest,tries,fails,endT:Math.max(...cars.map(c=>c.T)),cars:cars.map(c=>({id:c.id,code:c.code,name:c.name,team:c.team,grid:c.grid}))};
 }
 
-
 /* ================= SIMULATOR UI ================= */
-const SIM={track:"meridian",wx:"dry",fx:"",wxKey:"",ylo:89000,yhi:96000,res:null,seed:7,okaPit:29,ic:[],tau:0,running:false,speed:2,lapSec:3.2,evIdx:0,seen:new Set(),chain:Promise.resolve(),finishShown:false,fastest:null,chartKey:"",lastLead:0};
+const SIM={track:"monza",wx:"dry",mine:"LEC",strat:"auto",fx:"",wxKey:"",ylo:68000,yhi:76000,res:null,seed:7,ic:[],tau:0,running:false,speed:4,lapSec:3,evIdx:0,seen:new Set(),chain:Promise.resolve(),finishShown:false,chartKey:"",rank:[],lapEnd:[]};
+const ROWH=46;
+const drv=id=>DRIVERS.find(d=>d.id===id)||DRIVERS[0];
+const teamOf=id=>TEAMS[drv(id).team];
+const surname=id=>drv(id).name.split(" ").slice(-1)[0];
+const TYN={SLICK:"slicks",INTER:"intermediates",WET:"full wets"};
+function mmss(ms){ return Math.floor(ms/60000)+":"+String(Math.round(ms%60000/1000)).padStart(2,"0"); }
 function simCompute(){
-  SIM.res=runSim(SIM.seed,SIM.okaPit,SIM.ic,SIM.track,SIM.wx); SIM.wxKey="";
-  const v=[]; Object.values(SIM.res.tl).forEach(a=>a.forEach(l=>{ if(!l.pit&&!l.sc&&!l.err) v.push(l.lt); })); v.sort((a,b)=>a-b);
+  SIM.res=runSim(SIM.seed,{mine:SIM.mine,strat:SIM.strat},SIM.ic,SIM.track,SIM.wx); SIM.wxKey=""; SIM.chartKey="";
+  const R=SIM.res, ids=R.cars.map(c=>c.id), n=R.laps;
+  SIM.rank=[]; SIM.lapEnd=[];
+  for(let i=0;i<n;i++){ const arr=ids.map(id=>({id,e:R.tl[id][i].end})).sort((a,b)=>a.e-b.e), m={}; arr.forEach((a,k)=>m[a.id]=k+1); SIM.rank.push(m); SIM.lapEnd.push(arr[0].e); }
+  const v=[]; ids.forEach(id=>R.tl[id].forEach((l,i)=>{ if(i>0&&!l.pit&&!l.sc&&!l.err) v.push(l.lt); })); v.sort((a,b)=>a-b);
   const lo=v[Math.floor(v.length*0.01)], hi=v[Math.min(v.length-1,Math.floor(v.length*0.97))];
   SIM.ylo=Math.floor((lo-300)/500)*500; SIM.yhi=Math.max(SIM.ylo+4000,Math.ceil((hi+300)/500)*500);
 }
-function mmss(ms){ return Math.floor(ms/60000)+":"+String(Math.round(ms%60000/1000)).padStart(2,"0"); }
-function simWxAt(D){
-  const B=simBase(), W=SIM.res.W, R=SIM.res.rain, fl=Math.floor(D), i=Math.max(B.L0,Math.min(B.total,fl)), f=D<B.L0?0:Math.min(1,D-fl), j=Math.min(B.total+1,i+1);
-  return {w:W[i]+(W[j]-W[i])*f, rain:R[i]+(R[j]-R[i])*f, L:Math.min(B.total,fl+1)};
+function clearTower(){ $("tower").innerHTML=""; Object.keys(towerEls).forEach(k=>delete towerEls[k]); }
+function simResetState(){
+  SIM.tau=0; SIM.running=false; SIM.evIdx=0; SIM.seen=new Set(); SIM.finishShown=false; SIM.chartKey="";
+  S.feed=[]; S.feedIdx=-1; renderFeed(); $("toast").classList.remove("show");
+  simRender(true);
 }
-const TYN={SLICK:"slicks",INTER:"intermediates",WET:"full wets"};
+function simPlanText(){
+  const id=SIM.mine, laps=SIM.res.laps, st=SIM.res.tl[id], stops=st.filter(l=>l.pit).map(l=>l.L);
+  return `${surname(id)} starts P${SIM.res.start[id].grid+1} on ${SIM.res.start[id].comp.toLowerCase()}s and stops on ${stops.length?stops.map(x=>"lap "+x).join(", "):"no laps"} in this seed.`;
+}
+function simNote(){ const T=TRACKS[SIM.track], X=WX[SIM.wx]; $("trk-note").textContent=`${T.km} km · ${T.laps} laps · ${T.turns} turns. ${T.blurb} ${X.sub}.`;
+  $("trk-chips").innerHTML=`<span class="chip">pit stop about ${Math.round(T.pitLoss/1000)}s</span><span class="chip">under safety car about ${Math.round(T.pitLossSC/1000)}s</span><span class="chip">tyre wear x${T.degM}</span><span class="chip">passing ${T.passBase<0.08?"very hard":(T.passBase<0.16?"hard":(T.passBase<0.24?"medium":"easy"))}</span><span class="chip">safety car odds ${T.inc<0.2?"low":(T.inc<0.4?"medium":"high")}</span>`; }
+function simEnter(){
+  SIM.seed=+$("s-seed").value||7; SIM.track=$("s-track").value; SIM.wx=$("s-wx").value; SIM.mine=$("s-mine").value; SIM.strat=$("s-strat").value; SIM.ic=[];
+  clearTower(); applyTrack(SIM.track); simCompute(); simResetState(); simNote();
+  const T=TRACKS[SIM.track], X=WX[SIM.wx];
+  const em=$("alx-empty"); if(em) em.remove();
+  logBubble("al","Race simulator · browser model",esc(`Ready at ${T.full}, ${X.name.toLowerCase()}. You are on the pit wall for ${drv(SIM.mine).name} (${teamOf(SIM.mine).name}). ${simPlanText()} Press Start, or ask me about the race.`));
+}
+function simSetup(why){
+  SIM.track=$("s-track").value; SIM.wx=$("s-wx").value; SIM.mine=$("s-mine").value; SIM.strat=$("s-strat").value; SIM.ic=[];
+  if(why==="track"||why==="wx") { /* keep strategy */ }
+  applyTrack(SIM.track); simCompute(); simResetState(); simNote();
+  const T=TRACKS[SIM.track], X=WX[SIM.wx];
+  logBubble("al","Race simulator · "+T.name,esc(`${T.full}, ${X.name.toLowerCase()}. ${T.blurb} ${simPlanText()}`));
+}
+function simDist(id,tau){
+  const R=SIM.res, tl=R.tl[id], T0=tl[0].start;
+  if(tau<=T0) return {D:-(T0-tau)/tl[0].lt,i:-1,f:0,done:false};
+  for(let i=0;i<tl.length;i++){ if(tau<tl[i].end){ const f=(tau-tl[i].start)/(tl[i].end-tl[i].start); return {D:tl[i].L-1+f,i,f,done:false}; } }
+  return {D:R.laps,i:tl.length-1,f:1,done:true};
+}
+function simSnap(tau){
+  const R=SIM.res;
+  const L=R.cars.map(c=>{
+    const p=simDist(c.id,tau), tl=R.tl[c.id], cur=p.i>=0?tl[p.i]:null, prev=p.i>0?tl[p.i-1]:null;
+    return {id:c.id,code:c.code,name:c.name,team:c.team,...p,comp:cur?cur.comp:R.start[c.id].comp,age:cur?cur.age:0,
+      lastLt:prev?prev.lt:null,end:p.done?tl[tl.length-1].end:Infinity,pitNow:cur?cur.pit:false,scLap:cur?cur.sc:false};
+  });
+  L.sort((a,b)=>(a.done&&b.done)?a.end-b.end:(a.done?-1:(b.done?1:b.D-a.D)));
+  L.forEach((c,i)=>{c.pos=i+1; const ahead=L[i-1]; if(ahead){ c.gapAhead=(ahead.done&&c.done)?c.end-ahead.end:Math.max(0,(ahead.D-c.D)*(c.lastLt||TRACKS[SIM.track].lapTime)); } else c.gapAhead=0;});
+  return L;
+}
+function simXY(c){
+  const tlc=SIM.res.tl[c.id], k=c.i, f=c.f;
+  if(k>=0 && !c.done){
+    let u=null;
+    if(tlc[k].pit&&f>=1-PITSPAN) u=(f-(1-PITSPAN))/(2*PITSPAN); else if(k>0&&tlc[k-1].pit&&f<=PITSPAN) u=(f+PITSPAN)/(2*PITSPAN);
+    if(u!=null&&PIT.length){ const x=Math.min(Math.max(u,0),1)*24, a=Math.floor(x), b=Math.min(a+1,24), t=x-a; return {x:lerp(PIT[a].x,PIT[b].x,t),y:lerp(PIT[a].y,PIT[b].y,t),pit:true}; }
+  }
+  const q=ptAt(c.done?0:c.D); return {x:q.x,y:q.y,pit:false};
+}
+function simWxAt(D){
+  const R=SIM.res, W=R.W, RA=R.rain, fl=Math.floor(D), i=Math.max(0,Math.min(R.laps,fl)), f=D<0?0:Math.min(1,D-fl), j=Math.min(R.laps+1,i+1);
+  return {w:W[i]+(W[j]-W[i])*f, rain:RA[i]+(RA[j]-RA[i])*f, L:Math.min(R.laps,Math.max(1,fl+1))};
+}
 function wxCond(w,rain){ if(rain>0.85) return "Heavy rain"; if(rain>0.5) return "Rain"; if(rain>0.05) return "Light rain"; if(w>0.05) return "Track drying"; if(SIM.wx==="over") return "Overcast"; if(SIM.wx==="arrive") return "Cloudy, rain nearby"; return "Sunny"; }
 function wetWord(w){ return w<0.04?"Dry":(w<0.15?"Damp":(w<0.4?"Wet":(w<0.7?"Very wet":"Soaked"))); }
 function bestPen(w){ return Math.min(wetPen("SOFT",w),wetPen("INTER",w),wetPen("WET",w)); }
@@ -1176,180 +1299,134 @@ function simFx(w,rain){
   rl.setAttribute("opacity",rain>0.03?1:0); const n=Math.round(30+120*rain); [...rl.children].forEach((l,i)=>{ l.style.display=i<n?"":"none"; });
 }
 function simWxRender(snap,lead){
-  const T=TRACKS[SIM.track], X=WX[SIM.wx], B=simBase(), st=simWxAt(lead.D), w=st.w;
+  const T=TRACKS[SIM.track], X=WX[SIM.wx], R=SIM.res, st=simWxAt(Math.max(0,lead.D)), w=st.w;
   simFx(w,st.rain);
-  const best=tyreType(bestTyre(w,5)), oka=snap.find(c=>c.id==="CAR_04"), miss=oka?(wetPen(oka.comp,w)-bestPen(w))/1000:0;
-  $("wx-now").innerHTML=`<div>Conditions<b>${wxCond(w,st.rain)}</b></div><div>Track wetness<b>${wetWord(w)} · ${Math.round(w*100)}%</b></div><div>Track / air<b>${X.trk-Math.round(5*w)}° / ${X.air-Math.round(3*w)}°C</b></div><div>Grip<b>${Math.round(100-55*w)}%</b></div><div>Quickest tyre<b>${TYN[best][0].toUpperCase()+TYN[best].slice(1)}</b></div><div class="${miss>0.7?"bad":""}">CAR_04 on ${oka?oka.comp.toLowerCase():"--"}<b>${miss>0.7?"+"+miss.toFixed(1)+" s per lap":"right tyre"}</b></div>`;
-  const lapNow=Math.min(Math.floor(lead.D)+1,B.total), key=lapNow+":"+document.documentElement.dataset.theme+":"+SIM.track+SIM.wx+SIM.seed+":"+SIM.res.events.length+":"+Math.round(lead.D*4);
+  const me=snap.find(c=>c.id===SIM.mine), best=tyreType(bestTyre(w,5,T)), miss=me?(wetPen(me.comp,w)-bestPen(w))/1000:0;
+  $("wx-now").innerHTML=`<div>Conditions<b>${wxCond(w,st.rain)}</b></div><div>Track wetness<b>${wetWord(w)} · ${Math.round(w*100)}%</b></div><div>Track / air<b>${X.trk-Math.round(5*w)}° / ${X.air-Math.round(3*w)}°C</b></div><div>Grip<b>${Math.round(100-55*w)}%</b></div><div>Quickest tyre<b>${TYN[best][0].toUpperCase()+TYN[best].slice(1)}</b></div><div class="${miss>0.7?"bad":""}">${me?me.code:"--"} on ${me?me.comp.toLowerCase():"--"}<b>${miss>0.7?"+"+miss.toFixed(1)+" s per lap":"right tyre"}</b></div>`;
+  const lapNow=st.L, key=lapNow+":"+document.documentElement.dataset.theme+":"+SIM.track+SIM.wx+SIM.seed+SIM.mine+SIM.strat+":"+R.events.length+":"+Math.round(Math.max(0,lead.D)*4);
   if(key===SIM.wxKey) return; SIM.wxKey=key;
-  const n=B.total-B.L0, W=640, x0=44, x1=W-8, cw=(x1-x0)/n; let s="";
+  const n=R.laps, W=640, x0=44, x1=W-8, cw=(x1-x0)/n; let s="";
   s+=`<text x="${x0-6}" y="16" text-anchor="end" font-size="9" fill="var(--ink3)">wet</text><text x="${x0-6}" y="52" text-anchor="end" font-size="9" fill="var(--ink3)">dry</text><line x1="${x0}" x2="${x1}" y1="54" y2="54" stroke="var(--line2)"/>`;
-  s+=`<text x="${x0-6}" y="70" text-anchor="end" font-size="9" fill="var(--ink3)">best</text><text x="${x0-6}" y="88" text-anchor="end" font-size="9" fill="var(--ink3)">OKA</text>`;
+  s+=`<text x="${x0-6}" y="70" text-anchor="end" font-size="9" fill="var(--ink3)">best</text><text x="${x0-6}" y="88" text-anchor="end" font-size="9" fill="var(--ink3)">${SIM.mine}</text>`;
+  const mt=R.tl[SIM.mine];
   for(let i=0;i<n;i++){
-    const L=B.L0+1+i, wv=SIM.res.W[L], past=L<=lapNow, x=x0+i*cw, h=Math.max(wv>0.01?2:0,40*wv);
-    const bt=tyreType(bestTyre(wv,B.total-L)), bc=bt==="INTER"?"#2fa84f":(bt==="WET"?"#2b7be4":"var(--line2)");
-    s+=`<rect x="${x.toFixed(1)}" y="${(52-h).toFixed(1)}" width="${(cw-1).toFixed(1)}" height="${h.toFixed(1)}" fill="#4f86d6" opacity="${past?0.9:0.38}"/>`;
-    s+=`<rect x="${x.toFixed(1)}" y="60" width="${(cw-1).toFixed(1)}" height="12" fill="${bc}" opacity="${past?1:0.5}"/>`;
-    const lp=SIM.res.tl.CAR_04[i];
-    s+=past?`<rect x="${x.toFixed(1)}" y="78" width="${(cw-1).toFixed(1)}" height="12" fill="${TYRE[lp.comp]}"/>`:`<rect x="${x.toFixed(1)}" y="78.5" width="${(cw-1).toFixed(1)}" height="11" fill="none" stroke="var(--line2)"/>`;
+    const L=i+1, wv=R.W[L], past=L<=lapNow, x=x0+i*cw, h=Math.max(wv>0.01?2:0,40*wv);
+    const bt=tyreType(bestTyre(wv,n-L,T)), bc=bt==="INTER"?"#2fa84f":(bt==="WET"?"#2b7be4":"var(--line2)"), lp=mt[i];
+    s+=`<rect x="${x.toFixed(1)}" y="${(52-h).toFixed(1)}" width="${Math.max(0.5,cw-0.6).toFixed(1)}" height="${h.toFixed(1)}" fill="#4f86d6" opacity="${past?0.9:0.38}"/>`;
+    s+=`<rect x="${x.toFixed(1)}" y="60" width="${Math.max(0.5,cw-0.6).toFixed(1)}" height="12" fill="${bc}" opacity="${past?1:0.5}"/>`;
+    s+=past?`<rect x="${x.toFixed(1)}" y="78" width="${Math.max(0.5,cw-0.6).toFixed(1)}" height="12" fill="${TYRE[lp.comp]}"/>`:`<rect x="${x.toFixed(1)}" y="78.5" width="${Math.max(0.5,cw-0.6).toFixed(1)}" height="11" fill="none" stroke="var(--line2)" stroke-width="0.6"/>`;
     if(past&&lp.pit) s+=`<circle cx="${(x+cw/2).toFixed(1)}" cy="97" r="2.6" fill="var(--panel)" stroke="var(--ink2)" stroke-width="1.4"/>`;
   }
-  const cx=x0+Math.max(0,Math.min(n,lead.D-B.L0))*cw; s+=`<line x1="${cx.toFixed(1)}" x2="${cx.toFixed(1)}" y1="2" y2="92" stroke="var(--accent)" stroke-width="2"/>`;
-  [0,Math.round(n/2),n-1].forEach(i=>s+=`<text x="${(x0+i*cw+cw/2).toFixed(1)}" y="105" text-anchor="middle" font-size="9" fill="var(--ink3)">L${B.L0+1+i}</text>`);
+  const cx=x0+Math.max(0,Math.min(n,lead.D))*cw; s+=`<line x1="${cx.toFixed(1)}" x2="${cx.toFixed(1)}" y1="2" y2="92" stroke="var(--accent)" stroke-width="2"/>`;
+  [0,Math.round(n/2),n-1].forEach(i=>s+=`<text x="${(x0+i*cw+cw/2).toFixed(1)}" y="105" text-anchor="middle" font-size="9" fill="var(--ink3)">L${i+1}</text>`);
   $("wx-radar").innerHTML=s;
-}
-function simSetup(){
-  SIM.track=$("s-track").value; SIM.wx=$("s-wx").value; applyTrack(SIM.track); SIM.ic=[]; simCompute(); simResetState();
-  const T=TRACKS[SIM.track], X=WX[SIM.wx]; $("trk-note").textContent=T.blurb+" "+X.sub+".";
-  logBubble("al","Race simulator · "+T.name,esc(`${X.name}. ${T.blurb} ${X.sub}.`));
-}
-function simResetState(keepLog){
-  const B=simBase(); SIM.tau=B.tau0; SIM.running=false; SIM.evIdx=0; SIM.seen=new Set(); SIM.finishShown=false; SIM.fastest=null; SIM.chartKey="";
-  S.feed=[]; S.feedIdx=-1; renderFeed(); $("toast").classList.remove("show");
-  simRender(true);
-}
-function simEnter(){
-  SIM.seed=+$("s-seed").value||7; SIM.okaPit=+$("s-strat").value; SIM.track=$("s-track").value; SIM.wx=$("s-wx").value; SIM.ic=[];
-  applyTrack(SIM.track); simCompute(); simResetState();
-  const T=TRACKS[SIM.track], X=WX[SIM.wx]; $("trk-note").textContent=T.blurb+" "+X.sub+".";
-  const em=$("alx-empty"); if(em) em.remove();
-  logBubble("al","Race simulator · browser model",esc(`Ready at ${T.name}, ${X.name.toLowerCase()}. Seed ${SIM.seed}. Press Start to run laps ${simBase().L0+1} to ${simBase().total}. Try the safety car button, switch the weather, or ask me about the rain.`));
-}
-function simDist(id,tau){
-  const B=simBase(), tl=SIM.res.tl[id], T0=B.cars.find(c=>c.id===id).T0;
-  if(tau<=T0) return {D:B.L0-(T0-tau)/tl[0].lt,i:-1,f:0,done:false};
-  for(let i=0;i<tl.length;i++){ if(tau<tl[i].end){ const f=(tau-tl[i].start)/(tl[i].end-tl[i].start); return {D:tl[i].L-1+f,i,f,done:false}; } }
-  return {D:B.total,i:tl.length-1,f:1,done:true};
-}
-function simSnap(tau){
-  const B=simBase();
-  const L=B.cars.map(c=>{
-    const p=simDist(c.id,tau), tl=SIM.res.tl[c.id], cur=p.i>=0?tl[p.i]:null, prev=p.i>0?tl[p.i-1]:null;
-    return {id:c.id,code:c.code,name:c.name,team:c.team,...p,comp:cur?cur.comp:SIM.res.start[c.id].comp,age:cur?cur.age:SIM.res.start[c.id].age,inPit:false,
-      lastLt:prev?prev.lt:null,end:p.done?tl[tl.length-1].end:Infinity,pitNow:cur?cur.pit:false,scLap:cur?cur.sc:false};
-  });
-  L.sort((a,b)=>(a.done&&b.done)?a.end-b.end:(a.done?-1:(b.done?1:b.D-a.D)));
-  L.forEach((c,i)=>{c.pos=i+1; const ahead=L[i-1]; if(ahead){ c.gapAhead=(ahead.done&&c.done)?c.end-ahead.end:Math.max(0,(ahead.D-c.D)*(c.lastLt||92000)); } else c.gapAhead=0;});
-  return L;
-}
-function simXY(c){
-  const tlc=SIM.res.tl[c.id], k=c.i, f=c.f;
-  if(k>=0 && !c.done){
-    let u=null;
-    if(tlc[k].pit&&f>=1-PITSPAN) u=(f-(1-PITSPAN))/(2*PITSPAN); else if(k>0&&tlc[k-1].pit&&f<=PITSPAN) u=(f+PITSPAN)/(2*PITSPAN);
-    if(u!=null&&PIT.length){ const x=Math.min(Math.max(u,0),1)*24, a=Math.floor(x), b=Math.min(a+1,24), t=x-a; return {x:lerp(PIT[a].x,PIT[b].x,t),y:lerp(PIT[a].y,PIT[b].y,t),pit:true}; }
-  }
-  const q=ptAt(c.done?0:c.D); return {x:q.x,y:q.y,pit:false};
+  $("radar-me").textContent=surname(SIM.mine)+"'s tyres";
 }
 function simRender(){
   if(!pathEl||!SIM.res) return;
-  const B=simBase(), snap=simSnap(SIM.tau), lead=snap[0];
-  const lapNow=Math.min(Math.floor(lead.D)+1,B.total), done=lead.done;
-  $("lap").textContent=lapNow; $("total").textContent=B.total; $("tower-lap").textContent="Lap "+lapNow;
-  const scNow=!done&&lead.scLap;
-  const fl=$("flag"); fl.className="flag"+(done&&snap.every(c=>c.done)?" done":(SIM.running?"":" idle")); $("flagtxt").textContent=snap.every(c=>c.done)?"Chequered flag":(scNow?"Safety car":(SIM.running?"Green flag":(SIM.tau>B.tau0?"Paused":"Ready")));
+  const R=SIM.res, T=TRACKS[SIM.track], snap=simSnap(SIM.tau), lead=snap[0];
+  const lapNow=Math.min(Math.max(1,Math.floor(Math.max(0,lead.D))+1),R.laps), done=lead.done;
+  $("lap").textContent=lapNow; $("total").textContent=R.laps; $("tower-lap").textContent="Lap "+lapNow+" / "+R.laps;
+  const scNow=!done&&lead.scLap, allDone=snap.every(c=>c.done);
+  const fl=$("flag"); fl.className="flag"+(allDone?" done":(SIM.running?"":" idle")); $("flagtxt").textContent=allDone?"Chequered flag":(scNow?"Safety car":(SIM.running?"Green flag":(SIM.tau>0?"Paused":"Ready")));
+  // fastest lap so far
+  let fast=null; for(const h of R.fastHist){ if(h.t<=SIM.tau) fast=h; else break; }
   // tower
-  const ul=$("tower"); ul.style.height=(snap.length*58)+"px";
-  const fastest=SIM.fastest;
+  const ul=$("tower"); ul.classList.add("dense"); ul.style.height=(snap.length*ROWH)+"px";
   snap.forEach((c,idx)=>{
     let li=towerEls[c.id];
     if(!li){ li=document.createElement("li"); li.className="row"; li.innerHTML=`<span class="pos num"></span><span class="bar"></span><span class="who"><span class="code"></span><span class="team"></span></span><span class="gap num"></span><span class="tyre"><span class="tl"></span><em></em></span>`; ul.appendChild(li); towerEls[c.id]=li; }
-    li.style.transform=`translateY(${idx*58}px)`; li.classList.toggle("hl",c.id==="CAR_04"); li.classList.toggle("tgt",c.id==="CAR_03");
+    li.style.transform=`translateY(${idx*ROWH}px)`; li.classList.toggle("hl",c.id===SIM.mine); li.title=drv(c.id).name+" · "+TEAMS[c.team].name;
     li.querySelector(".pos").textContent=c.pos;
-    li.querySelector(".bar").style.background=TEAM[c.team]||"#888";
+    li.querySelector(".bar").style.background=TEAMS[c.team].color;
     li.querySelector(".code").textContent=c.code;
-    const stops=SIM.res.tl[c.id].filter((x,ii)=>x.pit&&(c.i<0?false:ii<c.i)).length+simBase().cars.find(x=>x.id===c.id).stops0;
-    li.querySelector(".team").textContent=c.name+" · "+stops+" stop"+(stops===1?"":"s");
-    const isF=fastest&&fastest.id===c.id&&c.lastLt&&Math.abs(c.lastLt-fastest.lt)<1;
+    const stops=R.tl[c.id].filter((x,ii)=>x.pit&&(c.i<0?false:ii<c.i)).length;
+    li.querySelector(".team").textContent=surname(c.id)+" · "+TEAMS[c.team].name;
+    const isF=fast&&fast.id===c.id&&c.lastLt&&Math.abs(c.lastLt-fast.lt)<1;
     li.querySelector(".gap").innerHTML=(c.pos===1?"Leader":fmt(c.gapAhead))+`<small style="${isF?"color:var(--purple,#9b2fd8);font-weight:700":""}">${c.lastLt?lapFmt(c.lastLt):"--"}</small>`;
     const ty=li.querySelector(".tyre"); ty.style.setProperty("--c",TYRE[c.comp]||"#999"); ty.querySelector(".tl").textContent=c.pitNow&&c.f>=1-PITSPAN?"P":c.comp[0]; ty.querySelector("em").textContent=c.age+"L";
   });
   // cars on circuit
   let g=$("simcars"); if(!g){ g=document.createElementNS("http://www.w3.org/2000/svg","g"); g.id="simcars"; $("track").insertBefore(g,$("wxfx")); }
-  snap.forEach(c=>{
+  const rad=Math.max(7,Math.min(10,T.tw*0.55));
+  snap.slice().reverse().forEach(c=>{
     let el=g.querySelector(`[data-id="${c.id}"]`);
-    if(!el){ el=document.createElementNS("http://www.w3.org/2000/svg","g"); el.dataset.id=c.id; el.innerHTML=`<circle class="car-dot" r="12"/><text class="pn" text-anchor="middle" y="5" fill="#fff" font-weight="800" font-size="13" font-family="${css("--font-display")}"></text><text class="carlabel" y="-17" text-anchor="middle"></text>`; g.appendChild(el); }
+    if(!el){ el=document.createElementNS("http://www.w3.org/2000/svg","g"); el.dataset.id=c.id; el.innerHTML=`<title>${drv(c.id).name}</title><circle class="car-dot" r="${rad}"/><text class="pn" text-anchor="middle" fill="#fff" font-weight="800" font-size="${rad+1}" font-family="${css("--font-display")}"></text><text class="carlabel" text-anchor="middle" font-size="12"></text>`; g.appendChild(el); }
     const p=simXY(c); el.setAttribute("transform",`translate(${p.x} ${p.y})`);
-    const dot=el.querySelector("circle"); dot.setAttribute("fill",TEAM[c.team]||"#888"); dot.setAttribute("stroke",c.id==="CAR_04"?css("--ink"):"#fff");
-    el.querySelector(".pn").textContent=c.pos; const lb=el.querySelector(".carlabel"); lb.textContent=c.code; lb.setAttribute("y",c.id==="CAR_04"?"30":"-17");
+    const dot=el.querySelector("circle"); dot.setAttribute("fill",TEAMS[c.team].color); dot.setAttribute("stroke",c.id===SIM.mine?css("--ink"):"#fff"); dot.setAttribute("stroke-width",c.id===SIM.mine?3.4:2.4);
+    const pn=el.querySelector(".pn"); pn.textContent=c.pos; pn.setAttribute("y",rad*0.38);
+    const lb=el.querySelector(".carlabel"); const show=c.id===SIM.mine||c.pos===1; lb.textContent=show?c.code:""; lb.setAttribute("y",c.id===SIM.mine?rad+15:-rad-6);
   });
+  [...g.children].forEach(el=>{ if(el.dataset.id===SIM.mine) g.appendChild(el); });
   let scEl=g.querySelector('[data-sc]');
-  if(scNow){ if(!scEl){ scEl=document.createElementNS("http://www.w3.org/2000/svg","g"); scEl.dataset.sc="1"; scEl.innerHTML=`<circle r="11" fill="#ffd200" stroke="#15151e" stroke-width="2.5"/><text text-anchor="middle" y="4" font-size="10" font-weight="800" fill="#15151e">SC</text>`; g.appendChild(scEl); } const q=ptAt(lead.D+0.035); scEl.setAttribute("transform",`translate(${q.x} ${q.y})`); }
+  if(scNow){ if(!scEl){ scEl=document.createElementNS("http://www.w3.org/2000/svg","g"); scEl.dataset.sc="1"; scEl.innerHTML=`<circle r="11" fill="#ffd200" stroke="#15151e" stroke-width="2.5"/><text text-anchor="middle" y="4" font-size="10" font-weight="800" fill="#15151e">SC</text>`; g.appendChild(scEl); } const q=ptAt(lead.D+0.03); scEl.setAttribute("transform",`translate(${q.x} ${q.y})`); }
   else if(scEl) scEl.remove();
   // telemetry strip
-  const raceClock=B.race0+(SIM.tau-B.tau0), best=SIM.fastest;
+  const wxs=simWxAt(Math.max(0,lead.D)), me=snap.find(c=>c.id===SIM.mine);
   $("telem").innerHTML=`<div>Track<b><i class="fl" style="background:${scNow?"var(--warn)":"var(--good)"}"></i>${scNow?"SAFETY CAR":"GREEN"}</b></div>
-    <div>Race time<b>${clock(raceClock)}</b></div><div>Leader<b>${lead.code}</b></div>
-    <div>Lead over P2<b>${snap[1]?(lead.done&&snap[1].done?fmt(snap[1].end-lead.end).replace("+",""):((lead.D-snap[1].D)*(lead.lastLt||92000)/1000).toFixed(1)+"s"):"--"}</b></div>
-    <div>Fastest lap<b style="color:var(--purple,#9b2fd8)">${best?best.code+" "+lapFmt(best.lt):"--"}</b></div>
-    <div>Weather<b>${wxCond(simWxAt(lead.D).w,simWxAt(lead.D).rain)}</b></div>`;
-  $("alx-watch").textContent=`Race simulator · ${TRACKS[SIM.track].name} · ${WX[SIM.wx].name}`;
+    <div>Race time<b>${clock(SIM.tau)}</b></div><div>Leader<b>${lead.code}</b></div>
+    <div>${SIM.mine}<b>P${me.pos}${me.pos>1?" · "+fmt(me.gapAhead):""}</b></div>
+    <div>Fastest lap<b style="color:var(--purple,#9b2fd8)">${fast?fast.id+" "+lapFmt(fast.lt):"--"}</b></div>
+    <div>Weather<b>${wxCond(wxs.w,wxs.rain)}</b></div>`;
+  $("alx-watch").textContent=`${drv(SIM.mine).name} · ${TEAMS[drv(SIM.mine).team].name} · ${T.name}`;
   // events -> feed + copilot
-  const evs=SIM.res.events;
+  const evs=R.events;
   while(SIM.evIdx<evs.length&&evs[SIM.evIdx].t<=SIM.tau){
     const e=evs[SIM.evIdx++], key=e.kind+"|"+e.L+"|"+e.title;
-    if(e.kind==="fast"){ SIM.fastest={id:e.title.split(": ")[1],lt:parseLapStr(e.detail),code:e.title.split(": ")[1]}; const car=simBase().cars.find(c=>c.code===SIM.fastest.code); SIM.fastest.id=car?car.id:null; }
     if(SIM.seen.has(key)) continue; SIM.seen.add(key);
     const kind=e.kind==="pass"?"alert":(e.kind==="pit"||e.kind==="fast"||e.kind==="blk"?"lap":(e.kind==="wx"?"wx":(e.kind==="inc"?"inc":"start")));
     S.feed.unshift({kind,lap:e.L,title:e.title,detail:e.detail}); renderFeed();
     if(e.radio) simRadio(e);
   }
   simCharts(snap); simTyres(snap); simWxRender(snap,lead);
-  const allDone=snap.every(c=>c.done);
   if(allDone&&!SIM.finishShown){ SIM.finishShown=true; SIM.running=false; setTimeout(simFinishDialog,700); }
-  $("s-sc").disabled=!(SIM.tau>B.tau0&&!allDone&&lapNow<B.total-4&&!scNow&&!SIM.ic.some(x=>x.lap>lapNow));
+  $("s-sc").disabled=!(SIM.tau>0&&!allDone&&lapNow<R.laps-5&&!scNow&&!SIM.ic.some(x=>x.lap>lapNow));
 }
-function parseLapStr(d){ const m=/(\d+):(\d+\.\d+)/.exec(d); return m?(+m[1])*60000+parseFloat(m[2])*1000:0; }
 function simRadio(e){
-  const B=simBase(), text=e.title+". "+e.detail;
-  SIM.chain=SIM.chain.then(()=>cpReply({radio:true,cls:"pro",tag:e.kind==="wx"?"RACE CONTROL · simulated weather":"TEAM RADIO · simulated race",trace:[{call:`RaceSimulator.lap(${e.L})`,result:`${e.kind==="sc"?"safety car state changed":e.kind==="pass"?"order change detected":e.kind==="pit"?"pit stop logged":e.kind==="wx"?"weather timeline update":e.kind==="inc"?"incident logged":"result recorded"}`}],plain:text,say:text}));
+  const text=e.title+". "+e.detail;
+  SIM.chain=SIM.chain.then(()=>cpReply({radio:true,cls:"pro",tag:e.kind==="wx"?"RACE CONTROL · simulated weather":"TEAM RADIO · "+teamOf(SIM.mine).name+" · simulated",trace:[{call:`RaceSimulator.lap(${e.L})`,result:`${e.kind==="sc"?"safety car state changed":e.kind==="pass"?"order change detected":e.kind==="pit"?"pit stop logged":e.kind==="wx"?"weather timeline update":e.kind==="inc"?"incident logged":"result recorded"}`}],plain:text,say:text}));
 }
 function simCharts(snap){
-  const B=simBase(), lead=snap[0];
-  const n=SIM.res.tl.CAR_03.filter(x=>x.end<=SIM.tau&&true).length;
-  // completed laps = laps whose leader end has passed
-  const doneLaps=SIM.res.tl.CAR_03.filter((x,i)=>Math.min(...B.cars.map(c=>SIM.res.tl[c.id][i].end))<=SIM.tau).length;
-  const key=doneLaps+":"+document.documentElement.dataset.theme+":"+SIM.res.seed+SIM.track+SIM.wx+":"+SIM.res.events.length; if(key===SIM.chartKey) return; SIM.chartKey=key;
-  const NL=B.total-B.L0, W=300,H=110,pl=24,pr=8,pt=8,pb=16, X=i=>pl+(W-pl-pr)*i/(NL-1), Yp=r=>pt+(H-pt-pb)*(r-1)/3;
-  let svg=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/>`;
-  for(let i=0;i<doneLaps;i++){ const wv=SIM.res.tl.CAR_03[i].w; if(wv>0.12) svg=`<rect x="${(X(i)-(W-pl-pr)/(NL-1)/2).toFixed(1)}" y="${pt}" width="${((W-pl-pr)/(NL-1)).toFixed(1)}" height="${H-pt-pb}" fill="#4f86d6" opacity="${(0.07+0.2*wv).toFixed(2)}"/>`+svg; }
-  for(let r=1;r<=4;r++) svg+=`<text x="${pl-5}" y="${Yp(r)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">P${r}</text><line x1="${pl}" x2="${W-pr}" y1="${Yp(r)}" y2="${Yp(r)}" stroke="var(--line)" stroke-dasharray="2 4"/>`;
-  const rank=(i)=>{const arr=B.cars.map(c=>({id:c.id,e:SIM.res.tl[c.id][i].end})).sort((a,b)=>a.e-b.e); const m={}; arr.forEach((a,k)=>m[a.id]=k+1); return m;};
-  B.cars.forEach(c=>{
-    const pts=[]; for(let i=0;i<doneLaps;i++) pts.push([X(i),Yp(rank(i)[c.id])]);
-    if(pts.length){ svg+=`<polyline fill="none" stroke="${TEAM[c.team]||"#888"}" stroke-width="${c.id==="CAR_04"?3.2:2}" stroke-linejoin="round" points="${pts.map(p=>p.join(",")).join(" ")}"/>`;
-      SIM.res.tl[c.id].forEach((l,i)=>{ if(i<doneLaps&&l.pit) svg+=`<circle cx="${X(i)}" cy="${Yp(rank(i)[c.id])}" r="3.4" fill="var(--panel)" stroke="${TEAM[c.team]||"#888"}" stroke-width="1.8"/>`; });
-      const last=pts[pts.length-1]; svg+=`<text x="${last[0]+4}" y="${last[1]+3}" font-size="9" font-weight="700" fill="${TEAM[c.team]||"#888"}">${c.code}</text>`; }
+  const R=SIM.res, ids=R.cars.map(c=>c.id);
+  let doneLaps=0; while(doneLaps<R.laps&&SIM.lapEnd[doneLaps]<=SIM.tau) doneLaps++;
+  const key=doneLaps+":"+document.documentElement.dataset.theme+":"+SIM.res.seed+SIM.track+SIM.wx+SIM.mine+SIM.strat+":"+R.events.length; if(key===SIM.chartKey) return; SIM.chartKey=key;
+  const NL=R.laps, W=760,H=170,pl=30,pr=26,pt=8,pb=16, X=i=>pl+(W-pl-pr)*i/(NL-1), Yp=r=>pt+(H-pt-pb)*(r-1)/9, step=(W-pl-pr)/(NL-1);
+  const bandsOf=()=>{ let b=""; for(let i=0;i<doneLaps;i++){ const wv=R.tl[ids[0]][i].w; if(wv>0.12) b+=`<rect x="${(X(i)-step/2).toFixed(1)}" y="${pt}" width="${step.toFixed(1)}" height="${H-pt-pb}" fill="#4f86d6" opacity="${(0.07+0.2*wv).toFixed(2)}"/>`; } return b; };
+  let svg=bandsOf()+`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/>`;
+  [1,5,10].forEach(r=>{ svg+=`<text x="${pl-5}" y="${Yp(r)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">P${r}</text><line x1="${pl}" x2="${W-pr}" y1="${Yp(r)}" y2="${Yp(r)}" stroke="var(--line)" stroke-dasharray="2 4"/>`; });
+  const order=[...ids].sort((a,b)=>(a===SIM.mine)-(b===SIM.mine));
+  order.forEach(id=>{
+    const col=TEAMS[drv(id).team].color, second=DRIVERS.filter(d=>d.team===drv(id).team)[1].id===id, pts=[];
+    for(let i=0;i<doneLaps;i++) pts.push([X(i),Yp(SIM.rank[i][id])]);
+    if(pts.length){ svg+=`<polyline fill="none" stroke="${col}" stroke-width="${id===SIM.mine?3.2:1.5}" ${second?'stroke-dasharray="4 2"':""} stroke-linejoin="round" opacity="${id===SIM.mine?1:0.85}" points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" ")}"/>`;
+      R.tl[id].forEach((l,i)=>{ if(i<doneLaps&&l.pit) svg+=`<circle cx="${X(i).toFixed(1)}" cy="${Yp(SIM.rank[i][id]).toFixed(1)}" r="2.6" fill="var(--panel)" stroke="${col}" stroke-width="1.4"/>`; });
+      const last=pts[pts.length-1]; svg+=`<text x="${(last[0]+3).toFixed(1)}" y="${(last[1]+3).toFixed(1)}" font-size="10" font-weight="700" fill="${col}">${id}</text>`; }
   });
-  [0,Math.round(NL/2),NL-1].forEach(i=>svg+=`<text x="${X(i)}" y="${H-3}" text-anchor="middle" font-size="9" fill="var(--ink3)">L${B.L0+1+i}</text>`);
-  // lap-time chart
-  const ylo=SIM.ylo, yhi=SIM.yhi, Y2=(v)=>pt+(H-pt-pb)*(1-(Math.min(Math.max(v,ylo),yhi)-ylo)/(yhi-ylo));
-  let s2=`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/>`;
+  [0,Math.round(NL/2),NL-1].forEach(i=>svg+=`<text x="${X(i)}" y="${H-3}" text-anchor="middle" font-size="9" fill="var(--ink3)">L${i+1}</text>`);
+  const ylo=SIM.ylo, yhi=SIM.yhi, Y2=v=>pt+(H-pt-pb)*(1-(Math.min(Math.max(v,ylo),yhi)-ylo)/(yhi-ylo));
+  let s2=bandsOf()+`<line x1="${pl}" y1="${H-pb}" x2="${W-pr}" y2="${H-pb}" stroke="var(--line2)"/>`;
   [ylo+(yhi-ylo)*0.1,ylo+(yhi-ylo)*0.5,ylo+(yhi-ylo)*0.9].forEach(v=>{ s2+=`<text x="${pl-4}" y="${Y2(v)+3}" text-anchor="end" font-size="9" fill="var(--ink3)">${mmss(v)}</text>`; });
-  let bands=""; for(let i=0;i<doneLaps;i++){ const wv=SIM.res.tl.CAR_03[i].w; if(wv>0.12) bands+=`<rect x="${(X(i)-(W-pl-pr)/(NL-1)/2).toFixed(1)}" y="${pt}" width="${((W-pl-pr)/(NL-1)).toFixed(1)}" height="${H-pt-pb}" fill="#4f86d6" opacity="${(0.07+0.2*wv).toFixed(2)}"/>`; }
-  s2=bands+s2;
-  B.cars.forEach(c=>{
-    let seg=[]; const flush=()=>{ if(seg.length>1) s2+=`<polyline fill="none" stroke="${TEAM[c.team]||"#888"}" stroke-width="${c.id==="CAR_04"?2.6:1.6}" points="${seg.join(" ")}"/>`; seg=[]; };
-    SIM.res.tl[c.id].forEach((l,i)=>{ if(i>=doneLaps) return; if(l.pit||l.sc){flush();return;} seg.push(X(i)+","+Y2(Math.min(Math.max(l.lt,89500),95000))); }); flush();
+  order.forEach(id=>{
+    const col=TEAMS[drv(id).team].color; let seg=[]; const flush=()=>{ if(seg.length>1) s2+=`<polyline fill="none" stroke="${col}" stroke-width="${id===SIM.mine?2.4:1}" opacity="${id===SIM.mine?1:0.7}" points="${seg.join(" ")}"/>`; seg=[]; };
+    R.tl[id].forEach((l,i)=>{ if(i>=doneLaps) return; if(i===0||l.pit||l.sc||l.err){flush();return;} seg.push(X(i).toFixed(1)+","+Y2(l.lt).toFixed(1)); }); flush();
   });
-  if(SIM.sc) {}
-  $("simcharts").innerHTML=`<figure><figcaption>Lap chart<span>positions, rings = pit stops</span></figcaption><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${svg}</svg></figure>
-   <figure><figcaption>Lap times<span>pit, safety car and mistake laps hidden; blue = wet</span></figcaption><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${s2}</svg></figure>`;
+  $("simcharts").innerHTML=`<figure><figcaption>Lap chart<span>rings = pit stops, dashed = second driver</span></figcaption><svg viewBox="0 0 ${W} ${H}" >${svg}</svg></figure>
+   <figure><figcaption>Lap times<span>pit, safety car and mistake laps hidden; blue = wet</span></figcaption><svg viewBox="0 0 ${W} ${H}" >${s2}</svg></figure>`;
 }
 function simTyres(snap){
-  const wnow=simWxAt(snap[0].D).w, bp=bestPen(wnow);
-  const rows=[...snap].sort((a,b)=>a.id<b.id?-1:1).map(c=>{
-    const life=SIMCFG.life[c.comp], pct=Math.min(1,c.age/(life+1)), hot=pct>0.85;
-    return `<div class="tyrow"><b>${c.code}</b><span class="tdot" style="background:${TYRE[c.comp]}"></span><span class="tbar"><i style="width:${Math.round(pct*100)}%;background:${hot?"var(--bad)":(pct>0.6?"var(--warn)":"var(--good)")}"></i></span><span class="tn">${c.age}/${life} laps${(wetPen(c.comp,wnow)-bp)>700?` <b style="color:var(--bad);font-size:12px;font-family:inherit">+${((wetPen(c.comp,wnow)-bp)/1000).toFixed(1)}s</b>`:""}</span></div>`; }).join("");
-  $("tyres").innerHTML=rows;
+  const T=TRACKS[SIM.track], wnow=simWxAt(Math.max(0,snap[0].D)).w, bp=bestPen(wnow);
+  $("tyres").innerHTML=snap.map(c=>{
+    const life=lifeOf(c.comp,T), pct=Math.min(1,c.age/(life+1)), hot=pct>0.85, mis=(wetPen(c.comp,wnow)-bp)/1000;
+    return `<div class="tyrow${c.id===SIM.mine?" me":""}"><b>${c.code}</b><span class="tdot" style="background:${TYRE[c.comp]}"></span><span class="tbar"><i style="width:${Math.round(pct*100)}%;background:${hot?"var(--bad)":(pct>0.6?"var(--warn)":"var(--good)")}"></i></span><span class="tn">${c.age}/${life}${mis>0.7?` <b style="color:var(--bad);font-size:12px;font-family:inherit">+${mis.toFixed(1)}s</b>`:""}</span></div>`; }).join("");
 }
 function simFinishDialog(){
-  const r=SIM.res, W=r.final[0];
+  const r=SIM.res, W=r.final[0], T=TRACKS[r.track], X=WX[r.wx], fl=r.fastest, flc=fl.id?drv(fl.id):null;
+  const myPos=r.final.findIndex(f=>f.id===r.mine)+1, myG=r.start[r.mine].grid+1;
   $("dlg-t").textContent="Chequered flag";
-  $("dlg-b").innerHTML=`<p style="margin-top:0">${W.code} wins the simulated race (seed ${r.seed}). Every run with the same seed gives the same race.</p>
-  <table style="width:100%;border-collapse:collapse;font-size:14px">${r.final.map((f,i)=>`<tr style="border-top:1px solid var(--line)"><td style="padding:8px 4px;font-family:var(--font-display);font-size:20px;font-weight:700">P${i+1}</td><td><b>${f.code}</b></td><td>${i===0?"Winner":"+"+((f.T-W.T)/1000).toFixed(1)+"s"}</td><td>${f.stops} stops</td></tr>`).join("")}</table>
-  <p style="margin:10px 0 0;font-size:13px">${TRACKS[r.track].name}, ${WX[r.wx].name.toLowerCase()}. ${r.tries?`Pass attempts: ${r.tries}, completed: ${r.tries-r.fails} (${Math.round(100*(r.tries-r.fails)/r.tries)}%).`:"No close battles, so no pass attempts."}</p>
-  <p style="color:var(--ink3);font-size:12px">Browser model of tyre wear, fuel burn, dirty air, pit stops, overtaking odds and safety cars, seeded from the scenario's real car data, on fictional circuits with simulated weather. It is separate from the backend strategy engine.</p>
+  $("dlg-b").innerHTML=`<p style="margin-top:0">${drv(W.id).name} wins the simulated ${T.name} race (seed ${r.seed}). ${surname(r.mine)} finished P${myPos} from P${myG}. The same seed always gives the same race.</p>
+  <table style="width:100%;border-collapse:collapse;font-size:13px">${r.final.map((f,i)=>`<tr style="border-top:1px solid var(--line);${f.id===r.mine?"background:color-mix(in srgb,var(--accent) 12%,transparent)":""}"><td style="padding:5px 4px;font-family:var(--font-display);font-size:17px;font-weight:700">P${i+1}</td><td><span style="display:inline-block;width:4px;height:14px;background:${TEAMS[f.team].color};vertical-align:-2px;margin-right:6px"></span><b>${f.code}</b> ${esc(f.name)}</td><td>${TEAMS[f.team].name}</td><td>${i===0?"Winner":"+"+((f.T-W.T)/1000).toFixed(1)+"s"}</td><td>${f.stops} stop${f.stops===1?"":"s"}</td><td>${POINTS[i]||0} pts</td></tr>`).join("")}</table>
+  <p style="margin:10px 0 0;font-size:13px">${T.full}, ${X.name.toLowerCase()}. Fastest lap: ${flc?flc.name+" "+lapFmt(fl.lt):"--"}. ${r.tries?`Pass attempts: ${r.tries}, completed: ${r.tries-r.fails} (${Math.round(100*(r.tries-r.fails)/r.tries)}%).`:"No close battles."}</p>
+  <p style="color:var(--ink3);font-size:12px">Simulated result, not a prediction. Team pace and driver form are invented numbers, circuit traits are rough, and the weather is simulated. Unofficial fan project, not affiliated with Formula 1, the FIA or any team. Separate from the backend strategy engine and not AWS-validated.</p>
   <p><button class="btn primary" id="again" type="button">Run another seed</button></p>`;
   $("dlg").showModal(); $("again").onclick=()=>{ $("dlg").close(); $("s-newseed").click(); $("s-start").click(); };
 }
@@ -1357,56 +1434,69 @@ function simFinishDialog(){
 function simStart(){ if(SIM.tau>=SIM.res.endT-1||SIM.finishShown){ simResetState(); } SIM.running=true; }
 $("s-start").onclick=simStart;
 $("s-pause").onclick=()=>{ SIM.running=false; simRender(); };
-$("s-track").innerHTML=Object.values(TRACKS).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
-$("s-wx").innerHTML=Object.values(WX).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
-$("s-track").onchange=simSetup; $("s-wx").onchange=simSetup;
 $("s-reset").onclick=()=>{ SIM.ic=[]; simCompute(); simResetState(); };
-$("s-seed").onchange=()=>{ SIM.seed=+$("s-seed").value||7; SIM.ic=[]; simCompute(); simResetState(); };
+$("s-seed").onchange=()=>{ SIM.seed=+$("s-seed").value||7; SIM.ic=[]; simCompute(); simResetState(); logBubble("al","Race simulator",esc(simPlanText())); };
 $("s-newseed").onclick=()=>{ $("s-seed").value=1+Math.floor(Math.random()*9000); $("s-seed").onchange(); };
-$("s-strat").onchange=()=>{ SIM.okaPit=+$("s-strat").value; SIM.ic=[]; simCompute(); simResetState(); logBubble("al","Race simulator",esc(SIM.okaPit===29?"OKA follows the engine's plan: pit on lap 29.":"OKA stays out and pits on lap 36 instead.")); };
 $("sspeed").onclick=e=>{ const s=e.target.dataset&&e.target.dataset.s; if(!s) return; SIM.speed=+s; [...$("sspeed").children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.s===s)); };
 $("s-sc").onclick=()=>{
   const snap=simSnap(SIM.tau), lapNow=Math.floor(snap[0].D)+1, L=lapNow+1;
-  SIM.ic.push({lap:L,type:"sc"}); const keepTau=SIM.tau; simCompute(); SIM.evIdx=SIM.res.events.filter(e=>e.t<=keepTau).length; SIM.chartKey="";
+  SIM.ic.push({lap:L,type:"sc"}); const keepTau=SIM.tau; simCompute(); SIM.evIdx=SIM.res.events.filter(e=>e.t<=keepTau).length;
   logBubble("me","",esc("Deploy the safety car")); logBubble("al","Race simulator · what-if",esc(`Safety car requested for lap ${L}. The field bunches up and pitting costs about half as much. Watch who dives into the pits.`));
 };
 function simTick(dt){
   if(!SIM.res) return;
-  if(SIM.running){ SIM.tau=Math.min(SIM.tau+dt*(92000/(SIM.lapSec/SIM.speed)),SIM.res.endT+500); }
+  if(SIM.running){ SIM.tau=Math.min(SIM.tau+dt*(TRACKS[SIM.track].lapTime/(SIM.lapSec/SIM.speed)),SIM.res.endT+500); }
   simRender();
 }
 /* Q&A about the simulated race */
 function simAnswer(q){
-  const snap=simSnap(SIM.tau), lead=snap[0], lap=Math.min(Math.floor(lead.D)+1,simBase().total), codes=snap.map(c=>c.code);
-  const mentioned=codes.filter(c=>new RegExp("\\b"+c+"\\b","i").test(q)||new RegExp(c.replace("CAR_",""),"i").test(q)&&false);
-  const car=n=>snap.find(c=>c.code===n);
-  const tr=(res)=>[{call:`RaceSimulator.snapshot(lap=${lap}, seed=${SIM.seed})`,result:res}];
-  let m;
-  const T=TRACKS[SIM.track], X=WX[SIM.wx], B=simBase(), stw=simWxAt(lead.D), W=SIM.res.W, oka=car("OKA");
-  if(/\binter|full wet|wets\b|slick|(box|pit|tyre|tire|change|switch).*(rain|wet|weather)|(rain|wet|weather).*(box|pit|tyre|tire|change|switch)/i.test(q)){
-    const wf=Math.min(1,stw.w+(W[Math.min(B.total+1,stw.L+1)]-stw.w)*0.6), rem=B.total-lap, here=wetPen(oka.comp,wf), best=bestPen(wf), diff=(here-best)/1000, target=bestTyre(wf,rem), cost=T.pitLoss/1000;
-    let txt, res;
-    if(tyreType(oka.comp)===tyreType(target)||diff<0.4){ txt=`Stay out. OKA is on ${oka.comp.toLowerCase()}s and they are within ${diff.toFixed(1)}s a lap of the quickest tyre for ${Math.round(wf*100)}% wetness.`; res=`stay out, loss ${diff.toFixed(1)}s/lap`; }
-    else if(diff*rem>cost&&diff>1){ txt=`Box now for ${TYN[tyreType(target)]}. OKA loses about ${diff.toFixed(1)}s a lap on ${oka.comp.toLowerCase()}s. Over ${rem} laps that is about ${Math.round(diff*rem)}s against a stop that costs about ${Math.round(cost)}s here.`; res=`box, loss ${diff.toFixed(1)}s/lap vs stop ${Math.round(cost)}s`; }
-    else { txt=`Not yet. OKA loses about ${diff.toFixed(1)}s a lap on ${oka.comp.toLowerCase()}s, which does not repay a ${Math.round(cost)}s stop over the ${rem} laps left. Watch the radar for more rain.`; res=`wait, loss ${diff.toFixed(1)}s/lap`; }
-    return {tag:"Race simulator · tyre call (simulated)",trace:[{call:`RaceSimulator.tyre_call(driver="CAR_04", lap=${lap}, circuit="${T.id}", scenario="${SIM.wx}")`,result:res}],plain:txt+" This comes from the browser model, not the backend strategy engine.",say:txt};
+  const R=SIM.res, T=TRACKS[SIM.track], X=WX[SIM.wx], snap=simSnap(SIM.tau), lead=snap[0], lap=Math.min(Math.max(1,Math.floor(Math.max(0,lead.D))+1),R.laps);
+  const car=id=>snap.find(c=>c.id===id), me=car(SIM.mine), stw=simWxAt(Math.max(0,lead.D)), W=R.W;
+  const tr=res=>[{call:`RaceSimulator.snapshot(lap=${lap}, circuit="${T.id}", seed=${SIM.seed})`,result:res}];
+  const out=(txt,res,tag)=>({tag:tag||"Race simulator · browser model",trace:tr(res),plain:txt+" (Simulated race.)",say:txt});
+  const mentioned=DRIVERS.filter(d=>new RegExp("\\b"+d.id+"\\b|"+surname(d.id),"i").test(q)).map(d=>d.id);
+  const gapTxt=c=>c.pos===1?"leads":fmt(c.gapAhead).replace("+","")+" behind "+snap[c.pos-2].code;
+  if(/\binter|full wet|wets\b|slick|(box|pit|tyre|tire|change|switch).*(rain|wet|weather)|(rain|wet|weather).*(box|pit|tyre|tire|change|switch)|box now|should .* (box|pit)/i.test(q)){
+    const wf=Math.min(1,stw.w+(W[Math.min(R.laps+1,stw.L+1)]-stw.w)*0.6), rem=R.laps-lap, here=wetPen(me.comp,wf), best=bestPen(wf), diff=(here-best)/1000, target=bestTyre(wf,rem,T), cost=T.pitLoss/1000;
+    const nextStop=R.tl[SIM.mine].find((l,i)=>l.pit&&i>=Math.max(0,me.i));
+    let txt,res;
+    if(wf<0.08&&tyreType(me.comp)==="SLICK"){ txt=`Dry track, so no weather reason to stop. ${surname(SIM.mine)} is on ${me.comp.toLowerCase()}s, ${me.age} laps old (about ${lifeOf(me.comp,T)} is their life here). ${nextStop?"The model's next stop is lap "+nextStop.L+".":"No more stops are planned."}`; res="dry, stay out"; }
+    else if(tyreType(me.comp)===tyreType(target)||diff<0.4){ txt=`Stay out. ${surname(SIM.mine)} is on ${me.comp.toLowerCase()}s and they are within ${diff.toFixed(1)}s a lap of the quickest tyre for ${Math.round(wf*100)}% wetness.`; res=`stay out, loss ${diff.toFixed(1)}s/lap`; }
+    else if(diff*rem>cost&&diff>1){ txt=`Box now for ${TYN[tyreType(target)]}. ${surname(SIM.mine)} loses about ${diff.toFixed(1)}s a lap on ${me.comp.toLowerCase()}s. Over ${rem} laps that is about ${Math.round(diff*rem)}s against a stop that costs about ${Math.round(cost)}s here.`; res=`box, loss ${diff.toFixed(1)}s/lap vs stop ${Math.round(cost)}s`; }
+    else { txt=`Not yet. ${surname(SIM.mine)} loses about ${diff.toFixed(1)}s a lap on ${me.comp.toLowerCase()}s, which does not repay a ${Math.round(cost)}s stop over the ${rem} laps left. Watch the radar for more rain.`; res=`wait, loss ${diff.toFixed(1)}s/lap`; }
+    return {tag:"Race simulator · tyre call (simulated)",trace:[{call:`RaceSimulator.tyre_call(driver="${SIM.mine}", lap=${lap}, circuit="${T.id}", scenario="${SIM.wx}")`,result:res}],plain:txt+" This comes from the browser model, not the backend strategy engine.",say:txt};
   }
   if(/weather|forecast|rain|\bwet\b|damp|\bdry\b|temperature|grip|conditions|storm|shower|drizzle/i.test(q)){
-    const now=tyreType(bestTyre(stw.w,5)); let cross=""; for(let K=lap+1;K<=Math.min(B.total,lap+8);K++){ const nt=tyreType(bestTyre(W[K],B.total-K)); if(nt!==now){ cross=`The quickest tyre changes to ${TYN[nt]} around lap ${K}.`; break; } }
-    const d=W[Math.min(B.total+1,lap+4)]-stw.w, trend=d>0.08?"It is getting wetter.":(d<-0.08?"It is drying out.":"Little change expected over the next few laps.");
+    const now=tyreType(bestTyre(stw.w,5,T)); let cross=""; for(let K=lap+1;K<=Math.min(R.laps,lap+8);K++){ const nt=tyreType(bestTyre(W[K],R.laps-K,T)); if(nt!==now){ cross=`The quickest tyre changes to ${TYN[nt]} around lap ${K}.`; break; } }
+    const d=W[Math.min(R.laps+1,lap+4)]-stw.w, trend=d>0.08?"It is getting wetter.":(d<-0.08?"It is drying out.":"Little change expected over the next few laps.");
     const txt=`Simulated conditions at ${T.name}: ${wxCond(stw.w,stw.rain).toLowerCase()}, track ${Math.round(stw.w*100)}% wet, ${X.trk-Math.round(5*stw.w)} degrees on the track, ${X.air-Math.round(3*stw.w)} in the air. Quickest tyre now: ${TYN[now]}. ${trend} ${cross}`.trim();
     return {tag:"Race simulator · simulated weather",trace:[{call:`RaceSimulator.weather(lap=${lap}, circuit="${T.id}", scenario="${SIM.wx}")`,result:`wetness=${Math.round(stw.w*100)}% · quickest=${TYN[now]}`}],plain:txt+" This is the simulator's own weather model, not a real forecast.",say:txt+" This is the simulator's weather, not a real forecast."};
   }
-  if(/lead|first|p1|winning|ahead of everyone/i.test(q)){ const p2=snap[1]; const txt=`${lead.code} leads on lap ${lap}, ${fmt(p2.gapAhead).replace("+","")} ahead of ${p2.code}.`; return {tag:"Race simulator · browser model",trace:tr(`P1=${lead.code}`),plain:txt,say:txt}; }
-  if(/gap/i.test(q)){ const txt=snap.map(c=>c.pos===1?`${c.code} leads`:`${c.code} is ${fmt(c.gapAhead)} behind ${snap[c.pos-2].code}`).join(". ")+"."; return {tag:"Race simulator · browser model",trace:tr("gaps to car ahead"),plain:txt,say:txt}; }
-  if(/tyre|tire|compound|wear/i.test(q)){ const txt=snap.map(c=>`${c.code} is on ${c.comp.toLowerCase()}s, ${c.age} laps old`).join(". ")+"."; return {tag:"Race simulator · browser model",trace:tr("tyre ages"),plain:txt,say:txt}; }
-  if(/fastest/i.test(q)){ const f=SIM.fastest; const txt=f?`${f.code} has the fastest lap so far, ${lapFmt(f.lt)}.`:"No fastest lap has been set yet."; return {tag:"Race simulator · browser model",trace:tr(f?`fastest=${f.code}`:"none yet"),plain:txt,say:txt}; }
-  if(/safety car/i.test(q)){ const on=lead.scLap&&!lead.done; const txt=on?"The safety car is out right now.":"Green flag racing. Use the Safety car button to see what changes."; return {tag:"Race simulator · browser model",trace:tr(on?"SC active":"green"),plain:txt,say:txt}; }
+  if(/podium|top (3|three|5|five)|standings|order|classification/i.test(q)){ const n=/5|five/.test(q)?5:3, txt=snap.slice(0,n).map(c=>`P${c.pos} ${drv(c.id).name}`).join(", ")+"."; return out(txt,`top ${n}`); }
+  if(/lead|first|p1|winning|ahead of everyone/i.test(q)&&!mentioned.length){ const p2=snap[1]; return out(`${drv(lead.id).name} (${TEAMS[lead.team].name}) leads on lap ${lap}, ${fmt(p2.gapAhead).replace("+","")} ahead of ${surname(p2.id)}.`,`P1=${lead.code}`); }
+  if(mentioned.length||/\b(my|our) (driver|car)|where (are|is) we|how (are|is) we/i.test(q)){
+    const c=car(mentioned[0]||SIM.mine), ahead=snap[c.pos-2], behind=snap[c.pos], stops=R.tl[c.id].filter((x,ii)=>x.pit&&c.i>=0&&ii<c.i).length;
+    const txt=`${drv(c.id).name} (${TEAMS[c.team].name}) is P${c.pos} on lap ${lap}${ahead?`, ${fmt(c.gapAhead).replace("+","")} behind ${surname(ahead.id)}`:", leading"}${behind?` and ${fmt(behind.gapAhead).replace("+","")} ahead of ${surname(behind.id)}`:""}. On ${c.comp.toLowerCase()}s, ${c.age} laps old, ${stops} stop${stops===1?"":"s"} so far.`;
+    return out(txt,`${c.code}=P${c.pos}`);
+  }
+  if(/gap|interval|how far/i.test(q)){ const txt=snap.slice(0,5).map(c=>`${c.code} ${c.pos===1?"leads":fmt(c.gapAhead).replace("+","")+" behind "+snap[c.pos-2].code}`).join(". ")+"."; return out(txt,"gaps, top 5"); }
+  if(/tyre|tire|compound|wear/i.test(q)){ const txt=[me,lead].filter((c,i,a)=>a.indexOf(c)===i).map(c=>`${c.code} is on ${c.comp.toLowerCase()}s, ${c.age} laps old (about ${lifeOf(c.comp,T)} is their life here)`).join(". ")+"."; return out(txt,"tyre ages"); }
+  if(/fastest/i.test(q)){ let f=null; for(const h of R.fastHist){ if(h.t<=SIM.tau) f=h; else break; } return out(f?`${drv(f.id).name} has the fastest lap so far, ${lapFmt(f.lt)}.`:"No fastest lap has been set yet.",f?`fastest=${f.id}`:"none yet"); }
+  if(/safety car/i.test(q)){ const on=lead.scLap&&!lead.done; return out(on?"The safety car is out right now.":"Green flag racing. Use the Safety car button to see what changes.",on?"SC active":"green"); }
   if(/pit|box|stop|strateg/i.test(q)){
-    const txt=snap.map(c=>{ const tl=SIM.res.tl[c.id], next=tl.find((l,i)=>l.pit&&(c.i<0||i>=c.i)); return `${c.code}: ${next?"next stop lap "+next.L:"no more stops planned"}`; }).join(". ")+".";
-    return {tag:"Race simulator · browser model",trace:tr("pit plans from the model"),plain:txt+" These come from the browser model, not the backend engine.",say:txt}; }
+    const nx=id=>{ const c=car(id), l=R.tl[id].find((l,i)=>l.pit&&i>=Math.max(0,c.i)); return l?"next stop lap "+l.L:"no more stops planned"; };
+    return out(`${surname(SIM.mine)}: ${nx(SIM.mine)}. ${surname(lead.id)}: ${nx(lead.id)}. A pit stop costs about ${Math.round(T.pitLoss/1000)}s here, or about ${Math.round(T.pitLossSC/1000)}s under the safety car. These come from the browser model, not the backend engine.`,"pit plans");
+  }
   return null;
 }
+/* selectors */
+$("s-track").innerHTML=Object.values(TRACKS).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
+$("s-wx").innerHTML=Object.values(WX).map(x=>`<option value="${x.id}">${x.name}</option>`).join("");
+$("s-mine").innerHTML=DRIVERS.map(d=>`<option value="${d.id}">${d.name} · ${TEAMS[d.team].name}</option>`).join("");
+$("s-strat").innerHTML=[["auto","Strategy: team plan"],["early","Pit early (undercut)"],["late","Pit late (overcut)"],["onestop","Force one stop"],["twostop","Force two stops"]].map(x=>`<option value="${x[0]}">${x[1]}</option>`).join("");
+$("s-track").value="monza"; $("s-wx").value="dry"; $("s-mine").value="LEC";
+["s-track","s-wx","s-mine","s-strat"].forEach(id=>{ $(id).onchange=()=>simSetup(id); });
+
 
 /* ================= boot ================= */
 loadReplay(); drawTrack(); setTheme(document.documentElement.dataset.theme||"broadcast"); render(true);
