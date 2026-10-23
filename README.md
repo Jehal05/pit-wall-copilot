@@ -353,4 +353,4 @@ Details, trade-offs and the unverified items are in [`docs/AWS_ARCHITECTURE.md`]
 
 ## License and notices
 
-MIT, see [`LICENSE`](./LICENSE). Circuit outlines are simplified from the open [f1-circuits](https://github.com/bacinger/f1-circuits) data, derived from OpenStreetMap contributors (ODbL). No official Formula 1 logos or fonts are used.
+MIT, see [`LICENSE`](./LICENSE). Data and naming notes are in [`NOTICE.md`](./NOTICE.md). Circuit outlines are simplified from the open [f1-circuits](https://github.com/bacinger/f1-circuits) data, derived from OpenStreetMap contributors (ODbL). No official Formula 1 logos or fonts are used.

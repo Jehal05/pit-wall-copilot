@@ -19,11 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
-
----
-
-Note on demonstration data: all race, driver, team and sporting-rule data
-in this repository (including scenarios/scenario-demo-01.json and anything
-under docs/) is entirely fictional and authored for this project. It is not
-sourced from, affiliated with, or endorsed by Formula 1, the FIA, or any
-real motorsport series, team or driver.
