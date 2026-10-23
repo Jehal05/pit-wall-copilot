@@ -4,7 +4,7 @@
 
 There is no Alexa+ developer/onboarding account available in this
 environment (the same documented constraint as Bedrock and Fire TV device
-access in earlier gates — see IMPLEMENTATION_STATUS.md). This module
+access in earlier gates — see `IMPLEMENTATION_STATUS.md` (removed in the repo cleanup; see git history)). This module
 stands in for what a real Alexa+ agentic runtime would do once it has
 been configured with this project's MCP server as an add-on: it holds an
 MCP `ClientSession` over the same Streamable HTTP transport

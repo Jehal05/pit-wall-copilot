@@ -2,8 +2,8 @@
 
 AWS hackathon-final pass, phase 9. This consolidates the security posture
 already documented piecemeal across `AWS_ARCHITECTURE.md`'s "Security
-architecture summary", `JUDGING_EVIDENCE.md`'s fixed-vulnerability
-history, and `FINAL_PRODUCTION_READINESS_REPORT.md`'s dependency-scan
+architecture summary", `JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history)'s fixed-vulnerability
+history, and `FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history)'s dependency-scan
 results, into one place. See `THREAT_MODEL.md` for the trust-boundary
 analysis this posture is meant to address, and `docs/observability-runbook.md`
 for detection/alerting on the controls below.
@@ -94,7 +94,7 @@ for detection/alerting on the controls below.
   weakened.
 - `correlation_id` is sanitized against a strict charset before being
   echoed back or logged (closes a header-injection vector — see
-  `JUDGING_EVIDENCE.md` §4 for the specific fix history).
+  `JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history) §4 for the specific fix history).
 
 ## Least-privilege IAM
 
@@ -156,5 +156,5 @@ Every control above is implemented and locally testable (see
 `backend/tests/test_observability.py`, and `scripts/preflight.sh`'s
 green run). **None of it has been verified against a real AWS
 deployment** — this environment has no AWS credentials. See
-`FINAL_PRODUCTION_READINESS_REPORT.md` for the explicit source-readiness
+`FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history) for the explicit source-readiness
 vs. externally-verified-deployment-readiness distinction.

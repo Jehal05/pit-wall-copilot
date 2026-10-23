@@ -21,5 +21,5 @@ credentials and no route to a real AWS account — they have NOT been
 exercised against a real `sam deploy`. See
 `EXTERNAL_RELEASE_CHECKLIST.md` for the exact commands a deployer with
 real AWS access should run to close that gap, and
-`FINAL_PRODUCTION_READINESS_REPORT.md` for the full source-readiness vs.
+`FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history) for the full source-readiness vs.
 externally-verified-deployment-readiness distinction.

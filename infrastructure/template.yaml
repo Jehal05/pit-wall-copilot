@@ -187,7 +187,7 @@ Parameters:
       the BedrockProviderRequiresModelArn Rule below) — the deploy is
       refused otherwise, rather than silently falling back while a judge
       or user believes Bedrock is active (this exact confusion is what
-      HACKATHON_DEMO_SCRIPT.md/JUDGE_QA.md's source/fallback-labeling
+      `HACKATHON_DEMO_SCRIPT.md` (removed in the repo cleanup; see git history)/JUDGE_QA.md's source/fallback-labeling
       guidance exists to prevent at the UI layer; this Rule prevents the
       infra-level version of the same mistake).
 
@@ -1736,7 +1736,7 @@ Resources:
         # idle and harmless when EnableOtelTracing=false, exactly like
         # that one) — receives OTLP/HTTP spans from the mcp-server
         # container on 4318 and re-exports them to X-Ray, closing the gap
-        # JUDGING_EVIDENCE.md/AWS_ARCHITECTURE.md previously described
+        # `JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history)/AWS_ARCHITECTURE.md previously described
         # inaccurately (both services now genuinely have this wired, not
         # just the backend).
         - Name: otel-collector

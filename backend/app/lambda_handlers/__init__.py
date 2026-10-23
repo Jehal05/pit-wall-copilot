@@ -13,7 +13,7 @@ documented this exact split before any Lambda code existed).
 
 None of the handlers here have been invoked by real AWS Lambda in this
 environment — there is no AWS account available (see
-`../../../IMPLEMENTATION_STATUS.md`). They are packaged and referenced by
+`../../../`IMPLEMENTATION_STATUS.md` (removed in the repo cleanup; see git history)). They are packaged and referenced by
 `infrastructure/template.yaml`, and covered by unit tests
 (`tests/lambda_handlers/`) that exercise the handler function directly
 with realistic synthetic DynamoDB Streams event payloads and a real

@@ -271,7 +271,7 @@ The full list is in [`.env.example`](./.env.example).
 | Fire TV app | `fire-tv/src/__tests__/` | `cd fire-tv && npm ci && npm test` |
 | Demo, chaos, endurance | `scripts/` | see [`scripts/README.md`](./scripts/README.md) |
 
-At the last run all 595 backend tests passed. The tests make no outbound AWS or network calls. Tests are never skipped or weakened to get a pass.
+At the last run these all passed: 595 backend tests, 53 MCP server tests, 8 simulated Alexa+ tests, 19 legacy skill tests and 186 Fire TV tests (TypeScript type check included). The tests make no outbound AWS or network calls. Tests are never skipped or weakened to get a pass.
 
 ---
 

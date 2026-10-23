@@ -13,7 +13,7 @@
 > as the historical record of what passes 1–3 could not verify.
 
 Every check that COULD be run in this environment was run for real — see
-`VALIDATION_RESULTS.md` for the exact commands and exact output. This
+`VALIDATION_RESULTS.md` (removed in the repo cleanup; see git history) for the exact commands and exact output. This
 file consolidates everything that could **not** be run here, across the
 original "fixall" pass, the second (deeper) pass, and this third
 (final) pass, into one place: the exact reason it's blocked, and the
@@ -29,7 +29,7 @@ directly, without invoking Gradle at all; Docker `HEALTHCHECK`/
 `healthcheck:` blocks + a static pytest suite that reads both Dockerfiles
 and `docker-compose.yml` directly, without invoking `docker build` at
 all). Nothing in this pass claims these commands were run when they
-weren't — see `VALIDATION_RESULTS.md` §10 for exactly what WAS verified
+weren't — see `VALIDATION_RESULTS.md` (removed in the repo cleanup; see git history) §10 for exactly what WAS verified
 around each blocked command.
 
 ---
@@ -63,7 +63,7 @@ across `useDeviceAuth.test.ts`/`PairingScreen.test.tsx`/
 `AppPairingGate.test.tsx`, the 5 `androidReleaseSigning.test.ts` tests,
 the 10 `releaseNetworkSecurity.test.ts` tests, and `react-native config`
 autolinking `react-native-keychain`) was verified and passes in this
-environment — see `VALIDATION_RESULTS.md` §3/§10.
+environment — see `VALIDATION_RESULTS.md` (removed in the repo cleanup; see git history) §3/§10.
 
 **Once built, additionally verify on a real device (see §4 below):** the
 release APK, installed on a real Fire TV, actually shows the PAIRING CODE
@@ -195,7 +195,7 @@ a bare `npm audit --audit-level=high` gate. The most recent run reported
 slightly with npm's own dependency resolution), reducing to exactly 3
 distinct advisories (fast-xml-parser, image-size x2 GHSA IDs), all
 covered by current, unexpired, build-time-only exceptions in that policy
-file (expiring 2026-12-31) — see `JUDGING_EVIDENCE.md` §6. This is an
+file (expiring 2026-12-31) — see `JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history) §6. This is an
 explicit, named, time-boxed acceptance of a known finding, not a
 silently-weakened gate and not a claim that the underlying dependency
 issue is resolved. The root-cause detail below (why a permanent fix

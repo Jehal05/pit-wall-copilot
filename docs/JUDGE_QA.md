@@ -2,8 +2,8 @@
 
 AWS hackathon-final pass, phase 9. Anticipated questions about this
 submission's scope, honestly answered — pulled from
-`JUDGING_EVIDENCE.md`, `FINAL_PRODUCTION_READINESS_REPORT.md`,
-`FINAL_READINESS_REPORT.md`, and `alexa_plus_client/README.md`, which
+`JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history), `FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history),
+`FINAL_READINESS_REPORT.md` (removed in the repo cleanup; see git history), and `alexa_plus_client/README.md`, which
 remain the fuller sources for anything summarized here.
 
 **Q: Is this actually deployed on AWS right now?**
@@ -162,5 +162,5 @@ production launch"?**
 A: External verification against real AWS — everything above that says
 "validated statically, never deployed" is the honest gap. The source
 itself does not claim to be 100% production-ready; see
-`FINAL_PRODUCTION_READINESS_REPORT.md`'s explicit two-status verdict
+`FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history)'s explicit two-status verdict
 (source readiness vs. externally verified deployment readiness).

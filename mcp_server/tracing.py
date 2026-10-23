@@ -2,7 +2,7 @@
 correction 4; tracing-test-reliability redesign pass).
 
 *** HONEST STATUS BEFORE THIS PASS ***
-`JUDGING_EVIDENCE.md`/`AWS_ARCHITECTURE.md` claimed BOTH ECS services (the
+`JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history)/`AWS_ARCHITECTURE.md` claimed BOTH ECS services (the
 backend and this MCP server) had X-Ray/OpenTelemetry tracing. That was
 untrue for this service: `backend/app/tracing.py` existed and was wired
 into `backend/app/main.py`'s lifespan, but nothing in `mcp_server/`

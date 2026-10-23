@@ -146,7 +146,7 @@ issues, scoped per-role (see `SECURITY.md`'s "Least-privilege IAM").
   state.
   Mitigation: `correlation_id` is sanitized to a strict charset before
   being echoed, closing a header-injection/information-leak vector fixed
-  in an earlier pass (see `JUDGING_EVIDENCE.md` §4).
+  in an earlier pass (see `JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history) §4).
 
 **Denial of service**
 - Threat: a flood of pairing attempts or authentication failures exhausts
@@ -157,7 +157,7 @@ issues, scoped per-role (see `SECURITY.md`'s "Least-privilege IAM").
 - Threat: a synchronous, blocking Bedrock call on the request thread
   starves the event loop under concurrent load.
   Mitigation: `run_in_threadpool` (fixed in an earlier pass — see
-  `JUDGING_EVIDENCE.md` §4) keeps the LLM call off the async request
+  `JUDGING_EVIDENCE.md` (removed in the repo cleanup; see git history) §4) keeps the LLM call off the async request
   thread.
 - Threat: an unbounded pairing-code collision retry loop becomes its own
   DoS vector against DynamoDB.

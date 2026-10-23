@@ -44,8 +44,8 @@
     only ever talks to a backend YOU started locally (STATE_REPOSITORY
     =memory, LLM_PROVIDER=template are this project's local-demo
     defaults - see backend/.env.example). Nothing here is, or claims to
-    be, AWS-validated or production-ready - see LOCAL-DEMO-CHECKLIST.md
-    and LOCAL-DEMO-VALIDATION-REPORT.md for the honest scope of what this
+    be, AWS-validated or production-ready - see `LOCAL-DEMO-CHECKLIST.md` (removed in the repo cleanup; see git history)
+    and `LOCAL-DEMO-VALIDATION-REPORT.md` (removed in the repo cleanup; see git history) for the honest scope of what this
     proves.
 
 .PARAMETER BaseUrl

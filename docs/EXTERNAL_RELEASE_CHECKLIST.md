@@ -312,5 +312,5 @@ This sandbox validated the file only as generic YAML
 (`python3 -c "import yaml; yaml.safe_load(open('.github/workflows/ci.yml'))"`
 — parses cleanly) and by manually tracing each job's commands against
 ones already proven to work live in this session (see
-`FINAL_PRODUCTION_READINESS_REPORT.md` §10). A real run of the workflow on
+`FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history) §10). A real run of the workflow on
 an actual GitHub Actions runner is the definitive verification.

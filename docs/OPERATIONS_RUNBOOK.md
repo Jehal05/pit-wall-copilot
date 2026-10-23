@@ -13,4 +13,4 @@ Quick links:
 - Full alarm table + response procedures: `observability-runbook.md`
 - Deploy/backup/secret-rotation procedures: `DEPLOYMENT.md` (→ `deployment-runbook.md`)
 - One-command local verification: `scripts/preflight.sh`
-- What each phase-5 observability piece is verified vs. not: `observability-runbook.md`'s own "HONEST STATUS" notes and `FINAL_PRODUCTION_READINESS_REPORT.md`
+- What each phase-5 observability piece is verified vs. not: `observability-runbook.md`'s own "HONEST STATUS" notes and `FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history)

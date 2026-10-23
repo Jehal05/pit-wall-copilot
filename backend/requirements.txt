@@ -7,7 +7,7 @@
 # explicitly so a future fastapi bump cannot silently drift back onto a
 # vulnerable transitive version without this file also changing. Full
 # backend test suite (380 tests) re-run and confirmed passing unchanged
-# against this pair before adopting it — see FINAL_PRODUCTION_READINESS_REPORT.md.
+# against this pair before adopting it — see `FINAL_PRODUCTION_READINESS_REPORT.md` (removed in the repo cleanup; see git history).
 fastapi==0.141.1
 starlette==1.6.0
 uvicorn[standard]==0.30.6

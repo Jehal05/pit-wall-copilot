@@ -17,7 +17,7 @@ role against that same transport.
 
 **There is no Alexa+ developer/onboarding account available in this
 environment** (the same documented constraint as Bedrock and Fire TV
-device access elsewhere in this repository — see `../IMPLEMENTATION_STATUS.md`).
+device access elsewhere in this repository — see `../`IMPLEMENTATION_STATUS.md` (removed in the repo cleanup; see git history)).
 `simulated_client.py` is therefore a **simulated Alexa+ client**, clearly
 labeled as such in its own module docstring: it holds a real MCP
 `ClientSession` over a real Streamable HTTP connection to a real,
@@ -171,4 +171,4 @@ relying on this.
    cannot verify locally (see "What this actually is" above).
 5. **Do not claim real Alexa+ validation without having actually done
    step 4** — this repository has not, and says so throughout
-   (`IMPLEMENTATION_STATUS.md`, `VALIDATION_RESULTS.md`, this file).
+   (`IMPLEMENTATION_STATUS.md` (removed in the repo cleanup; see git history), `VALIDATION_RESULTS.md` (removed in the repo cleanup; see git history), this file).

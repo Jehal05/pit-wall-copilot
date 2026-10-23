@@ -78,7 +78,7 @@ scripts above.
 
 All three scripts have been run against a real local backend subprocess
 (`STATE_REPOSITORY=memory`, `LOCAL_DEMO_AUTH_MODE=true`) in this
-environment — see `IMPLEMENTATION_STATUS.md` / `VALIDATION_RESULTS.md`
+environment — see `IMPLEMENTATION_STATUS.md` (removed in the repo cleanup; see git history) / `VALIDATION_RESULTS.md` (removed in the repo cleanup; see git history)
 for the exact captured output. They have NOT been run against a deployed
 (AWS) backend — there is no AWS account available here (the same
 constraint documented throughout `docs/deployment-runbook.md`).

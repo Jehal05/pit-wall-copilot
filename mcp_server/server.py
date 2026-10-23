@@ -106,7 +106,7 @@ class _AuthMiddleware(BaseHTTPMiddleware):
     layer in front of this service — this server cannot honestly claim to
     implement or have tested that gateway-level auth (no AgentCore
     account is available in this environment; see
-    IMPLEMENTATION_STATUS.md). What IS implemented and tested here is
+    `IMPLEMENTATION_STATUS.md` (removed in the repo cleanup; see git history)). What IS implemented and tested here is
     this server's own half, which is required and non-optional whenever
     `PIT_WALL_MCP_ACCESS_TOKEN` is configured (as
     infrastructure/template.yaml now always does for the deployed ECS
