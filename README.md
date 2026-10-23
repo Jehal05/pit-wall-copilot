@@ -10,6 +10,8 @@ Built for the *Build, Ship, Shape: Amazon Developer Hackathon*. Runs fully on yo
 
 ![Pit Wall Copilot, Strategy page](web-dashboard/screenshots/page-strategy.png)
 
+**Live demo:** <https://jehal05.github.io/pit-wall-copilot/> (the dashboard in Replay and Simulator modes, with simulated data; Live backend mode needs a backend you run yourself).
+
 > **Honest status.** This is an unofficial fan project, not affiliated with Formula 1, the FIA or any team. Team and driver names and circuit shapes are real so the demo is recognisable; **every number, lap time, tyre model and result is simulated**. The backend and tests run locally. **Nothing has been deployed to or validated on AWS**, no real Bedrock endpoint is called, and no AWS credentials are used. The release name is `source-validated-aws-pending`. It is not production-ready.
 
 ---
